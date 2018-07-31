@@ -1,0 +1,40 @@
+/********************************
+VERSION: 1.1.1.0
+*********************************/
+-----------------------
+CHANGES
+-----------------------
+-Changed geolocation query from $near to $within
+-Added sorting to by_location calls.
+-Renamed stockINum to stockNum
+-Removed sortOrder field
+-Added the ability to sort/filter on isMTCA
+-Added min/max year filter
+-Added parameter to enforce search radius in vehicle records for geolocation calls.  This prevents records from appearing in results if the distance value is higher than the searchRadiusValue.
+-Added config value for maximum allowed search radius for geolocation calls.
+-Added distance calculation support in /filter call when passing geocoordinate parameters.  Also applied sorting logic used in by_location calls for the geocoordinate calls.
+
+/********************************
+VERSION: 1.1.1.0
+*********************************/
+
+-----------------------
+BUG FIXES
+-----------------------
+-Fixed bug with VEHICLE_IS_MTCA sorting in location calls.
+
+/********************************
+VERSION: 1.1.2.0
+*********************************/
+Moving the varnish cache config file into the service under /src/main/resources/vcache/
+Updated the maven dependency sorc-env-tool
+
+/********************************
+VERSION: 1.1.2.4
+*********************************/
+Performance enhancements to reduce network traffic and CPU/Memory decimation
+
+/********************************
+VERSION: 1.1.2.5
+*********************************/
+Fixed a bug where location queries would hang when no results were found.

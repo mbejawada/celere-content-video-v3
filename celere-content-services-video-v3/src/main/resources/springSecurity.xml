@@ -1,0 +1,112 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/security 
+   http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+	<context:component-scan base-package="com.sorc.content" />
+	<context:annotation-config />
+	<aop:aspectj-autoproxy />
+
+	<!-- <sec:debug /> --> <!-- Turns on security logging. Remove before going to production. -->
+
+	<sec:global-method-security
+		pre-post-annotations="enabled">
+	</sec:global-method-security>
+
+	<!-- Empty filter chain for the Enunicate Rest documentation page -->
+	<sec:http pattern="/apidocs/**" security="none" />
+	<sec:http pattern="/api-docs/**" security="none" /> <!-- the /api-docs path is required by swagger in com.wordnik.swagger.jersey.listing.ApiListingResource -->
+	<sec:http pattern="/init/**" security="none" />
+	<sec:http pattern="/healthCheck" security="none" />
+
+
+	<sec:http realm="Protected API" pattern="/**" use-expressions="true" auto-config="false" create-session="stateless" entry-point-ref="hmacServiceAuthenticationEntryPoint">
+		<sec:custom-filter ref="hmacServiceAuthenticationFilter" position="FORM_LOGIN_FILTER" />
+			
+		<sec:intercept-url pattern='/**' access="isAuthenticated()" />
+<!--	<sec:intercept-url pattern='/rest/**' access="isAuthenticated()" />
+			<sec:intercept-url pattern='/rest/article/**' access="hasRole('user')" />
+-->
+	</sec:http>
+
+ 
+	<bean id="hmacServiceAuthenticationEntryPoint" class="com.sorc.security.HMacServiceAuthenticationEntryPoint" />
+
+	<bean id="hmacServiceAuthenticationFilter" class="com.sorc.security.HMacServiceAuthenticationFilter">
+	  <!--  <property name="authenticationEntryPoint" ref="hmacServiceAuthenticationEntryPoint" />-->
+	</bean>
+	
+	<bean id="contextHelper" class="com.sorc.content.services.context.ContextConfigResolver">
+		<constructor-arg index="0">
+			<value>opsPath</value>
+		</constructor-arg>
+	</bean>
+	 <bean class="com.sorc.security.rsa.PlatformKeyStore">
+		<property name="keyStoreResource">
+			<value>file:${catalina.home}/#{contextHelper.getParameterValue()}/keystore/keystore.jks</value>
+		</property>
+		<property name="alias" value="platformSecurity" />
+		<property name="password" value="welcome" />
+	</bean> 
+	
+      <bean id="rsa" class="com.sorc.security.rsa.RSA"/>
+     
+	<sec:authentication-manager/>
+	
+	<!--datasource for Mongo bean definitions -->
+	<bean id="securityDataSource" class="com.sorc.content.mongodb.core.dao.DataSource">
+		<property name="database">
+			<value>${mongo_security_database}</value>
+		</property>
+		<property name="collection">
+			<value>${mongo_security_collection}</value>
+		</property>
+		<property name="socketKeepAlive">
+			<value>${mongo_socket_keep_alive}</value>
+		</property>
+	</bean>
+	<!--datasource for Mongo bean definitions -->
+	<bean id="dbConfig" class="com.sorc.content.mongodb.core.dao.DBGlobalConfig">
+		<property name="defaultMaxNumberOfRetries">
+			<value>${mongo_default_number_of_retries}</value>
+		</property>
+		<property name="defaultRetryWaitTime">
+			<value>${mongo_default_wait_time}</value>
+		</property>
+	</bean>
+	<bean id="esConfig" class="com.sorc.content.mongodb.core.dao.DBGlobalConfig">
+		<property name="defaultMaxNumberOfRetries">
+			<value>${mongo_default_number_of_retries}</value>
+		</property>
+		<property name="defaultRetryWaitTime">
+			<value>${mongo_default_wait_time}</value>
+		</property>
+	</bean>
+	<bean id="loggingAspect" class="com.sorc.content.services.aop.LoggingAspect">
+		<constructor-arg index="0">
+			<value>${mongo_query_execution_time_warning_threshold}</value>
+		</constructor-arg>
+	</bean>
+	<bean id="searchConfigurationProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location">
+			<value>file:${catalina.home}/#{contextHelper.getParameterValue()}/conf/config.properties</value>
+		</property>
+	</bean>
+	<bean id="mongoClientURI" class="com.mongodb.MongoClientURI">
+		<constructor-arg index="0">
+			<value>mongodb://${mongo_servers}${mongo_options}</value>
+		</constructor-arg>
+	</bean>
+	<bean id="mongoClient" class="com.mongodb.MongoClient" destroy-method="close">
+		<constructor-arg index="0">
+			<ref bean="mongoClientURI" />
+		</constructor-arg>
+	</bean>
+</beans>

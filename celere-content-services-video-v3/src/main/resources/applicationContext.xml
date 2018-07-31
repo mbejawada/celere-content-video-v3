@@ -1,0 +1,55 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	<context:component-scan base-package="com.sorc.content">
+		<context:exclude-filter type="regex" expression="com.sorc.content.services.aop.LoggingAspect"/>
+	</context:component-scan>
+	<context:annotation-config />
+	<aop:aspectj-autoproxy />
+ <import resource="springSecurity.xml" /> 
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>file:${catalina.home}/${opsPath}/conf/config.properties</value>
+		</property>
+	</bean>
+	<bean id="elasticSearchClusterConfiguration"
+		class="com.sorc.content.elasticsearch.core.dao.ElasticSearchClusterConfiguration">
+		<property name="servers">
+			<value>${elasticsearch_mtod_video_servers}</value>
+		</property>
+		<property name="port">
+			<value>${elasticsearch_mtod_video_port}</value>
+		</property>
+		<property name="sniff">
+			<value>${elasticsearch_sniff}</value>
+		</property>
+	</bean>
+		<bean id="securityProps" class="com.sorc.security.SecurityProperties">
+  		<constructor-arg index="0">
+   		<value>${security_enabled}</value>
+  		</constructor-arg>
+ 	</bean>
+	<bean id="amqConfiguration" class="com.sorc.content.core.dao.amq.AmqConfiguration">
+		<property name="url">
+			<null/>
+		</property>
+		<property name="queueName">
+			<null/>
+		</property>
+	</bean>
+
+	<bean id="amqDao" class="com.sorc.content.core.dao.amq.AmqDao">
+		<constructor-arg index="0">
+			<ref bean="amqConfiguration" />
+		</constructor-arg>
+	</bean>
+
+</beans>
