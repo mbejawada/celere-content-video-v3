@@ -1,4 +1,4 @@
-package com.sorc.content.services.video.util;
+package com.sorc.content.elasticsearch.core.util;
 
 import java.io.IOException;
 import java.util.Properties;

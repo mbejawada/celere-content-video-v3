@@ -89,6 +89,7 @@ public class VideoResource3_0 {
 		List<String> facetFieldsList = new ArrayList<String>();
 		facetFieldsList.add(VideoConstants.SHOW);
 		facetFieldsList.add(VideoConstants.SEASON);
+		facetFieldsList.add(VideoConstants.UPDATED_AT);
 		facetFieldsList.add(VideoConstants.CATEGORIES);
 		facetFieldsList.add(VideoConstants.MAIN_CATEGORY);
 		facetFieldsList.add(VideoConstants.META);

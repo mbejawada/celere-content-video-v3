@@ -71,7 +71,7 @@ public class AppleXmlFeedConstants {
 	
 	public static final String CATEGORY_SHOW = "Show";
 	public static final String CATEGORY_SEASON = "Season";
-	public static final String CATEGORY_MOTORSPORT = "MOTORSPORT";	
+	public static final String CATEGORY_MOTORSPORTS = "MOTORSPORTS";	
 	public static final String GENRE_REALITY = "reality";
 	public static final String GENRE_SPORTS = "sports";
 	public static final String RATING_VAL_PREFIX = "TV-";

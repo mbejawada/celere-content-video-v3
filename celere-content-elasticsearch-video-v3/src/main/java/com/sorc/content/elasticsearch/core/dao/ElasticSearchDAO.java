@@ -212,11 +212,7 @@ public abstract class ElasticSearchDAO<T extends IDataTransfer<IDType>, IDType>
 			// execute the search			
 			do {
 				try {
-					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-					System.out.println("querying..."+dateFormat.format(new Date()));
-					System.out.println(source.toString());
 					searchResult  = jestClient.execute(search);					
-					System.out.println("finished query..."+dateFormat.format(new Date()));
 					break;
 				} catch (NoNodeAvailableException e) {
 					retry.errorOccured(e);
