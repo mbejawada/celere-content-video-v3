@@ -512,7 +512,7 @@ public class ElasticSearchVideoResultAssembler {
 	
 	private static String getGenre(ElasticSearchVideo elasticSearchVideo)
 	{
-		if(elasticSearchVideo != null && elasticSearchVideo.getMainCategory() !=null && elasticSearchVideo.getMainCategory().trim().equals(AppleXmlFeedConstants.CATEGORY_MOTORSPORT))			
+		if(elasticSearchVideo != null && elasticSearchVideo.getMainCategory() !=null && elasticSearchVideo.getMainCategory().trim().equals(AppleXmlFeedConstants.CATEGORY_MOTORSPORTS))			
 		{
 			return AppleXmlFeedConstants.GENRE_SPORTS;
 		}
