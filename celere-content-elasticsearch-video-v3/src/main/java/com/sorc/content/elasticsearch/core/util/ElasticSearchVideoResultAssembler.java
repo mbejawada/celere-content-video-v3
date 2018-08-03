@@ -194,14 +194,20 @@ public class ElasticSearchVideoResultAssembler {
 													recordCount += 1;
 												}
 												else
+												{
 													totalSeason -= 1;
+													recordCount -= 1;
+												}
 												seasonNodeAdded = true;
 											}											
 											
 											if(!subBucket.getKey().equals(AppleXmlFeedConstants.CATEGORY_TYPE_SEASON_PLACE_HOLDER))
 												createEpisodeImformation(streamWriter, eventFactory, elasticSearchVideo, showContentId, seasonContentId);
 											else
+											{
 												totalEpisode -= 1;
+												recordCount -= 1;
+											}
 											
 										} catch (Exception e) {
 											logger.error(e.getMessage());
@@ -240,7 +246,10 @@ public class ElasticSearchVideoResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeEndElement();;
-				
+						
+		logger.info("Total Show: "+totalShow);
+		logger.info("Total Season: "+totalSeason);
+		logger.info("Total Episode: "+totalEpisode);
 		resultFacetList.add(output.toString());		
 		return resultFacetList;
 	}
