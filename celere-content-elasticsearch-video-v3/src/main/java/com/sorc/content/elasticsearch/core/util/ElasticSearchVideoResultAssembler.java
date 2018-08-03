@@ -195,8 +195,7 @@ public class ElasticSearchVideoResultAssembler {
 												}
 												else
 												{
-													totalSeason -= 1;
-													recordCount -= 1;
+													totalSeason -= 1;													
 												}
 												seasonNodeAdded = true;
 											}											
@@ -246,7 +245,7 @@ public class ElasticSearchVideoResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeEndElement();;
-						
+					
 		logger.info("Total Show: "+totalShow);
 		logger.info("Total Season: "+totalSeason);
 		logger.info("Total Episode: "+totalEpisode);
