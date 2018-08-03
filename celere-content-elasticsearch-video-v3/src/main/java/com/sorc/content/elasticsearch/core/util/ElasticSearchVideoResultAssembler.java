@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,11 @@ public class ElasticSearchVideoResultAssembler {
 		String seasonContentId = null;
 		boolean showNodeAdded = false;
 		boolean seasonNodeAdded = false;
+		int totalShow = 0;
+		int totalSeason = 0;
+		int totalEpisode = 0;
+		long showDocCount = 0;
+		long seasonDocCount = 0;		
 		
 		int recordCount = 0;
 		// create a XMLOutputFactory
@@ -136,48 +142,66 @@ public class ElasticSearchVideoResultAssembler {
 			} else {				
 				terms = result.getAggregations().getTermsAggregation(facet);					
 			}
-						
+			
+			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());			
 			createNode(streamWriter, AppleXmlFeedConstants.TITLE, AppleXmlFeedConstants.ROOT_TITLE);
 			createNode(streamWriter, AppleXmlFeedConstants.DESCRIPTION, AppleXmlFeedConstants.ROOT_DESCRIPTION);
 			createNode(streamWriter, AppleXmlFeedConstants.DEFALUT_LOCALE, AppleXmlFeedConstants.ROOT_DEFALUT_LOCALE);
 	        if(terms != null && terms.getBuckets() != null && terms.getBuckets().size() > 0) 
-	        {	        		        	        	
+	        {	        		        	    
+	        	totalShow = terms.getBuckets().size();
 	        	for(Entry bucket : terms.getBuckets()) {		        		
 	        		showNodeAdded = false;
-	        		seasonNodeAdded = false;	        		
+	        		seasonNodeAdded = false;	 
+	        		showContentId = null;
+	        		showDocCount = bucket.getCount();
+	        		seasonDocCount = 0;
+	        		
 	        		if(bucket != null && bucket.getKey() != null && bucket.getCount() != null) {	 	        				        				        		        			
 	        			TermsAggregation subTerms = bucket.getAggregation(subAggFacet, TermsAggregation.class);
 	        			if(subTerms != null && subTerms.getBuckets() != null && subTerms.getBuckets().size() > 0) {
-	        				//recordCount += subTerms.getBuckets().size();	        				
+	        				//recordCount += subTerms.getBuckets().size();	   
+	        				totalSeason += subTerms.getBuckets().size();
 	        				for(Entry subBucket : subTerms.getBuckets()) {
+	        					seasonDocCount += subBucket.getCount();        						
 	        					seasonNodeAdded = false;
-	        					if(subBucket != null && subBucket.getKey() != null && subBucket.getCount() != null) {	 
-				        			List<String> topHitsList = subBucket.getTopHitsAggregation(facet+subAggFacet).getSourceAsStringList();
-				        			showContentId = null;
+	        					if(subBucket != null && subBucket.getKey() != null && subBucket.getCount() != null) {		        						
+				        			List<String> topHitsList = subBucket.getTopHitsAggregation(facet+subAggFacet).getSourceAsStringList();				        			
 				        			seasonContentId = null;
-				        			recordCount += topHitsList.size();				        			
+				        			recordCount += topHitsList.size();		
+				        			totalEpisode += topHitsList.size();				        			
 				        			for(String sourceStr : topHitsList)
 				        			{				        				
 				    					ObjectMapper mapper = new ObjectMapper();
 										ElasticSearchVideo elasticSearchVideo = null;
 										try 
 										{											
-											elasticSearchVideo = mapper.readValue(sourceStr, new TypeReference<ElasticSearchVideo>(){});
-												
+											elasticSearchVideo = mapper.readValue(sourceStr, new TypeReference<ElasticSearchVideo>(){});																							
+													
 											if(!showNodeAdded)
 											{
 												showContentId = createShowImformation(streamWriter, eventFactory, elasticSearchVideo, bucket.getKey());
 												showNodeAdded = true;
 												recordCount += 1;
 											}
+																						
 											if(!seasonNodeAdded)
 											{
-												seasonContentId = createSeasonwImformation(streamWriter, eventFactory, elasticSearchVideo, showContentId, subBucket.getKey());
+												if(!subBucket.getKey().equals(AppleXmlFeedConstants.CATEGORY_TYPE_SEASON_PLACE_HOLDER))
+												{
+													seasonContentId = createSeasonwImformation(streamWriter, eventFactory, elasticSearchVideo, showContentId, subBucket.getKey());
+													seasonNodeAdded = true;
+													recordCount += 1;
+												}
+												else
+													totalSeason -= 1;
 												seasonNodeAdded = true;
-												recordCount += 1;
-											}
+											}											
 											
-											createEpisodeImformation(streamWriter, eventFactory, elasticSearchVideo, showContentId, seasonContentId);											
+											if(!subBucket.getKey().equals(AppleXmlFeedConstants.CATEGORY_TYPE_SEASON_PLACE_HOLDER))
+												createEpisodeImformation(streamWriter, eventFactory, elasticSearchVideo, showContentId, seasonContentId);
+											else
+												totalEpisode -= 1;
 											
 										} catch (Exception e) {
 											logger.error(e.getMessage());
@@ -187,23 +211,27 @@ public class ElasticSearchVideoResultAssembler {
 	        					}
 	        					else
 	        					{
-	        						//System.out.println("No episode found for :"+subBucket.getKey());
+	        						logger.info("No episode found for :"+subBucket.getKey());
 	        					}
 	        				}
+	        				
+	        				if(showDocCount != seasonDocCount)
+	        					logger.info("Document not matched for Show:"+ bucket.getKey() + " show docCount: "+showDocCount + " season docCount: "+seasonDocCount);
 	        			}	
 	        			else
 	        			{
-	        				//System.out.println("No Season Found for	:"+bucket.getKey());
-	        				//System.out.println("Missing Docs:	"+bucket.getCount());
+	        				logger.info("No Season Found for	:"+bucket.getKey());
+	        				logger.info("Missing Docs:	"+bucket.getCount());
 	        			}
-	        		}        			
-	        	}
-	        	//System.out.println("TOtal Records:"+j);
+	        		}  
+	        		else
+	        			logger.info("No season found for :"+bucket.getKey());
+	        	}	        	
 	        }
 		}
 		else
-		{
-			createNode(streamWriter, AppleXmlFeedConstants.TOTAL_ITEM_COUNT, "0");
+		{			
+			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());	
 			createNode(streamWriter, AppleXmlFeedConstants.TITLE, AppleXmlFeedConstants.ROOT_TITLE);
 			createNode(streamWriter, AppleXmlFeedConstants.DESCRIPTION, AppleXmlFeedConstants.ROOT_DESCRIPTION);
 			createNode(streamWriter, AppleXmlFeedConstants.DEFALUT_LOCALE, AppleXmlFeedConstants.ROOT_DEFALUT_LOCALE);
@@ -212,7 +240,7 @@ public class ElasticSearchVideoResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeEndElement();;
-		
+				
 		resultFacetList.add(output.toString());		
 		return resultFacetList;
 	}
@@ -244,7 +272,7 @@ public class ElasticSearchVideoResultAssembler {
 			{
 				if(category.getType() != null && AppleXmlFeedConstants.CATEGORY_SHOW.equals(category.getType()))
 				{			
-					if(category.getDisplayName() != null && category.getDisplayName().equals(showName))
+					if(category.getName() != null && category.getName().equals(showName))
 					{
 						showContentId = (category.getId()==null?"":String.valueOf(category.getId()));
 						streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
@@ -257,14 +285,14 @@ public class ElasticSearchVideoResultAssembler {
 						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, isStringNull(category.getCreatedAt()));		
 						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.TITLE, isStringNull(category.getDisplayName()));
 						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.DESCRIPTION, isStringNull(category.getDescription()));
-						createNode(streamWriter, AppleXmlFeedConstants.GENRE, getGenre(elasticSearchVideo));		
+						createNode(streamWriter, AppleXmlFeedConstants.GENRE, isStringNull(elasticSearchVideo.getShowGenry()));		
 						
 						//Populating Rating
 						streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 						streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 						streamWriter.writeStartElement(AppleXmlFeedConstants.RATING);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.SYSTEM_CODE, AppleXmlFeedConstants.SYSTEM_CODE_VAL);		
-						streamWriter.writeCharacters(AppleXmlFeedConstants.RATING_VAL_PREFIX+isStringNull(elasticSearchVideo.getMeta()==null?"":elasticSearchVideo.getMeta().getParentalRating()));	
+						streamWriter.writeCharacters(AppleXmlFeedConstants.RATING_VAL_PREFIX+isStringNull(elasticSearchVideo.getShowParentalRating()));	
 						streamWriter.writeEndElement();	
 						
 						createArtWorkNode(streamWriter, eventFactory, isStringNull(category.getAppleUmcUrl()), AppleXmlFeedConstants.ARTWORK_TYPE_COVERAGE_SQUARE);		
@@ -339,7 +367,7 @@ public class ElasticSearchVideoResultAssembler {
 			{
 				if(category.getType() != null && AppleXmlFeedConstants.CATEGORY_SEASON.equals(category.getType()))
 				{
-					if(category.getDisplayName() != null && category.getDisplayName().equals(seasonName))
+					if(category.getName() != null && category.getName().equals(seasonName))
 					{
 						seasonContentId = category.getId()==null?"":String.valueOf(category.getId());
 						streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
@@ -503,20 +531,23 @@ public class ElasticSearchVideoResultAssembler {
 			return "";
 		}
 	}
+	
 	public static String isStringNull(String param) {
 		if(param != null) {
 			return param;
 		}
 		return "";
-	}
+	}	
 	
-	private static String getGenre(ElasticSearchVideo elasticSearchVideo)
+	private static String getLastBuildDate()
 	{
-		if(elasticSearchVideo != null && elasticSearchVideo.getMainCategory() !=null && elasticSearchVideo.getMainCategory().trim().equals(AppleXmlFeedConstants.CATEGORY_MOTORSPORTS))			
+		try
 		{
-			return AppleXmlFeedConstants.GENRE_SPORTS;
+			return sdf.format(new Date());
 		}
-		
-		return AppleXmlFeedConstants.GENRE_REALITY;
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 }

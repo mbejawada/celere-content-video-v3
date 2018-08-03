@@ -94,7 +94,9 @@ public class VideoResource3_0 {
 		facetFieldsList.add(VideoConstants.MAIN_CATEGORY);
 		facetFieldsList.add(VideoConstants.META);
 		facetFieldsList.add(VideoConstants.VIDEO);		
-		facetFieldsList.add(VideoConstants.PERSON);		
+		facetFieldsList.add(VideoConstants.PERSON);
+		facetFieldsList.add(VideoConstants.SHOW_PARENTAL_RATING);	
+		facetFieldsList.add(VideoConstants.SHOW_GENRY);	
 		esfdt.setFacetFields(facetFieldsList);
 		
 		esfdt.setFacets(VideoConstants.FACET_SHOW);

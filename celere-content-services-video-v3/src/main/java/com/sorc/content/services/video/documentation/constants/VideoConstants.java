@@ -13,6 +13,8 @@ public class VideoConstants {
 	public static final String SHOW = "show";
 	public static final String UPDATED_AT = "updatedAt";
 	public static final String SEASON = "season";
+	public static final String SHOW_PARENTAL_RATING = "showParentalRating";
+	public static final String SHOW_GENRY = "showGenry";
 	public static final String MAIN_CATEGORY = "mainCategory";
 	public static final String META = "meta";
 	public static final String VIDEO = "video";

@@ -49,6 +49,8 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 	private String show;
 	private String season;
 	private String mainCategory;
+	private String showParentalRating;
+	private String showGenry;
 	
 	@Override
 	public String getId() {
@@ -182,6 +184,22 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		this.mainCategory = mainCategory;
 	}
 
+	public String getShowParentalRating() {
+		return showParentalRating;
+	}
+
+	public void setShowParentalRating(String showParentalRating) {
+		this.showParentalRating = showParentalRating;
+	}
+
+	public String getShowGenry() {
+		return showGenry;
+	}
+
+	public void setShowGenry(String showGenry) {
+		this.showGenry = showGenry;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -214,6 +232,12 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		result = prime * result + ((person == null) ? 0 : person.hashCode());
 		result = prime * result + ((season == null) ? 0 : season.hashCode());
 		result = prime * result + ((show == null) ? 0 : show.hashCode());
+		result = prime * result
+				+ ((showGenry == null) ? 0 : showGenry.hashCode());
+		result = prime
+				* result
+				+ ((showParentalRating == null) ? 0 : showParentalRating
+						.hashCode());
 		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result
 				+ ((updatedAt == null) ? 0 : updatedAt.hashCode());
@@ -312,6 +336,16 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 				return false;
 		} else if (!show.equals(other.show))
 			return false;
+		if (showGenry == null) {
+			if (other.showGenry != null)
+				return false;
+		} else if (!showGenry.equals(other.showGenry))
+			return false;
+		if (showParentalRating == null) {
+			if (other.showParentalRating != null)
+				return false;
+		} else if (!showParentalRating.equals(other.showParentalRating))
+			return false;
 		if (tags == null) {
 			if (other.tags != null)
 				return false;
@@ -333,5 +367,5 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		} else if (!websiteIds.equals(other.websiteIds))
 			return false;
 		return true;
-	}		
+	}	
 }

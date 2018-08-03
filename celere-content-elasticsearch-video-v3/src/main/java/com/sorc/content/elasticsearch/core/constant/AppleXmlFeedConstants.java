@@ -28,6 +28,7 @@ public class AppleXmlFeedConstants {
 	public static final String VERSION_VAL = "3.0";
 	
 	public static final String TOTAL_ITEM_COUNT = "totalItemCount";
+	public static final String LAST_BUILD_DATE = "lastBuildDate";
 	public static final String TITLE = "title";
 	public static final String DESCRIPTION = "description";
 	public static final String DEFALUT_LOCALE = "defaultLocale";
@@ -79,4 +80,5 @@ public class AppleXmlFeedConstants {
 	public static final String ROOT_DESCRIPTION = "Motor Trend Apple UMC Video Catalog Feed version 3.0";
 	public static final String ROOT_TITLE = "Motor Trend Video Catalog Feed version 3.0";
 	public static final String ROOT_DEFALUT_LOCALE = "en-US";
+	public static final String CATEGORY_TYPE_SEASON_PLACE_HOLDER = "SEASON_PLACE_HOLDER";
 }
