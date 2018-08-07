@@ -131,12 +131,32 @@ public class VideoResource3_0 {
 			) throws JsonParseException, JsonMappingException, IOException,Exception 
 	{
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
+		List<String> facetFieldsList = new ArrayList<String>();
 		
+		facetFieldsList.add(VideoConstants.VIDEO);	
+		facetFieldsList.add(VideoConstants.UPDATED_AT);
+		facetFieldsList.add(VideoConstants.CATEGORIES);
+		facetFieldsList.add(VideoConstants.META);
+		facetFieldsList.add(VideoConstants.SHOW);
+		facetFieldsList.add(VideoConstants.SEASON);		
+		facetFieldsList.add(VideoConstants.MAIN_CATEGORY);					
+		facetFieldsList.add(VideoConstants.ACCESS_CONTROL);
+		facetFieldsList.add(VideoConstants.CLOSED_CAPTION);			
+		esfdt.setFacetFields(facetFieldsList);
 		
 		esfdt.setFacets(VideoConstants.FACET_SHOW);
 		esfdt.setPagination(new Pagination(0, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds));		
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds));
+		
+		List<String> additionalFacetColumns = new ArrayList<String>();
+		additionalFacetColumns.add(VideoConstants.FACET_SEASON);
+		esfdt.setAdditionalFacetColumns(additionalFacetColumns);
+		
+		List<IElasticSearchSorting> aggDetailSorting = new ArrayList<IElasticSearchSorting>();
+		aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, SortingMode.ASCENDING));
+		aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SEASON, SortingMode.ASCENDING));
+		esfdt.setAggDetailSorting(aggDetailSorting);
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, SortingMode.ASCENDING));
