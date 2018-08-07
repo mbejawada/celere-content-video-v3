@@ -44,8 +44,7 @@ public class ElasticSearchVideoResultAssembler {
 	private static Logger logger = LoggerFactory.getLogger(ElasticSearchVideoResultAssembler.class);
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	private static SimpleDateFormat sdf_yyyy_mm_dd = new SimpleDateFormat("yyyy-MM-dd");
-	private static TimeZone utc = TimeZone.getTimeZone("UTC");
+	private static SimpleDateFormat sdf_yyyy_mm_dd = new SimpleDateFormat("yyyy-MM-dd");	
 	
 	public static Map<String, Object> getElasticSearchVideoResult(SearchResult result) {
 		
@@ -103,7 +102,7 @@ public class ElasticSearchVideoResultAssembler {
 		return resultFacetList;
 	}
 	
-	public static List<Object> getElasticSearchAppleumvFeedDetailFacetResult(String facet, String subAggFacet, BoolQueryBuilder filters, SearchResult result) throws Exception {
+	public static List<Object> getElasticSearchAppleUmcFeedDetailFacetResult(String facet, String subAggFacet, BoolQueryBuilder filters, SearchResult result) throws Exception {
 		List<Object> resultFacetList = new ArrayList<Object>();
 		
 		String showContentId = null;
@@ -143,7 +142,8 @@ public class ElasticSearchVideoResultAssembler {
 				terms = result.getAggregations().getTermsAggregation(facet);					
 			}
 			
-			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());			
+			createNode(streamWriter, AppleXmlFeedConstants.TOTAL_ITEM_COUNT, AppleXmlFeedConstants.COUNT_PLACE_HOLDER);
+			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());				
 			createNode(streamWriter, AppleXmlFeedConstants.TITLE, AppleXmlFeedConstants.ROOT_TITLE);
 			createNode(streamWriter, AppleXmlFeedConstants.DESCRIPTION, AppleXmlFeedConstants.ROOT_DESCRIPTION);
 			createNode(streamWriter, AppleXmlFeedConstants.DEFALUT_LOCALE, AppleXmlFeedConstants.ROOT_DEFALUT_LOCALE);
@@ -236,12 +236,13 @@ public class ElasticSearchVideoResultAssembler {
 		}
 		else
 		{			
-			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());	
+			createNode(streamWriter, AppleXmlFeedConstants.TOTAL_ITEM_COUNT, AppleXmlFeedConstants.COUNT_PLACE_HOLDER);
+			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());				
 			createNode(streamWriter, AppleXmlFeedConstants.TITLE, AppleXmlFeedConstants.ROOT_TITLE);
 			createNode(streamWriter, AppleXmlFeedConstants.DESCRIPTION, AppleXmlFeedConstants.ROOT_DESCRIPTION);
 			createNode(streamWriter, AppleXmlFeedConstants.DEFALUT_LOCALE, AppleXmlFeedConstants.ROOT_DEFALUT_LOCALE);
 		}
-		createNode(streamWriter, AppleXmlFeedConstants.TOTAL_ITEM_COUNT, String.valueOf(recordCount));
+		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeEndElement();;
@@ -249,7 +250,7 @@ public class ElasticSearchVideoResultAssembler {
 		logger.info("Total Show: "+totalShow);
 		logger.info("Total Season: "+totalSeason);
 		logger.info("Total Episode: "+totalEpisode);
-		resultFacetList.add(output.toString());		
+		resultFacetList.add(output.toString().replace(AppleXmlFeedConstants.TOTAL_ITME_COUNT_PLACEHOLDER, AppleXmlFeedConstants.TOTAL_ITEM_COUNT_START_ELEMENT+recordCount+AppleXmlFeedConstants.TOTAL_ITEM_COUNT_END_ELEMENT));		
 		return resultFacetList;
 	}
 	

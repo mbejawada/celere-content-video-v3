@@ -57,7 +57,10 @@ public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, 
 	public List<Object> getDetailFacetList(ElasticSearchFilterDataTransfer esfdt, String callType)
 			throws Exception {	
 		if(ElasticSearchVideoFieldConstants.CALL_TYPE_APPLEUMC_CATALOG.equalsIgnoreCase(callType))
-			return getElasticSearchAppleumvFeedDetailFacetResult(esfdt.getPagination(), esfdt.getIndex(), 
+			return getElasticSearchAppleUmcFeedDetailFacetResult(esfdt.getPagination(), esfdt.getIndex(), 
+					esfdt.getFacets(), esfdt.getFilters(), esfdt.getFacetFields(), esfdt.getAdditionalFacetColumns(), esfdt.getSorting(), esfdt.getAggDetailSorting(), callType);
+		else if(ElasticSearchVideoFieldConstants.CALL_TYPE_APPLEUMC_AVAILABILITY.equalsIgnoreCase(callType))
+			return getElasticSearchAppleUmcAvailabilityFeedDetailFacetResult(esfdt.getPagination(), esfdt.getIndex(), 
 					esfdt.getFacets(), esfdt.getFilters(), esfdt.getFacetFields(), esfdt.getAdditionalFacetColumns(), esfdt.getSorting(), esfdt.getAggDetailSorting(), callType);
 		return null;
 	}

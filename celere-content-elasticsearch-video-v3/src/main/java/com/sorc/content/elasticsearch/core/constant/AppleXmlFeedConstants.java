@@ -81,4 +81,8 @@ public class AppleXmlFeedConstants {
 	public static final String ROOT_TITLE = "Motor Trend Video Catalog Feed version 3.0";
 	public static final String ROOT_DEFALUT_LOCALE = "en-US";
 	public static final String CATEGORY_TYPE_SEASON_PLACE_HOLDER = "SEASON_PLACE_HOLDER";
+	public static final String COUNT_PLACE_HOLDER = "PLACEHOLDER";
+	public static final String TOTAL_ITME_COUNT_PLACEHOLDER = "<totalItemCount>PLACEHOLDER</totalItemCount>";
+	public static final String TOTAL_ITEM_COUNT_START_ELEMENT = "<totalItemCount>";
+	public static final String TOTAL_ITEM_COUNT_END_ELEMENT = "</totalItemCount>";		
 }

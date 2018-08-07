@@ -10,10 +10,7 @@ import io.searchbox.core.SearchResult;
 import io.searchbox.core.search.sort.Sort;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,6 +37,7 @@ import com.sorc.content.core.pagination.Pagination;
 import com.sorc.content.core.sort.SortingMode;
 import com.sorc.content.elasticsearch.core.constant.ElasticSearchVideoFieldConstants;
 import com.sorc.content.elasticsearch.core.sort.IElasticSearchSorting;
+import com.sorc.content.elasticsearch.core.util.AppleUmcAvailabilityResultAssembler;
 import com.sorc.content.elasticsearch.core.util.ElasticSearchVideoResultAssembler;
 import com.sorc.content.mongodb.core.dao.DBGlobalConfig;
 import com.sorc.content.mongodb.core.dao.RetryStrategy;
@@ -231,11 +229,18 @@ public abstract class ElasticSearchDAO<T extends IDataTransfer<IDType>, IDType>
 		return searchResult;
 	}
 	
-	public List<Object> getElasticSearchAppleumvFeedDetailFacetResult(Pagination pagination, String index, String facet,
+	public List<Object> getElasticSearchAppleUmcFeedDetailFacetResult(Pagination pagination, String index, String facet,
 			BoolQueryBuilder filters, List<String> facetFields, List<String> additionalFacetColumns, List<IElasticSearchSorting> sorting, List<IElasticSearchSorting> aggDetailSorting, String callType) throws Exception
 	{
 		SearchResult searchResult = searchDetailFacet(pagination, index, facet, filters, facetFields, additionalFacetColumns, sorting, aggDetailSorting, callType);		
-		return ElasticSearchVideoResultAssembler.getElasticSearchAppleumvFeedDetailFacetResult(facet, additionalFacetColumns.get(0), filters, searchResult);
+		return ElasticSearchVideoResultAssembler.getElasticSearchAppleUmcFeedDetailFacetResult(facet, additionalFacetColumns.get(0), filters, searchResult);
+	}
+	
+	public List<Object> getElasticSearchAppleUmcAvailabilityFeedDetailFacetResult(Pagination pagination, String index, String facet,
+			BoolQueryBuilder filters, List<String> facetFields, List<String> additionalFacetColumns, List<IElasticSearchSorting> sorting, List<IElasticSearchSorting> aggDetailSorting, String callType) throws Exception
+	{
+		SearchResult searchResult = searchDetailFacet(pagination, index, facet, filters, facetFields, additionalFacetColumns, sorting, aggDetailSorting, callType);		
+		return AppleUmcAvailabilityResultAssembler.getElasticSearchAppleUmcAvailabilityFeedDetailFacetResult(facet, additionalFacetColumns.get(0), filters, searchResult);
 	}
 		
 	private JSONObject setAggregateBuilder(String facet,  List<IElasticSearchSorting> sorting ) {

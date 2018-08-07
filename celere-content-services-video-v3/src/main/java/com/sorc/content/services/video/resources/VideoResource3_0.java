@@ -120,4 +120,29 @@ public class VideoResource3_0 {
 		List<Object> modelsHeaderList = dao.getDetailFacetList(esfdt, VideoConstants.CALL_TYPE_APPLEUMC_CATALOG);
 		return modelsHeaderList.get(0);
 	}
+	
+	@GET
+	@Path("/appleUmc/availability")
+	@ApiOperation(value = "Find Unique Show", notes = "Returns the list of video with unique show and season", response = ElasticSearchVideo.class, position = 1, httpMethod="GET")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
+	@Produces({ MediaType.TEXT_XML })
+	public Object getAppleUmcAvailabilityFeedData(
+			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds
+			) throws JsonParseException, JsonMappingException, IOException,Exception 
+	{
+		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
+		
+		
+		esfdt.setFacets(VideoConstants.FACET_SHOW);
+		esfdt.setPagination(new Pagination(0, 0));
+		esfdt.setIndex(INDEX);
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds));		
+		
+		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
+		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, SortingMode.ASCENDING));
+		esfdt.setSorting(sorting);
+		
+		List<Object> modelsHeaderList = dao.getDetailFacetList(esfdt, VideoConstants.CALL_TYPE_APPLEUMC_AVAILABILITY);
+		return modelsHeaderList.get(0);
+	}
 }
