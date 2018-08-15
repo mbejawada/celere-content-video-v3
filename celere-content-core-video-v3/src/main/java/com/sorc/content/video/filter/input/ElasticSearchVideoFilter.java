@@ -15,6 +15,8 @@ import com.sorc.content.video.dao.data.ElasticSearchVideo;
 public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, String>{
 
 	private Set<Integer> websiteIds;
+	private String mainCategory;
+	private Set<String> mainCategoryNotIn;
 
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -24,10 +26,32 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.websiteIds = websiteIds;
 	}
 
+	public String getMainCategory() {
+		return mainCategory;
+	}
+
+	public void setMainCategory(String mainCategory) {
+		this.mainCategory = mainCategory;
+	}
+
+	public Set<String> getMainCategoryNotIn() {
+		return mainCategoryNotIn;
+	}
+
+	public void setMainCategoryNotIn(Set<String> mainCategoryNotIn) {
+		this.mainCategoryNotIn = mainCategoryNotIn;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((mainCategory == null) ? 0 : mainCategory.hashCode());
+		result = prime
+				* result
+				+ ((mainCategoryNotIn == null) ? 0 : mainCategoryNotIn
+						.hashCode());
 		result = prime * result
 				+ ((websiteIds == null) ? 0 : websiteIds.hashCode());
 		return result;
@@ -42,6 +66,16 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		if (getClass() != obj.getClass())
 			return false;
 		ElasticSearchVideoFilter other = (ElasticSearchVideoFilter) obj;
+		if (mainCategory == null) {
+			if (other.mainCategory != null)
+				return false;
+		} else if (!mainCategory.equals(other.mainCategory))
+			return false;
+		if (mainCategoryNotIn == null) {
+			if (other.mainCategoryNotIn != null)
+				return false;
+		} else if (!mainCategoryNotIn.equals(other.mainCategoryNotIn))
+			return false;
 		if (websiteIds == null) {
 			if (other.websiteIds != null)
 				return false;

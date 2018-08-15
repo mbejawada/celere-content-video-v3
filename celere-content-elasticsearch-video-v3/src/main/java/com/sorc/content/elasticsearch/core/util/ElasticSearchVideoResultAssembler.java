@@ -41,10 +41,7 @@ import com.sorc.content.video.dao.data.Video;
  */
 public class ElasticSearchVideoResultAssembler {
 
-	private static Logger logger = LoggerFactory.getLogger(ElasticSearchVideoResultAssembler.class);
-	
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	private static SimpleDateFormat sdf_yyyy_mm_dd = new SimpleDateFormat("yyyy-MM-dd");	
+	private static Logger logger = LoggerFactory.getLogger(ElasticSearchVideoResultAssembler.class);			
 	
 	public static Map<String, Object> getElasticSearchVideoResult(SearchResult result) {
 		
@@ -143,7 +140,7 @@ public class ElasticSearchVideoResultAssembler {
 			}
 			
 			createNode(streamWriter, AppleXmlFeedConstants.TOTAL_ITEM_COUNT, AppleXmlFeedConstants.COUNT_PLACE_HOLDER);
-			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());				
+			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, XmlFeedUtil.getLastBuildDate());				
 			createNode(streamWriter, AppleXmlFeedConstants.TITLE, AppleXmlFeedConstants.ROOT_TITLE);
 			createNode(streamWriter, AppleXmlFeedConstants.DESCRIPTION, AppleXmlFeedConstants.ROOT_DESCRIPTION);
 			createNode(streamWriter, AppleXmlFeedConstants.DEFALUT_LOCALE, AppleXmlFeedConstants.ROOT_DEFALUT_LOCALE);
@@ -237,7 +234,7 @@ public class ElasticSearchVideoResultAssembler {
 		else
 		{			
 			createNode(streamWriter, AppleXmlFeedConstants.TOTAL_ITEM_COUNT, AppleXmlFeedConstants.COUNT_PLACE_HOLDER);
-			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());				
+			createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, XmlFeedUtil.getLastBuildDate());				
 			createNode(streamWriter, AppleXmlFeedConstants.TITLE, AppleXmlFeedConstants.ROOT_TITLE);
 			createNode(streamWriter, AppleXmlFeedConstants.DESCRIPTION, AppleXmlFeedConstants.ROOT_DESCRIPTION);
 			createNode(streamWriter, AppleXmlFeedConstants.DEFALUT_LOCALE, AppleXmlFeedConstants.ROOT_DEFALUT_LOCALE);
@@ -259,8 +256,8 @@ public class ElasticSearchVideoResultAssembler {
 		streamWriter.writeStartElement(AppleXmlFeedConstants.UMC_CATALOG);
 		streamWriter.writeAttribute(AppleXmlFeedConstants.XMLNS_UMC, AppleXmlFeedConstants.XMLNS_UMC_VAL);
 		streamWriter.writeAttribute(AppleXmlFeedConstants.VERSION, AppleXmlFeedConstants.VERSION_VAL);
-		streamWriter.writeAttribute(AppleXmlFeedConstants.TEAM_ID, isStringNull(teamId));		
-		streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, isStringNull(catalogId));			
+		streamWriter.writeAttribute(AppleXmlFeedConstants.TEAM_ID, XmlFeedUtil.isStringNull(teamId));		
+		streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, XmlFeedUtil.isStringNull(catalogId));			
 	}
 	
 	private static void createNode(XMLStreamWriter streamWriter, String name, String value) throws XMLStreamException {
@@ -291,22 +288,22 @@ public class ElasticSearchVideoResultAssembler {
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_TYPE, AppleXmlFeedConstants.TV_SHOW);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_ID, showContentId);
 				
-						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, isStringNull(category.getCreatedAt()));		
-						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.TITLE, isStringNull(category.getDisplayName()));
-						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.DESCRIPTION, isStringNull(category.getDescription()));
-						createNode(streamWriter, AppleXmlFeedConstants.GENRE, isStringNull(elasticSearchVideo.getShowGenry()));		
+						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, XmlFeedUtil.isStringNull(category.getCreatedAt()));		
+						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.TITLE, XmlFeedUtil.isStringNull(category.getDisplayName()));
+						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.DESCRIPTION, XmlFeedUtil.isStringNull(category.getDescription()));
+						createNode(streamWriter, AppleXmlFeedConstants.GENRE, XmlFeedUtil.isStringNull(elasticSearchVideo.getShowGenry()));		
 						
 						//Populating Rating
-						streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
+						/*streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 						streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 						streamWriter.writeStartElement(AppleXmlFeedConstants.RATING);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.SYSTEM_CODE, AppleXmlFeedConstants.SYSTEM_CODE_VAL);		
-						streamWriter.writeCharacters(AppleXmlFeedConstants.RATING_VAL_PREFIX+isStringNull(elasticSearchVideo.getShowParentalRating()));	
-						streamWriter.writeEndElement();	
+						streamWriter.writeCharacters(AppleXmlFeedConstants.RATING_VAL_PREFIX+XmlFeedUtil.isStringNull(elasticSearchVideo.getShowParentalRating()));	
+						streamWriter.writeEndElement();	*/
 						
-						createArtWorkNode(streamWriter, eventFactory, isStringNull(category.getAppleUmcUrl()), AppleXmlFeedConstants.ARTWORK_TYPE_COVERAGE_SQUARE);		
+						createArtWorkNode(streamWriter, eventFactory, XmlFeedUtil.isStringNull(category.getAppleUmcUrl()), AppleXmlFeedConstants.ARTWORK_TYPE_COVERAGE_SQUARE);		
 						createNode(streamWriter, AppleXmlFeedConstants.IS_ORIGINAL, AppleXmlFeedConstants.TRUE);
-						createTvShowInfoNode(streamWriter, eventFactory,  isStringNull(category.getCreatedAt()));	
+						createTvShowInfoNode(streamWriter, eventFactory,  XmlFeedUtil.isStringNull(category.getCreatedAt()));	
 						
 						streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 						streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);
@@ -352,7 +349,7 @@ public class ElasticSearchVideoResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.ORIGINAL_PREMIERE_DATE);
-		streamWriter.writeCharacters(isStringNull(createdAt));	
+		streamWriter.writeCharacters(XmlFeedUtil.getYyyyMmDdStr(createdAt));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
@@ -386,11 +383,11 @@ public class ElasticSearchVideoResultAssembler {
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_TYPE, AppleXmlFeedConstants.TV_SEASON);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_ID, seasonContentId);
 				
-						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, isStringNull(category.getCreatedAt()));		
-						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.TITLE, isStringNull(category.getDisplayName()));		
+						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, XmlFeedUtil.isStringNull(category.getCreatedAt()));		
+						createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.TITLE, XmlFeedUtil.isStringNull(category.getDisplayName()));		
 								
-						createArtWorkNode(streamWriter, eventFactory, isStringNull(category.getAppleUmcUrl()), AppleXmlFeedConstants.ARTWORK_TYPE_COVERAGE_SQUARE);				
-						createTvSeasonInfoNode(streamWriter, eventFactory, isStringNull(showContentId), (elasticSearchVideo.getMeta()==null?"":String.valueOf(elasticSearchVideo.getMeta().getSeason())), isStringNull(category.getCreatedAt()));		
+						createArtWorkNode(streamWriter, eventFactory, XmlFeedUtil.isStringNull(category.getAppleUmcUrl()), AppleXmlFeedConstants.ARTWORK_TYPE_COVERAGE_SQUARE);				
+						createTvSeasonInfoNode(streamWriter, eventFactory, XmlFeedUtil.isStringNull(showContentId), (elasticSearchVideo.getMeta()==null?"":String.valueOf(elasticSearchVideo.getMeta().getSeason())), XmlFeedUtil.isStringNull(category.getCreatedAt()));		
 						
 						streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 						streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);
@@ -411,19 +408,19 @@ public class ElasticSearchVideoResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.SHOW_CONTENT_ID);
-		streamWriter.writeCharacters(isStringNull(contentId));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(contentId));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.SEASON_NUMBER);
-		streamWriter.writeCharacters(isStringNull(seasonNumber));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(seasonNumber));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.ORIGINAL_PREMIERE_DATE);
-		streamWriter.writeCharacters(isStringNull(createdAt));	
+		streamWriter.writeCharacters(XmlFeedUtil.getYyyyMmDdStr(createdAt));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
@@ -440,13 +437,13 @@ public class ElasticSearchVideoResultAssembler {
 			
 			streamWriter.writeStartElement(AppleXmlFeedConstants.ITEM);
 			streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_TYPE, AppleXmlFeedConstants.TV_EPISODE);
-			streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_ID, isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getVmsId():null));
+			streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_ID, XmlFeedUtil.isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getVmsId():null));
 	
-			createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, isStringNull(elasticSearchVideo.getUpdatedAt()));		
-			createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.TITLE, isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getName():null));
-			createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.DESCRIPTION, isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getDescription():null));		
+			createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, XmlFeedUtil.isStringNull(elasticSearchVideo.getUpdatedAt()));		
+			createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.TITLE, XmlFeedUtil.isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getName():null));
+			createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.DESCRIPTION, XmlFeedUtil.isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getDescription():null));		
 					
-			createArtWorkNode(streamWriter, eventFactory, isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getAppleUmcThumbnailUrl():null), AppleXmlFeedConstants.ARTWORK_TYPE_TITLE);		
+			createArtWorkNode(streamWriter, eventFactory, XmlFeedUtil.isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getAppleUmcThumbnailUrl():null), AppleXmlFeedConstants.ARTWORK_TYPE_TITLE);		
 			
 			if(elasticSearchVideo.getPerson() != null && !elasticSearchVideo.getPerson().isEmpty())
 			{
@@ -491,72 +488,41 @@ public class ElasticSearchVideoResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.DURATION);
-		streamWriter.writeCharacters(isStringNull(video == null?"":String.valueOf(video.getDuration())));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(video == null?"":String.valueOf(video.getDuration())));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.ORIGINAL_AIR_DATE);
-		streamWriter.writeCharacters(isStringNull(video == null?"":getYyyyMmDdStr(video.getStartDate())));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(video == null?"":XmlFeedUtil.getYyyyMmDdStr(video.getStartDate())));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.SHOW_CONTENT_ID);
-		streamWriter.writeCharacters(isStringNull(showContentId));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(showContentId));	
 		streamWriter.writeEndElement();		
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.SEASON_CONTENT_ID);
-		streamWriter.writeCharacters(isStringNull(seasonContentId));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(seasonContentId));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.SEASON_NUMBER);
-		streamWriter.writeCharacters(isStringNull(meta == null?"":String.valueOf(meta.getSeason())));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(meta == null?"":String.valueOf(meta.getSeason())));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.EPISODE_NUMBER);
-		streamWriter.writeCharacters(isStringNull(meta == null?"":String.valueOf(meta.getEpisode())));	
+		streamWriter.writeCharacters(XmlFeedUtil.isStringNull(meta == null?"":String.valueOf(meta.getEpisode())));	
 		streamWriter.writeEndElement();
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);
 		streamWriter.writeEndElement();	
-	}
-	
-	private static String getYyyyMmDdStr(String dateStr)
-	{
-		try
-		{
-			return sdf_yyyy_mm_dd.format(sdf_yyyy_mm_dd.parse(dateStr));
-		}
-		catch(Exception e)
-		{
-			return "";
-		}
-	}
-	
-	public static String isStringNull(String param) {
-		if(param != null) {
-			return param;
-		}
-		return "";
-	}	
-	
-	private static String getLastBuildDate()
-	{
-		try
-		{
-			return sdf.format(new Date());
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
-	}
+	}			
 }

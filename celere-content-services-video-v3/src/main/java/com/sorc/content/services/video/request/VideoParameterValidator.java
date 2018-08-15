@@ -16,11 +16,17 @@ import com.sorc.content.video.filter.input.ElasticSearchVideoFilter;
  */
 public class VideoParameterValidator {
 
-	public static BoolQueryBuilder validateCustomParameters(Set<Integer> websiteIds) {
+	public static BoolQueryBuilder validateCustomParameters(Set<Integer> websiteIds, String mainCategory, Set<String> mainCategoryNotIn) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
 			filter.setWebsiteIds(websiteIds);
+		
+		if(mainCategory != null)
+			filter.setMainCategory(mainCategory);
+		
+		if(mainCategoryNotIn != null && !mainCategoryNotIn.isEmpty())
+			filter.setMainCategoryNotIn(mainCategoryNotIn);
 		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();
