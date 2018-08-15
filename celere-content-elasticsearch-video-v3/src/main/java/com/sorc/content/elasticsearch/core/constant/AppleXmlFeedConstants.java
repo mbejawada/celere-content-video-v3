@@ -131,7 +131,7 @@ public class AppleXmlFeedConstants {
 	public static final String OFFERING_TYPE_SUBSCRIPTION = "subscription";
 	public static final String TYPE_DEVICE_LOCATION = "subscription";
 	public static final String HYPHEN_US = "-US";
-	public static final String YEAR_END_STR = "-12-31T23:59:59.000-0700";
+	public static final String YEAR_END_STR = "-12-31T23:59:59-07:00";
 	
 	public static final String LIVE_EVENT_CATALOG_ROOT_DESCRIPTION = "Motor Trend Apple UMC Video Live Event Feed version 3.0";
 	public static final String LIVE_EVENT_CATALOG_ROOT_TITLE = "Motor Trend Video Live Event Feed version 3.0";
