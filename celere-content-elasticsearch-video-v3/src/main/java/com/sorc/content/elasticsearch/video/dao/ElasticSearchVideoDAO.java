@@ -38,8 +38,7 @@ public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, 
 
 	@Override
 	public Map<String, Object> getDetailList(ElasticSearchFilterDataTransfer esfdt) throws Exception {
-		//return search(esfdt.getPagination(), esfdt.getIndex(), esfdt.getFilters(), esfdt.getSorting(), esfdt.getScriptFilter(), false);
-		return null;
+		return search(esfdt.getPagination(), esfdt.getIndex(), esfdt.getFilters(), esfdt.getSorting(), esfdt.getScriptFilter(), false);		
 	}
 
 	@Override

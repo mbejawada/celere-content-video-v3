@@ -23,6 +23,7 @@ public class AppleXmlFeedConstants {
 	public static final String VERSION = "version";
 	public static final String TEAM_ID = "teamId";
 	public static final String CATALOG_ID = "catalogId";
+	public static final String LIVE_EVENT_CATALOG_ID = "liveEventcatalogId";
 	
 	public static final String XMLNS_UMC_VAL = "https://www.tbd.com/spec/umc-catalog/";
 	public static final String VERSION_VAL = "3.0";
@@ -131,4 +132,18 @@ public class AppleXmlFeedConstants {
 	public static final String TYPE_DEVICE_LOCATION = "subscription";
 	public static final String HYPHEN_US = "-US";
 	public static final String YEAR_END_STR = "-12-31T23:59:59.000-0700";
+	
+	public static final String LIVE_EVENT_CATALOG_ROOT_DESCRIPTION = "Motor Trend Apple UMC Video Live Event Feed version 3.0";
+	public static final String LIVE_EVENT_CATALOG_ROOT_TITLE = "Motor Trend Video Live Event Feed version 3.0";
+	public static final String SPORTING_EVENT = "sporting_event";
+	public static final String SPORTING_EVENT_INFO = "sportingEventInfo";
+	public static final String START_DATE = "startDate";
+	public static final String SPORT_NAME = "sportName";
+	public static final String LEAGE = "league";
+	public static final String ABBREVIATION = "abbreviation";
+	public static final String VENUE = "venue";
+	public static final String NAME = "name";
+	public static final String CITY = "city";
+	public static final String COUNTRY = "country";
+	public static final String IS_TBD = "isTBD";
 }

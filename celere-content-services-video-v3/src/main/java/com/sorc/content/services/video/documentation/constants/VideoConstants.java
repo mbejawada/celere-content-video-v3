@@ -21,15 +21,19 @@ public class VideoConstants {
 	public static final String PERSON = "person.*";
 	public static final String ACCESS_CONTROL = "accessControl";
 	public static final String CLOSED_CAPTION = "closedCaption";
+	public static final String CATEGORY_WATCH_LIVE = "WATCH LIVE";
+	public static final String CATEGORY_MOTORSPORTS = "MOTORSPORTS";
 	
 	public static final String FACET_SHOW = "show.keyword";
 	public static final String FACET_SEASON = "season.keyword";
 	
 	public static final String SORT_SHOW = "show.keyword";
 	public static final String SORT_SEASON = "season.keyword";
+	public static final String SORT_UPDATED_AT = "updatedAt";
 	
 	public static final String CALL_TYPE_APPLEUMC_CATALOG = "/appleUmc/catalog";
 	public static final String CALL_TYPE_APPLEUMC_AVAILABILITY = "/appleUmc/availability";	
 	
 	public static final String TEXT_XML = "text/xml";
+	public static final Integer MAX_RESULT_SIZE = 10000;
 }

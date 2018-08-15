@@ -79,7 +79,7 @@ public class AppleUmcAvailabilityResultAssembler {
 		streamWriter.writeStartDocument("UTF-8", "1.0");
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);
 		createUmcAvailabilityNode(streamWriter, eventFactory);
-		createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, getLastBuildDate());	
+		createNode(streamWriter, AppleXmlFeedConstants.LAST_BUILD_DATE, XmlFeedUtil.getLastBuildDate());	
 		createServiceNode(streamWriter, eventFactory, PropertiesUtil.getProperty(AppleXmlFeedConstants.TEAM_ID), PropertiesUtil.getProperty(AppleXmlFeedConstants.SERVICE_ID));
 		createNode(streamWriter, AppleXmlFeedConstants.SERVICE_TYPE, AppleXmlFeedConstants.UMC_AVAILABILITY_SERVICE_TYPE_VAL);
 		createNode(streamWriter, AppleXmlFeedConstants.TOTAL_ITEM_COUNT, AppleXmlFeedConstants.COUNT_PLACE_HOLDER);						
@@ -188,7 +188,7 @@ public class AppleUmcAvailabilityResultAssembler {
 		//End umcAvailability
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
-		streamWriter.writeEndElement();;
+		streamWriter.writeEndElement();
 					
 		logger.info("Total Show: "+totalShow);
 		logger.info("Total Season: "+totalSeason);
@@ -207,8 +207,8 @@ public class AppleUmcAvailabilityResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.SERVICE);
-		streamWriter.writeAttribute(AppleXmlFeedConstants.TEAM_ID, isStringNull(teamId));		
-		streamWriter.writeAttribute(AppleXmlFeedConstants.SERVICE_ID, isStringNull(serviceId));		
+		streamWriter.writeAttribute(AppleXmlFeedConstants.TEAM_ID, XmlFeedUtil.isStringNull(teamId));		
+		streamWriter.writeAttribute(AppleXmlFeedConstants.SERVICE_ID, XmlFeedUtil.isStringNull(serviceId));		
 	}
 		
 	private static void createNode(XMLStreamWriter streamWriter, String name, String value) throws XMLStreamException {
@@ -241,9 +241,9 @@ public class AppleUmcAvailabilityResultAssembler {
 						streamWriter.writeStartElement(AppleXmlFeedConstants.ITEM);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_TYPE, AppleXmlFeedConstants.TV_SHOW);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_ID, showContentId);
-						streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, isStringNull(catalogId));
+						streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, XmlFeedUtil.isStringNull(catalogId));
 				
-						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, isStringNull(category.getCreatedAt()));																		
+						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, XmlFeedUtil.isStringNull(category.getCreatedAt()));																		
 							
 						locatorWebUrl = locatorWebUrl.replace(AppleXmlFeedConstants.DISPLAY_NAME_INDICATOR, SlugGeneratorUtil.generateSlug(category.getName()));
 						locatorWebUrl = locatorWebUrl.replace(AppleXmlFeedConstants.CATETORY_ID_INDICATOR, showContentId);
@@ -288,8 +288,8 @@ public class AppleUmcAvailabilityResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.LOCATOR);
-		streamWriter.writeAttribute(AppleXmlFeedConstants.PLATFORM, isStringNull(platform));
-		streamWriter.writeAttribute(AppleXmlFeedConstants.ACTION, isStringNull(action));
+		streamWriter.writeAttribute(AppleXmlFeedConstants.PLATFORM, XmlFeedUtil.isStringNull(platform));
+		streamWriter.writeAttribute(AppleXmlFeedConstants.ACTION, XmlFeedUtil.isStringNull(action));
 		streamWriter.writeAttribute(AppleXmlFeedConstants.URL, url);				
 		streamWriter.writeEndElement();	
 	}
@@ -299,7 +299,7 @@ public class AppleUmcAvailabilityResultAssembler {
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		streamWriter.writeStartElement(AppleXmlFeedConstants.PLAYBLE_PROPERTIES);
 		
-		createNode(streamWriter, AppleXmlFeedConstants.CLOSED_CAPATIONING, isStringNull(closedCaptioning).toLowerCase()+AppleXmlFeedConstants.HYPHEN_US);	
+		createNode(streamWriter, AppleXmlFeedConstants.CLOSED_CAPATIONING, XmlFeedUtil.isStringNull(closedCaptioning).toLowerCase()+AppleXmlFeedConstants.HYPHEN_US);	
 		createNode(streamWriter, AppleXmlFeedConstants.VIDEO_QUALITY,  AppleXmlFeedConstants.VIDEO_QUALITY_HD);	
 		
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
@@ -329,9 +329,9 @@ public class AppleUmcAvailabilityResultAssembler {
 						streamWriter.writeStartElement(AppleXmlFeedConstants.ITEM);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_TYPE, AppleXmlFeedConstants.TV_SEASON);
 						streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_ID, seasonContentId);
-						streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, isStringNull(catalogId));
+						streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, XmlFeedUtil.isStringNull(catalogId));
 				
-						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, isStringNull(category.getCreatedAt()));																		
+						createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, XmlFeedUtil.isStringNull(category.getCreatedAt()));																		
 							
 						locatorWebUrl = locatorWebUrl.replace(AppleXmlFeedConstants.DISPLAY_NAME_INDICATOR, SlugGeneratorUtil.generateSlug(showName));
 						locatorWebUrl = locatorWebUrl.replace(AppleXmlFeedConstants.PARENT_CATETORY_ID_INDICATOR, showContentId);
@@ -360,16 +360,16 @@ public class AppleUmcAvailabilityResultAssembler {
 		String endDate = null;
 		if(elasticSearchVideo != null)
 		{
-			vmsId = isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getVmsId():null);
+			vmsId = XmlFeedUtil.isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getVmsId():null);
 			streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 			streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 			
 			streamWriter.writeStartElement(AppleXmlFeedConstants.ITEM);
 			streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_TYPE, AppleXmlFeedConstants.TV_EPISODE);
 			streamWriter.writeAttribute(AppleXmlFeedConstants.CONTENT_ID, vmsId);
-			streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, isStringNull(catalogId));
+			streamWriter.writeAttribute(AppleXmlFeedConstants.CATALOG_ID, XmlFeedUtil.isStringNull(catalogId));
 	
-			createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, isStringNull(elasticSearchVideo.getUpdatedAt()));	
+			createNode(streamWriter, AppleXmlFeedConstants.PUB_DATE, XmlFeedUtil.isStringNull(elasticSearchVideo.getUpdatedAt()));	
 			
 			locatorWebUrl = locatorWebUrl.replace(AppleXmlFeedConstants.VMS_ID_INDICATOR, vmsId);						
 			locatorOtherUrl = locatorOtherUrl.replace(AppleXmlFeedConstants.VMS_ID_INDICATOR, vmsId);			
@@ -418,38 +418,10 @@ public class AppleUmcAvailabilityResultAssembler {
 		streamWriter.writeStartElement(AppleXmlFeedConstants.OFFER);
 		
 		createNode(streamWriter, AppleXmlFeedConstants.OFFERING_TYPE, AppleXmlFeedConstants.OFFERING_TYPE_SUBSCRIPTION);
-		createNode(streamWriter, AppleXmlFeedConstants.WINDOW_START, isStringNull(startDate));
-		createNode(streamWriter, AppleXmlFeedConstants.WINDOW_END, isStringNull(endDate));		
+		createNode(streamWriter, AppleXmlFeedConstants.WINDOW_START, XmlFeedUtil.isStringNull(startDate));
+		createNode(streamWriter, AppleXmlFeedConstants.WINDOW_END, XmlFeedUtil.isStringNull(endDate));		
 		createNode(streamWriter, AppleXmlFeedConstants.IS_LIVE, String.valueOf(isLive));
-		
-		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
-		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
-		streamWriter.writeStartElement(AppleXmlFeedConstants.RESTRICTIONS);
-		
-		if(accessControl != null && accessControl.getValues() != null && !accessControl.getValues().isEmpty())
-		{
-			allow = accessControl.getAllow()==null?false:accessControl.getAllow();
-			
-			for(String str : accessControl.getValues())
-			{
-				streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
-				streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
-				streamWriter.writeStartElement(AppleXmlFeedConstants.RESTRICTION);
 				
-				streamWriter.writeAttribute(AppleXmlFeedConstants.TYPE, AppleXmlFeedConstants.TYPE_DEVICE_LOCATION);
-				streamWriter.writeAttribute(AppleXmlFeedConstants.RELATIONSHIP, allow?AppleXmlFeedConstants.RELATIONSHIP_ALLOW:AppleXmlFeedConstants.RELATIONSHIP_DENY);
-				streamWriter.writeCharacters(restrictionFormat+str);
-				
-				//End Restriction
-				streamWriter.writeEndElement();	
-			}
-			streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
-			streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
-		}
-		
-		
-		//End Restrictions
-		streamWriter.writeEndElement();	
 		streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
 		streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
 		//End Offer
@@ -473,23 +445,5 @@ public class AppleUmcAvailabilityResultAssembler {
 		}
 		
 		return "";
-	}
-	public static String isStringNull(String param) {
-		if(param != null) {
-			return param;
-		}
-		return "";
 	}	
-	
-	private static String getLastBuildDate()
-	{
-		try
-		{
-			return sdf.format(new Date());
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
-	}
 }
