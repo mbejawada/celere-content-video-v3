@@ -136,7 +136,7 @@ public class AppleUmcLiveEventCatalogResultAssembler {
 		createVenueNode(streamWriter, eventFactory, esVideo);
 		
 		if(esVideo.getLiveEvents() != null)
-			createNode(streamWriter, AppleXmlFeedConstants.IS_TBD, String.valueOf(esVideo.getLiveEvents().getEventTimeTBD()));
+			createNode(streamWriter, AppleXmlFeedConstants.IS_TBD, esVideo.getLiveEvents().getEventTimeTBD() == null ? "false":String.valueOf(esVideo.getLiveEvents().getEventTimeTBD()));
 		else
 			createNode(streamWriter, AppleXmlFeedConstants.IS_TBD, "false");
 		
