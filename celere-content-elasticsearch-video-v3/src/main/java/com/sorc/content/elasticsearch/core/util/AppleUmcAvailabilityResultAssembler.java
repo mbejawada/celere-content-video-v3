@@ -436,7 +436,7 @@ public class AppleUmcAvailabilityResultAssembler {
 			{
 				Calendar calendar = new GregorianCalendar();
 				calendar.setTime(sdf.parse(startDate));
-				return String.valueOf(calendar.get(Calendar.YEAR))+AppleXmlFeedConstants.YEAR_END_STR;
+				return String.valueOf(calendar.get(Calendar.YEAR)+1)+AppleXmlFeedConstants.YEAR_END_STR;
 			}
 			catch(Exception e)
 			{

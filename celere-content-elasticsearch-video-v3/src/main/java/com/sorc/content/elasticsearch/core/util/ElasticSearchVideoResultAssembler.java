@@ -444,27 +444,7 @@ public class ElasticSearchVideoResultAssembler {
 			createNodeWithLocale(streamWriter, eventFactory, AppleXmlFeedConstants.DESCRIPTION, XmlFeedUtil.isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getDescription():null));		
 					
 			createArtWorkNode(streamWriter, eventFactory, XmlFeedUtil.isStringNull(elasticSearchVideo.getVideo()!=null?elasticSearchVideo.getVideo().getAppleUmcThumbnailUrl():null), AppleXmlFeedConstants.ARTWORK_TYPE_TITLE);		
-			
-			if(elasticSearchVideo.getPerson() != null && !elasticSearchVideo.getPerson().isEmpty())
-			{
-				for(String personName : elasticSearchVideo.getPerson())
-				{
-					streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
-					streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
-					streamWriter.writeStartElement(AppleXmlFeedConstants.CREDIT);
-					streamWriter.writeAttribute(AppleXmlFeedConstants.ROLE, AppleXmlFeedConstants.ROLE_CREATOR);		
-					streamWriter.writeCharacters(personName);	
-					streamWriter.writeEndElement();	
-				}
-			}
-			else
-			{
-				streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
-				streamWriter.writeDTD(AppleXmlFeedConstants.NEW_LINE);	
-				streamWriter.writeStartElement(AppleXmlFeedConstants.CREDIT);
-				streamWriter.writeAttribute(AppleXmlFeedConstants.ROLE, AppleXmlFeedConstants.ROLE_CREATOR);				
-				streamWriter.writeEndElement();	
-			}
+						
 			createTvEpisodeInfoNode(streamWriter, eventFactory, elasticSearchVideo.getVideo(), showContentId, seasonContentId, elasticSearchVideo.getMeta());
 			
 			streamWriter.writeDTD(AppleXmlFeedConstants.TAB);
