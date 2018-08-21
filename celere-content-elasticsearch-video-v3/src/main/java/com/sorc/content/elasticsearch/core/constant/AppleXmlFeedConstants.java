@@ -24,6 +24,7 @@ public class AppleXmlFeedConstants {
 	public static final String TEAM_ID = "teamId";
 	public static final String CATALOG_ID = "catalogId";
 	public static final String LIVE_EVENT_CATALOG_ID = "liveEventcatalogId";
+	public static final String LIVE_EVENT_AVAILABILITY_SERVICE_ID = "liveAvailabilityServiceId";
 	
 	public static final String XMLNS_UMC_VAL = "https://www.tbd.com/spec/umc-catalog/";
 	public static final String VERSION_VAL = "3.0";
@@ -103,6 +104,8 @@ public class AppleXmlFeedConstants {
 	public static final String TV_SHOW_LOCATOR_OTHER_URL = "tv_show_locator_other_url";
 	public static final String TV_SEASON_LOCATOR_OTHER_URL = "tv_season_locator_other_url";
 	public static final String EPISODE_LOCATOR_OTHER_URL = "episode_locator_other_url";
+	public static final String LIVE_EVENT_LOCATOR_WEB_URL = "live_event_locator_web_url";
+	public static final String LIVE_EVENT_LOCATOR_OTHER_URL = "live_event_locator_other_url";
 	public static final String DISPLAY_NAME_INDICATOR = "<LOWER_CASE_DISPLAY_NAME_WITH_HYPEN>";
 	public static final String PARENT_CATETORY_ID_INDICATOR = "<PARENT_CATETORY_ID>";
 	public static final String CATETORY_ID_INDICATOR = "<CATETORY_ID>";

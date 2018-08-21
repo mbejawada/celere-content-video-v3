@@ -38,6 +38,7 @@ import com.sorc.content.services.video.documentation.constants.VideoConstants;
 import com.sorc.content.services.video.documentation.constants.VideoDocumentationParameters;
 import com.sorc.content.services.video.request.VideoParameterValidator;
 import com.sorc.content.services.video.request.VideoQueryParameters;
+import com.sorc.content.services.video.util.AppleUmcLiveEventAvailabilityResultAssembler;
 import com.sorc.content.services.video.util.AppleUmcLiveEventCatalogResultAssembler;
 import com.sorc.content.video.dao.data.ElasticSearchVideo;
 import com.wordnik.swagger.annotations.Api;
@@ -243,5 +244,37 @@ public class VideoResource3_0 {
 		}
 		
 		return AppleUmcLiveEventCatalogResultAssembler.getAppleUmcLiveEventCatalogFeedData(videoList, totalCount);
+	}
+	
+	@GET
+	@Path("/appleUmc/liveEventAvailability")
+	@ApiOperation(value = "Find list of Live Events", notes = "Returns the list of Live Events", response = ElasticSearchVideo.class, position = 4, httpMethod="GET")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
+	@Produces({ MediaType.TEXT_XML })
+	public Object getAppleUmcLiveEventAvailabilityFeedData(
+			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds
+			)  throws JsonParseException, JsonMappingException, IOException,Exception 
+	{	
+		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
+		esfdt.setPagination(new Pagination(VideoConstants.MAX_RESULT_SIZE, 0));
+		esfdt.setIndex(INDEX);
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null));
+		
+		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
+		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
+		esfdt.setSorting(sorting);
+		
+		Map<String, Object> resultMap = dao.getDetailList(esfdt);
+		Long totalCount = 0L;
+		List<ElasticSearchVideo> videoList = new ArrayList<ElasticSearchVideo>();
+		if(resultMap != null && !resultMap.isEmpty()) {
+			if(resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT) != null 
+					&& resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {
+				totalCount = (Long) resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT);
+				videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);
+			}
+		}
+		
+		return AppleUmcLiveEventAvailabilityResultAssembler.getAppleUmcLiveEventAvailabilityFeedData(videoList, totalCount);
 	}
 }
