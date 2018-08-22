@@ -17,6 +17,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private Set<Integer> websiteIds;
 	private String mainCategory;
 	private Set<String> mainCategoryNotIn;
+	private Integer videoDuration;
 
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -42,6 +43,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.mainCategoryNotIn = mainCategoryNotIn;
 	}
 
+	public Integer getVideoDuration() {
+		return videoDuration;
+	}
+
+	public void setVideoDuration(Integer videoDuration) {
+		this.videoDuration = videoDuration;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -52,6 +61,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				* result
 				+ ((mainCategoryNotIn == null) ? 0 : mainCategoryNotIn
 						.hashCode());
+		result = prime * result
+				+ ((videoDuration == null) ? 0 : videoDuration.hashCode());
 		result = prime * result
 				+ ((websiteIds == null) ? 0 : websiteIds.hashCode());
 		return result;
@@ -75,6 +86,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.mainCategoryNotIn != null)
 				return false;
 		} else if (!mainCategoryNotIn.equals(other.mainCategoryNotIn))
+			return false;
+		if (videoDuration == null) {
+			if (other.videoDuration != null)
+				return false;
+		} else if (!videoDuration.equals(other.videoDuration))
 			return false;
 		if (websiteIds == null) {
 			if (other.websiteIds != null)

@@ -98,7 +98,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(size, (page-1)*size));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -147,7 +147,7 @@ public class VideoResource3_0 {
 		esfdt.setFacets(VideoConstants.FACET_SHOW);
 		esfdt.setPagination(new Pagination(0, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, 1));
 		
 		List<String> additionalFacetColumns = new ArrayList<String>();
 		additionalFacetColumns.add(VideoConstants.FACET_SEASON);
@@ -195,7 +195,7 @@ public class VideoResource3_0 {
 		esfdt.setFacets(VideoConstants.FACET_SHOW);
 		esfdt.setPagination(new Pagination(0, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, null));
 		
 		List<String> additionalFacetColumns = new ArrayList<String>();
 		additionalFacetColumns.add(VideoConstants.FACET_SEASON);
@@ -226,7 +226,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(VideoConstants.MAX_RESULT_SIZE, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -258,7 +258,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(VideoConstants.MAX_RESULT_SIZE, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
