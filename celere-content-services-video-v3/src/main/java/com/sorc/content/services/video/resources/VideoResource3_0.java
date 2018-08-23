@@ -195,7 +195,7 @@ public class VideoResource3_0 {
 		esfdt.setFacets(VideoConstants.FACET_SHOW);
 		esfdt.setPagination(new Pagination(0, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, 1));
 		
 		List<String> additionalFacetColumns = new ArrayList<String>();
 		additionalFacetColumns.add(VideoConstants.FACET_SEASON);
