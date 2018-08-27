@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -38,6 +39,7 @@ import com.sorc.content.services.video.documentation.constants.VideoConstants;
 import com.sorc.content.services.video.documentation.constants.VideoDocumentationParameters;
 import com.sorc.content.services.video.request.VideoParameterValidator;
 import com.sorc.content.services.video.request.VideoQueryParameters;
+import com.sorc.content.services.video.response.status.RestrictedResource;
 import com.sorc.content.services.video.util.AppleUmcLiveEventAvailabilityResultAssembler;
 import com.sorc.content.services.video.util.AppleUmcLiveEventCatalogResultAssembler;
 import com.sorc.content.video.dao.data.ElasticSearchVideo;
@@ -90,7 +92,7 @@ public class VideoResource3_0 {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Result<ElasticSearchVideo> getElasticSearchVideoList(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,			
-			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE) int page,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE) int page,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SIZE) int size)
 			throws JsonParseException, JsonMappingException, IOException,
 			Exception {
@@ -98,7 +100,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(size, (page-1)*size));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -116,7 +118,7 @@ public class VideoResource3_0 {
 		}
 		
 		return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
-	}
+	}		
 	
 	@GET
 	@Path("/appleUmc/catalog")
@@ -147,7 +149,7 @@ public class VideoResource3_0 {
 		esfdt.setFacets(VideoConstants.FACET_SHOW);
 		esfdt.setPagination(new Pagination(0, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, 1));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, 1, null, null));
 		
 		List<String> additionalFacetColumns = new ArrayList<String>();
 		additionalFacetColumns.add(VideoConstants.FACET_SEASON);
@@ -195,7 +197,7 @@ public class VideoResource3_0 {
 		esfdt.setFacets(VideoConstants.FACET_SHOW);
 		esfdt.setPagination(new Pagination(0, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, 1));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, mainCategoryNotIn, 1, null, null));
 		
 		List<String> additionalFacetColumns = new ArrayList<String>();
 		additionalFacetColumns.add(VideoConstants.FACET_SEASON);
@@ -214,6 +216,7 @@ public class VideoResource3_0 {
 		return modelsHeaderList.get(0);
 	}
 		
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/appleUmc/liveEventCatalog")
 	@ApiOperation(value = "Find list of Live Events", notes = "Returns the list of Live Events", response = ElasticSearchVideo.class, position = 4, httpMethod="GET")
@@ -226,7 +229,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(VideoConstants.MAX_RESULT_SIZE, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -246,6 +249,7 @@ public class VideoResource3_0 {
 		return AppleUmcLiveEventCatalogResultAssembler.getAppleUmcLiveEventCatalogFeedData(videoList, totalCount);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/appleUmc/liveEventAvailability")
 	@ApiOperation(value = "Find list of Live Events", notes = "Returns the list of Live Events", response = ElasticSearchVideo.class, position = 4, httpMethod="GET")
@@ -258,7 +262,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(VideoConstants.MAX_RESULT_SIZE, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -276,5 +280,52 @@ public class VideoResource3_0 {
 		}
 		
 		return AppleUmcLiveEventAvailabilityResultAssembler.getAppleUmcLiveEventAvailabilityFeedData(videoList, totalCount);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GET
+	@Path("/{" + VideoQueryParameters.QUERY_PARAM_VIDEO_ID + "}")
+	@ApiOperation(value = "Find videos associated with country", notes = "Returns the video associated with country", response = ElasticSearchVideo.class, position = 5, httpMethod="GET")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Object getElasticSearchVideo(
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_VIDEO_ID, required = true) @PathParam(VideoQueryParameters.QUERY_PARAM_VIDEO_ID) final String videoId,
+			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,			
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode)
+			throws JsonParseException, JsonMappingException, IOException,
+			Exception {
+		
+		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
+		esfdt.setPagination(new Pagination(1, 0));
+		esfdt.setIndex(INDEX);
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId));
+		
+		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
+		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
+		esfdt.setSorting(sorting);
+		
+		Map<String, Object> resultMap = dao.getDetailList(esfdt);
+		
+		List<ElasticSearchVideo> videoList = new ArrayList<ElasticSearchVideo>();
+		if(resultMap != null && !resultMap.isEmpty()) {
+			if(resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {				
+				videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);
+				if(videoList.size() > 0)
+				{
+					if(!videoList.get(0).getAccessControl().getAllow())
+					{
+						if(videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
+					}
+					else
+					{
+						if(!videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
+					}						
+				}
+			}
+		}
+		
+		return videoList.get(0);
 	}
 }

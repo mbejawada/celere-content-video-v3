@@ -48,6 +48,15 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		if(filter.getVideoDuration() != null) {			
 			buildBoolQueryFilter(new RangeFilter("video.duration", filter.getVideoDuration(), null));
 		}
+		
+		if(filter.getCountryCode() != null) {			
+			buildBoolQueryFilter(new TermFilter("accessControl.values.keyword", filter.getCountryCode()));
+		}
+		
+		if(filter.getVideoId()!= null) {			
+			buildBoolQueryFilter(new TermFilter("id.keyword", filter.getVideoId()));
+		}
+		
 		return boolQueryBuilder;
 	}
 

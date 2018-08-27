@@ -18,6 +18,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String mainCategory;
 	private Set<String> mainCategoryNotIn;
 	private Integer videoDuration;
+	private String countryCode;
+	private String videoId;
 
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -51,10 +53,28 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.videoDuration = videoDuration;
 	}
 
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public String getVideoId() {
+		return videoId;
+	}
+
+	public void setVideoId(String videoId) {
+		this.videoId = videoId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((countryCode == null) ? 0 : countryCode.hashCode());
 		result = prime * result
 				+ ((mainCategory == null) ? 0 : mainCategory.hashCode());
 		result = prime
@@ -63,6 +83,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 						.hashCode());
 		result = prime * result
 				+ ((videoDuration == null) ? 0 : videoDuration.hashCode());
+		result = prime * result + ((videoId == null) ? 0 : videoId.hashCode());
 		result = prime * result
 				+ ((websiteIds == null) ? 0 : websiteIds.hashCode());
 		return result;
@@ -77,6 +98,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		if (getClass() != obj.getClass())
 			return false;
 		ElasticSearchVideoFilter other = (ElasticSearchVideoFilter) obj;
+		if (countryCode == null) {
+			if (other.countryCode != null)
+				return false;
+		} else if (!countryCode.equals(other.countryCode))
+			return false;
 		if (mainCategory == null) {
 			if (other.mainCategory != null)
 				return false;
@@ -91,6 +117,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.videoDuration != null)
 				return false;
 		} else if (!videoDuration.equals(other.videoDuration))
+			return false;
+		if (videoId == null) {
+			if (other.videoId != null)
+				return false;
+		} else if (!videoId.equals(other.videoId))
 			return false;
 		if (websiteIds == null) {
 			if (other.websiteIds != null)
