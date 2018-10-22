@@ -2,7 +2,6 @@ package com.sorc.content.services.video.resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,8 +39,6 @@ import com.sorc.content.services.video.documentation.constants.VideoDocumentatio
 import com.sorc.content.services.video.request.VideoParameterValidator;
 import com.sorc.content.services.video.request.VideoQueryParameters;
 import com.sorc.content.services.video.response.status.RestrictedResource;
-import com.sorc.content.services.video.util.AppleUmcLiveEventAvailabilityResultAssembler;
-import com.sorc.content.services.video.util.AppleUmcLiveEventCatalogResultAssembler;
 import com.sorc.content.video.dao.data.ElasticSearchVideo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -92,15 +89,19 @@ public class VideoResource3_0 {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Result<ElasticSearchVideo> getElasticSearchVideoList(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,			
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_STATUS, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_STAUTS) String status,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE) int page,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SIZE) int size)
 			throws JsonParseException, JsonMappingException, IOException,
 			Exception {
 		
+		if(status == null || status.trim().length() == 0)		
+			status = VideoConstants.STATUS_READY;
+		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(size, (page-1)*size));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -128,15 +129,19 @@ public class VideoResource3_0 {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Object getElasticSearchVideo(
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_VIDEO_ID, required = true) @PathParam(VideoQueryParameters.QUERY_PARAM_VIDEO_ID) final String videoId,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_STATUS, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_STAUTS) String status,
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,			
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode)
 			throws JsonParseException, JsonMappingException, IOException,
 			Exception {
 		
+		if(status == null || status.trim().length() == 0)		
+			status = VideoConstants.STATUS_READY;
+		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(1, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -150,20 +155,25 @@ public class VideoResource3_0 {
 				videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);
 				if(videoList.size() > 0)
 				{
-					if(!videoList.get(0).getAccessControl().getAllow())
+					if(videoList.get(0).getAccessControl() != null)
 					{
-						if(videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
-							return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
+						if(!videoList.get(0).getAccessControl().getAllow())
+						{
+							if(videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
+								return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
+						}
+						else
+						{
+							if(!videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
+								return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
+						}		
 					}
-					else
-					{
-						if(!videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
-							return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
-					}						
 				}
 			}
 		}
 		
-		return videoList.get(0);
+		if(videoList != null && videoList.size() > 0)
+			return videoList.get(0);		
+		return "";
 	}
 }
