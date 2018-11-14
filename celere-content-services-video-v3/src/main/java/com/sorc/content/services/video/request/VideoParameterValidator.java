@@ -3,6 +3,9 @@
  */
 package com.sorc.content.services.video.request;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -17,7 +20,7 @@ import com.sorc.content.video.filter.input.ElasticSearchVideoFilter;
 public class VideoParameterValidator {
 
 	public static BoolQueryBuilder validateCustomParameters(Set<Integer> websiteIds, String mainCategory, Set<String> mainCategoryNotIn, Integer videoDuration,
-			String countryCode, String videoId, String status) {
+			String countryCode, String videoId, String status, String text) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -41,7 +44,22 @@ public class VideoParameterValidator {
 		if(status != null)
 			filter.setStatus(status.trim().toUpperCase());
 		
+		if(text != null && text.trim().length() > 0)
+			filter.setText(text);
+		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();
+	}
+	
+	@SuppressWarnings("unused")
+	private static List<String> getSearchableTextList(String text)
+	{
+		List<String> textList = null;
+		if(text != null)		
+			textList = Arrays.asList(text.split(" "));			
+		else
+			return null;
+		
+		return textList;
 	}
 }

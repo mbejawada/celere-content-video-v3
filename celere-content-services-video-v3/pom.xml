@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>celere-content-services-video-v3</artifactId>
-	<version>1.1.0.4-SNAPSHOT</version>
+	<version>1.1.0.5-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<properties>
 		<serviceContextName>videoapi</serviceContextName>
@@ -32,12 +32,12 @@
 		<dependency>
 			<groupId>com.celere</groupId>
 			<artifactId>celere-content-elasticsearch-video-v3</artifactId>
-			<version>1.1.0.3-SNAPSHOT</version>
+			<version>1.1.0.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.celere</groupId>
 			<artifactId>celere-content-services-common</artifactId>
-			<version>1.1.0.2-RELEASE</version>
+			<version>1.1.0.3-RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.celere</groupId>

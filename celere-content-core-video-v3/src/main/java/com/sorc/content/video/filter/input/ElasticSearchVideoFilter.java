@@ -21,6 +21,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String countryCode;
 	private String videoId;
 	private String status;
+	private String text;
 
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -76,6 +77,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 
 	public void setStatus(String status) {
 		this.status = status;
+	}	
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	@Override
@@ -91,6 +100,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				+ ((mainCategoryNotIn == null) ? 0 : mainCategoryNotIn
 						.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		result = prime * result
 				+ ((videoDuration == null) ? 0 : videoDuration.hashCode());
 		result = prime * result + ((videoId == null) ? 0 : videoId.hashCode());
@@ -127,6 +137,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.status != null)
 				return false;
 		} else if (!status.equals(other.status))
+			return false;
+		if (text == null) {
+			if (other.text != null)
+				return false;
+		} else if (!text.equals(other.text))
 			return false;
 		if (videoDuration == null) {
 			if (other.videoDuration != null)

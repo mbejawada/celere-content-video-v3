@@ -30,4 +30,5 @@ public class ElasticSearchVideoFieldConstants {
 	
 	public static final String CALL_TYPE_APPLEUMC_CATALOG = "/appleUmc/catalog";	
 	public static final String CALL_TYPE_APPLEUMC_AVAILABILITY = "/appleUmc/availability";	
+	public static final String SEARCHABLE_FIELDS = "searchable_fields";
 }
