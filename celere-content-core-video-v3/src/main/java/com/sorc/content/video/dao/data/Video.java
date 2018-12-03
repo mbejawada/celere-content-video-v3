@@ -49,6 +49,8 @@ public class Video implements Serializable {
 	private Double rank;
 	private Integer totalRank;
 	private Integer votes;
+	private String hlsUrl;
+	private String mpegdashUrl;
 
 	public String getDataUrl() {
 		return dataUrl;
@@ -194,6 +196,18 @@ public class Video implements Serializable {
 	public void setVotes(Integer votes) {
 		this.votes = votes;
 	}
+	public String getHlsUrl() {
+		return hlsUrl;
+	}
+	public void setHlsUrl(String hlsUrl) {
+		this.hlsUrl = hlsUrl;
+	}
+	public String getMpegdashUrl() {
+		return mpegdashUrl;
+	}
+	public void setMpegdashUrl(String mpegdashUrl) {
+		this.mpegdashUrl = mpegdashUrl;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -213,12 +227,15 @@ public class Video implements Serializable {
 				+ ((duration == null) ? 0 : duration.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((height == null) ? 0 : height.hashCode());
+		result = prime * result + ((hlsUrl == null) ? 0 : hlsUrl.hashCode());
 		result = prime * result
 				+ ((iOSThumbnailUrl == null) ? 0 : iOSThumbnailUrl.hashCode());
 		result = prime * result
 				+ ((lastPlayedAt == null) ? 0 : lastPlayedAt.hashCode());
 		result = prime * result
 				+ ((minDuration == null) ? 0 : minDuration.hashCode());
+		result = prime * result
+				+ ((mpegdashUrl == null) ? 0 : mpegdashUrl.hashCode());
 		result = prime * result
 				+ ((msDuration == null) ? 0 : msDuration.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -286,6 +303,11 @@ public class Video implements Serializable {
 				return false;
 		} else if (!height.equals(other.height))
 			return false;
+		if (hlsUrl == null) {
+			if (other.hlsUrl != null)
+				return false;
+		} else if (!hlsUrl.equals(other.hlsUrl))
+			return false;
 		if (iOSThumbnailUrl == null) {
 			if (other.iOSThumbnailUrl != null)
 				return false;
@@ -300,6 +322,11 @@ public class Video implements Serializable {
 			if (other.minDuration != null)
 				return false;
 		} else if (!minDuration.equals(other.minDuration))
+			return false;
+		if (mpegdashUrl == null) {
+			if (other.mpegdashUrl != null)
+				return false;
+		} else if (!mpegdashUrl.equals(other.mpegdashUrl))
 			return false;
 		if (msDuration == null) {
 			if (other.msDuration != null)
