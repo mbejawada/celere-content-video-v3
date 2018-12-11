@@ -70,7 +70,7 @@ if (req.url ~ "^/videoapi/3\.0") {
       return (hit_for_pass);
   } else {
     /* Cache all other responses and set the object lifetime grace and ttl */
-    set beresp.ttl = 14400s;
+    set beresp.ttl = 300s;
     set beresp.grace = 24h;
     return (deliver);
   }
