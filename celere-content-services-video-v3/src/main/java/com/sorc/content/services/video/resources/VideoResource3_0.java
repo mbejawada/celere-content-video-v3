@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sorc.content.core.dao.NotFoundException;
 import com.sorc.content.core.pagination.Pagination;
 import com.sorc.content.core.sort.SortingMode;
 import com.sorc.content.elasticsearch.core.constant.ElasticSearchVideoFieldConstants;
@@ -182,7 +183,8 @@ public class VideoResource3_0 {
 		
 		if(videoList != null && videoList.size() > 0)
 			return videoList.get(0);		
-		return "";
+		else throw new NotFoundException("video ["+videoId+"] is not found"); 
+		
 	}
 	
 	public String getDecodedString(String string) throws UnsupportedEncodingException{
