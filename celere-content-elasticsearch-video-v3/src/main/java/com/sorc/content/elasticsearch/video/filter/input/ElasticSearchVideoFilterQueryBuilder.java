@@ -16,6 +16,7 @@ import com.sorc.content.elasticsearch.core.constant.ElasticSearchVideoFieldConst
 import com.sorc.content.elasticsearch.core.filter.input.CustomFilterBuilder;
 import com.sorc.content.elasticsearch.core.filter.input.IElasticSearchFilter;
 import com.sorc.content.elasticsearch.core.filter.input.IElasticSearchQueryBuilder;
+import com.sorc.content.elasticsearch.core.filter.input.NumericRangeFilter;
 import com.sorc.content.elasticsearch.core.filter.input.RangeFilter;
 import com.sorc.content.elasticsearch.core.filter.input.TermFilter;
 import com.sorc.content.elasticsearch.core.filter.input.TermsFilter;
@@ -70,6 +71,30 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		
 		if(filter.getVideoId()!= null) {			
 			buildBoolQueryFilter(new TermFilter("id.keyword", filter.getVideoId()));
+		}
+		
+		if(filter.getShowId() != null) {
+			buildBoolQueryFilter(new TermFilter("categories.id", filter.getShowId()));
+		}
+		
+		if(filter.getSeasonId() != null) {
+			buildBoolQueryFilter(new TermFilter("categories.id", filter.getSeasonId()));
+		}
+		
+		if(filter.getShowName() != null) {
+			buildBoolQueryFilter(new TermFilter("show.keyword", filter.getShowName()));
+		}
+		
+		if(filter.getSeasonName() != null) {
+			buildBoolQueryFilter(new TermFilter("season.keyword", filter.getSeasonName()));
+		}
+		
+		if(filter.getEpisodeNum() != null) {
+			buildBoolQueryFilter(new NumericRangeFilter("meta.episode", filter.getEpisodeNum(), null));
+		}
+		
+		if(filter.getShowCategory() != null) {
+			buildBoolQueryFilter(new TermFilter("mainCategory.keyword", filter.getShowCategory()));
 		}
 		
 		if(filter.getText() != null)

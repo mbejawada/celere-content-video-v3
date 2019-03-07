@@ -20,7 +20,9 @@ import com.sorc.content.video.filter.input.ElasticSearchVideoFilter;
 public class VideoParameterValidator {
 
 	public static BoolQueryBuilder validateCustomParameters(Set<Integer> websiteIds, String mainCategory, Set<String> mainCategoryNotIn, Integer videoDuration,
-			String countryCode, String videoId, String status, String text) {
+			String countryCode, String videoId, String status, String text,
+			Integer showId, Integer seasonId, String showName, String seasonName, 
+			Integer episodeNum, String showCategory) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -46,6 +48,24 @@ public class VideoParameterValidator {
 		
 		if(text != null && text.trim().length() > 0)
 			filter.setText(text);
+		
+		if(showId != null)
+			filter.setShowId(showId);
+		
+		if(seasonId != null)
+			filter.setSeasonId(seasonId);
+		
+		if(showName != null)
+			filter.setShowName(showName);
+		
+		if(seasonName != null)
+			filter.setSeasonName(seasonName);
+		
+		if(episodeNum != null)
+			filter.setEpisodeNum(episodeNum);
+		
+		if(showCategory != null)
+			filter.setShowCategory(showCategory);
 		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();
