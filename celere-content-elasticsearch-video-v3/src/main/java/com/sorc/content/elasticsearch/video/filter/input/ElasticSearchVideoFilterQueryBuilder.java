@@ -84,6 +84,9 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		if(filter.getShowName() != null) {
 			buildBoolQueryFilter(new TermFilter("show.keyword", filter.getShowName()));
 		}
+		else if(filter.getShowCategory() != null) {
+			buildBoolQueryFilter(new TermFilter("show.keyword", filter.getShowCategory()));
+		}
 		
 		if(filter.getSeasonName() != null) {
 			buildBoolQueryFilter(new TermFilter("season.keyword", filter.getSeasonName()));
@@ -91,11 +94,7 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		
 		if(filter.getEpisodeNum() != null) {
 			buildBoolQueryFilter(new NumericRangeFilter("meta.episode", filter.getEpisodeNum(), null));
-		}
-		
-		if(filter.getShowCategory() != null) {
-			buildBoolQueryFilter(new TermFilter("mainCategory.keyword", filter.getShowCategory()));
-		}
+		}				
 		
 		if(filter.getText() != null)
 		{			
