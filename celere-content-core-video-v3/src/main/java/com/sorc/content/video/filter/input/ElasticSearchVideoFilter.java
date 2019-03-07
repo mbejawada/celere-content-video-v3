@@ -22,6 +22,12 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String videoId;
 	private String status;
 	private String text;
+	private String showName;
+	private String seasonName;
+	private Integer showId;
+	private Integer seasonId;
+	private Integer episodeNum;
+	private String showCategory;
 
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -87,6 +93,54 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.text = text;
 	}
 
+	public String getShowName() {
+		return showName;
+	}
+
+	public void setShowName(String showName) {
+		this.showName = showName;
+	}
+
+	public String getSeasonName() {
+		return seasonName;
+	}
+
+	public void setSeasonName(String seasonName) {
+		this.seasonName = seasonName;
+	}
+
+	public Integer getShowId() {
+		return showId;
+	}
+
+	public void setShowId(Integer showId) {
+		this.showId = showId;
+	}
+
+	public Integer getSeasonId() {
+		return seasonId;
+	}
+
+	public void setSeasonId(Integer seasonId) {
+		this.seasonId = seasonId;
+	}
+
+	public Integer getEpisodeNum() {
+		return episodeNum;
+	}
+
+	public void setEpisodeNum(Integer episodeNum) {
+		this.episodeNum = episodeNum;
+	}
+
+	public String getShowCategory() {
+		return showCategory;
+	}
+
+	public void setShowCategory(String showCategory) {
+		this.showCategory = showCategory;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,11 +148,22 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result
 				+ ((countryCode == null) ? 0 : countryCode.hashCode());
 		result = prime * result
+				+ ((episodeNum == null) ? 0 : episodeNum.hashCode());
+		result = prime * result
 				+ ((mainCategory == null) ? 0 : mainCategory.hashCode());
 		result = prime
 				* result
 				+ ((mainCategoryNotIn == null) ? 0 : mainCategoryNotIn
 						.hashCode());
+		result = prime * result
+				+ ((seasonId == null) ? 0 : seasonId.hashCode());
+		result = prime * result
+				+ ((seasonName == null) ? 0 : seasonName.hashCode());
+		result = prime * result
+				+ ((showCategory == null) ? 0 : showCategory.hashCode());
+		result = prime * result + ((showId == null) ? 0 : showId.hashCode());
+		result = prime * result
+				+ ((showName == null) ? 0 : showName.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		result = prime * result
@@ -123,6 +188,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				return false;
 		} else if (!countryCode.equals(other.countryCode))
 			return false;
+		if (episodeNum == null) {
+			if (other.episodeNum != null)
+				return false;
+		} else if (!episodeNum.equals(other.episodeNum))
+			return false;
 		if (mainCategory == null) {
 			if (other.mainCategory != null)
 				return false;
@@ -132,6 +202,31 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.mainCategoryNotIn != null)
 				return false;
 		} else if (!mainCategoryNotIn.equals(other.mainCategoryNotIn))
+			return false;
+		if (seasonId == null) {
+			if (other.seasonId != null)
+				return false;
+		} else if (!seasonId.equals(other.seasonId))
+			return false;
+		if (seasonName == null) {
+			if (other.seasonName != null)
+				return false;
+		} else if (!seasonName.equals(other.seasonName))
+			return false;
+		if (showCategory == null) {
+			if (other.showCategory != null)
+				return false;
+		} else if (!showCategory.equals(other.showCategory))
+			return false;
+		if (showId == null) {
+			if (other.showId != null)
+				return false;
+		} else if (!showId.equals(other.showId))
+			return false;
+		if (showName == null) {
+			if (other.showName != null)
+				return false;
+		} else if (!showName.equals(other.showName))
 			return false;
 		if (status == null) {
 			if (other.status != null)

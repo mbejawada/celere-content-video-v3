@@ -3,6 +3,7 @@
  */
 package com.sorc.content.elasticsearch.video.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,9 +49,8 @@ public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, 
 
 	@Override
 	public List<Object> getFacetList(ElasticSearchFilterDataTransfer esfdt) throws Exception {		
-		//return searchFacet(esfdt.getPagination(), esfdt.getIndex(), esfdt.getFacets(), esfdt.getFilters(), esfdt.getSorting(), false);
-		return null;
-	}
+		return searchFacet(esfdt.getPagination(), esfdt.getIndex(), esfdt.getFacets(), esfdt.getFilters(), esfdt.getSorting(), false);		
+	}	
 
 	@Override
 	public List<Object> getDetailFacetList(ElasticSearchFilterDataTransfer esfdt, String callType)
@@ -79,4 +79,42 @@ public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, 
 		return null;
 	}
 
+	@Override
+	public ElasticSearchVideo getVideoDetail(ElasticSearchFilterDataTransfer esfdt) throws Exception {
+		
+		Map<String, Object> resultMap = search(esfdt.getPagination(), esfdt.getIndex(), esfdt.getFilters(), esfdt.getSorting(), esfdt.getScriptFilter(), false);	
+		Long totalCount = 0L;
+		List<ElasticSearchVideo> videoList = new ArrayList<ElasticSearchVideo>();
+		if(resultMap != null && !resultMap.isEmpty()) {
+			if(resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT) != null 
+					&& resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {
+				totalCount = (Long) resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT);
+				videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);
+				if(videoList != null && videoList.size() > 0)
+					return videoList.get(0);
+			}
+		}
+		
+		return null;
+	}
+
+	@Override
+	public String getNextSeason(ElasticSearchFilterDataTransfer esfdt, String previousSeason) throws Exception {
+		
+		String nextSeason = null;
+		boolean isPreviousSeasonFound = false;
+		List<Object> seasonList = getFacetList(esfdt);
+		
+		for(Object seasonStr : seasonList)
+		{
+			if(isPreviousSeasonFound)
+			{
+				nextSeason = seasonStr.toString();
+				break;
+			}
+			if(seasonStr != null && seasonStr.toString().equalsIgnoreCase(previousSeason))
+				isPreviousSeasonFound = true;		
+		}
+		return nextSeason;
+	}
 }

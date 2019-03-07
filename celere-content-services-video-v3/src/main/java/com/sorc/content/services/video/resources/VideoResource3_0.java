@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sorc.content.core.dao.NotFoundException;
+import com.sorc.content.core.dao.ValidationException;
 import com.sorc.content.core.pagination.Pagination;
 import com.sorc.content.core.sort.SortingMode;
 import com.sorc.content.elasticsearch.core.constant.ElasticSearchVideoFieldConstants;
@@ -110,7 +111,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(size, (page-1)*size));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, text));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, text, null, null, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -150,7 +151,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(1, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null, null, null, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -186,6 +187,101 @@ public class VideoResource3_0 {
 		else throw new NotFoundException("video ["+videoId+"] is not found"); 
 		
 	}
+	
+	@GET
+	@Path("/upNext")
+	@ApiOperation(value = "Find next possible video belongs to show and season", notes = "Returns the list of video belongs to show and season", response = ElasticSearchVideo.class, position = 1, httpMethod="GET")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Object getCatlogFeedData(
+			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_VIDEO_ID, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_VIDEO_ID) final String videoId,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SHOW_ID, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SHOW_ID) Integer showId,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SEASON_ID, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SEASON_ID) Integer seasonId,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SHOW_CATEGORY, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SHOW_CATEGORY) String showCategory
+			) throws JsonParseException, JsonMappingException, IOException,Exception 
+	{
+		if(websiteIds == null || websiteIds.isEmpty())		
+			throw new ValidationException("website_ids is required field");
+				
+		String status = null;
+		if(status == null || status.trim().length() == 0)		
+			status = VideoConstants.STATUS_READY;
+		
+		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
+				
+		esfdt.setPagination(new Pagination(1, 0));
+		esfdt.setIndex(INDEX);		
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null, showId, seasonId, null, null, null, showCategory));
+		
+		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
+		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_EPISODE_NO, SortingMode.ASCENDING));
+		esfdt.setSorting(sorting);
+		
+		List<ElasticSearchVideo> videoList = new ArrayList<ElasticSearchVideo>();
+		ElasticSearchVideo esVideo = dao.getVideoDetail(esfdt);
+		
+		Long totalCount = 0L;
+		Map<String, Object> resultMap = null;
+		String nextSeason = null;
+		if(esVideo != null)
+		{
+			//fetch next episode list based on current episode no
+			esfdt = new ElasticSearchFilterDataTransfer();
+			
+			esfdt.setPagination(new Pagination(500, 0));
+			esfdt.setIndex(INDEX);			
+			esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), esVideo.getSeason(), (esVideo.getMeta() != null ?esVideo.getMeta().getEpisode():0), showCategory));
+			esfdt.setSorting(sorting);
+			
+			resultMap = dao.getDetailList(esfdt);
+			if(resultMap != null && !resultMap.isEmpty()) {
+				if(resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT) != null 
+						&& resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {
+					totalCount = (Long) resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT);
+					videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);					
+				}
+			}
+			
+			if(videoList == null || videoList.size() == 0)
+			{
+				//get the next season based on show
+				esfdt = new ElasticSearchFilterDataTransfer();
+				esfdt.setPagination(new Pagination(0, 0));
+				esfdt.setIndex(INDEX);	
+				esfdt.setFacets(VideoConstants.FACET_SEASON);
+				esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), null, null, showCategory));
+				esfdt.setSorting(sorting);
+				List<IElasticSearchSorting> aggDetailSorting = new ArrayList<IElasticSearchSorting>();
+				aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SEASON, SortingMode.ASCENDING));				
+				esfdt.setAggDetailSorting(aggDetailSorting);
+				
+				nextSeason = dao.getNextSeason(esfdt, esVideo.getSeason());
+				
+				if(nextSeason != null && nextSeason.trim().length() > 0)
+				{
+					//fetch the next season spisodes
+					esfdt = new ElasticSearchFilterDataTransfer();
+					
+					esfdt.setPagination(new Pagination(500, 0));
+					esfdt.setIndex(INDEX);			
+					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), nextSeason, null, showCategory));
+					esfdt.setSorting(sorting);
+					
+					resultMap = dao.getDetailList(esfdt);
+					if(resultMap != null && !resultMap.isEmpty()) {
+						if(resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT) != null 
+								&& resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {
+							totalCount = (Long) resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT);
+							videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);					
+						}
+					}
+				}
+			}
+		}
+		
+		return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());				
+	}	
 	
 	public String getDecodedString(String string) throws UnsupportedEncodingException{
 		return URLDecoder.decode(string, "UTF-8");

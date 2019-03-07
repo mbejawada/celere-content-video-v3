@@ -37,4 +37,5 @@ public class VideoConstants {
 	public static final String TEXT_XML = "text/xml";
 	public static final Integer MAX_RESULT_SIZE = 10000;
 	public static final String STATUS_READY = "READY";
+	public static final String SORT_EPISODE_NO = "meta.episode";
 }

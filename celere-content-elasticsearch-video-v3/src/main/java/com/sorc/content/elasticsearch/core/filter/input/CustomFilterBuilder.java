@@ -50,6 +50,8 @@ public class CustomFilterBuilder {
 					.rangeQuery(((DateRangeFilter) filter).getField())
 					.gte(((DateRangeFilter) filter).getFrom())
 					.lte(((DateRangeFilter) filter).getTo());
+		} else if(filter instanceof NumericRangeFilter) {
+			return QueryBuilders.rangeQuery(((NumericRangeFilter) filter).getField()).gt(((NumericRangeFilter) filter).getFrom());
 		}
 		else {
 			return null;
