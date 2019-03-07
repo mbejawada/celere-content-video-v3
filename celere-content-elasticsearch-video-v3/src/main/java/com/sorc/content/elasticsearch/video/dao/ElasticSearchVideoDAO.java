@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +29,8 @@ import com.sorc.content.video.dao.data.ElasticSearchVideo;
 @Repository
 public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, String> {
 
+	Logger logger = LoggerFactory.getLogger(ElasticSearchVideoDAO.class);
+	
 	@Autowired
 	public ElasticSearchVideoDAO(ElasticSearchClusterConfiguration clusterConfiguration) {
 		super(clusterConfiguration);		
@@ -103,16 +107,32 @@ public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, 
 		
 		String nextSeason = null;
 		boolean isPreviousSeasonFound = false;
+		Integer previousSeasonNumber = 1;
+		String seasonPreStr = "";
+		String[] previousSeasonArray = previousSeason.split(" ");		
+		try
+		{
+			if(previousSeasonArray!= null && previousSeasonArray.length > 1)
+			{
+				seasonPreStr = previousSeasonArray[0];
+				previousSeasonNumber = Integer.parseInt(previousSeasonArray[1].trim());
+			}
+		}
+		catch(Exception e)
+		{
+			logger.info("Error while getting season no from previous season: "+previousSeason);
+		}
 		List<Object> seasonList = getFacetList(esfdt);
 		
-		for(Object seasonStr : seasonList)
+		for(Object season : seasonList)
 		{
+			
 			if(isPreviousSeasonFound)
 			{
-				nextSeason = seasonStr.toString();
+				nextSeason = seasonPreStr + " " +season;
 				break;
 			}
-			if(seasonStr != null && seasonStr.toString().equalsIgnoreCase(previousSeason))
+			if(season != null && Integer.valueOf(season.toString())==previousSeasonNumber)
 				isPreviousSeasonFound = true;		
 		}
 		return nextSeason;

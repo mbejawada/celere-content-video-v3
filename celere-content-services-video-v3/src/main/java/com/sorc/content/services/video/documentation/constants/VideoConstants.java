@@ -26,6 +26,7 @@ public class VideoConstants {
 	
 	public static final String FACET_SHOW = "show.keyword";
 	public static final String FACET_SEASON = "season.keyword";
+	public static final String FACET_SEASON_NO = "meta.season";
 	
 	public static final String SORT_SHOW = "show.keyword";
 	public static final String SORT_SEASON = "season.keyword";

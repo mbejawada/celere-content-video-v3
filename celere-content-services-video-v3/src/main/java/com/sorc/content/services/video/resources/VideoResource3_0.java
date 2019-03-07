@@ -249,7 +249,7 @@ public class VideoResource3_0 {
 				esfdt = new ElasticSearchFilterDataTransfer();
 				esfdt.setPagination(new Pagination(0, 0));
 				esfdt.setIndex(INDEX);	
-				esfdt.setFacets(VideoConstants.FACET_SEASON);
+				esfdt.setFacets(VideoConstants.FACET_SEASON_NO);
 				esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), null, null, showCategory));
 				esfdt.setSorting(sorting);
 				List<IElasticSearchSorting> aggDetailSorting = new ArrayList<IElasticSearchSorting>();
