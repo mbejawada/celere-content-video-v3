@@ -234,12 +234,12 @@ public class VideoResource3_0 {
 					if(!esVideo.getAccessControl().getAllow())
 					{
 						if(esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
-							new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+							return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
 					}
 					else
 					{
 						if(!esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
-							new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+							return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
 					}		
 				}
 			}
