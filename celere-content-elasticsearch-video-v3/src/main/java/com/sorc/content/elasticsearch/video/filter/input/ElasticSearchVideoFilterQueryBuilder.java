@@ -14,6 +14,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import com.sorc.content.elasticsearch.core.constant.ElasticSearchVideoFieldConstants;
 import com.sorc.content.elasticsearch.core.filter.input.CustomFilterBuilder;
+import com.sorc.content.elasticsearch.core.filter.input.ExistsFilter;
 import com.sorc.content.elasticsearch.core.filter.input.IElasticSearchFilter;
 import com.sorc.content.elasticsearch.core.filter.input.IElasticSearchQueryBuilder;
 import com.sorc.content.elasticsearch.core.filter.input.NumericRangeFilter;
@@ -65,8 +66,24 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new RangeFilter("video.duration", filter.getVideoDuration(), null));
 		}
 		
-		if(filter.getCountryCode() != null) {			
-			buildBoolQueryFilter(new TermFilter("accessControl.values.keyword", filter.getCountryCode()));
+		if(filter.getCountryCode() != null) {		
+			
+			BoolQueryBuilder countryGlobalBoolQueryBuilder = QueryBuilders.boolQuery();	
+			countryGlobalBoolQueryBuilder.mustNot(fb.createFilter(new ExistsFilter("accessControl")));
+			
+			BoolQueryBuilder countryAllowBoolQueryBuilder = QueryBuilders.boolQuery();	
+			countryAllowBoolQueryBuilder.filter(fb.createFilter(new TermFilter("accessControl.values.keyword", filter.getCountryCode())));
+			countryAllowBoolQueryBuilder.filter(fb.createFilter(new TermFilter("accessControl.allow", true)));
+			
+			BoolQueryBuilder countryNotAllowBoolQueryBuilder = QueryBuilders.boolQuery();	
+			countryNotAllowBoolQueryBuilder.mustNot(fb.createFilter(new TermFilter("accessControl.values.keyword", filter.getCountryCode())));
+			countryNotAllowBoolQueryBuilder.filter(fb.createFilter(new TermFilter("accessControl.allow", false)));
+				
+			if(boolQueryBuilder == null)
+				boolQueryBuilder = QueryBuilders.boolQuery();		
+			boolQueryBuilder.should(countryGlobalBoolQueryBuilder);
+			boolQueryBuilder.should(countryAllowBoolQueryBuilder);
+			boolQueryBuilder.should(countryNotAllowBoolQueryBuilder);
 		}
 		
 		if(filter.getVideoId()!= null) {			
