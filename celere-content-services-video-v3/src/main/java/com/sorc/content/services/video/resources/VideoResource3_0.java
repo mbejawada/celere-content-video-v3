@@ -213,7 +213,7 @@ public class VideoResource3_0 {
 				
 		esfdt.setPagination(new Pagination(1, 0));
 		esfdt.setIndex(INDEX);		
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, videoId, status, null, showId, seasonId, null, null, null, showCategory));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null, showId, seasonId, null, null, null, showCategory));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_EPISODE_NO, SortingMode.ASCENDING));
@@ -227,12 +227,29 @@ public class VideoResource3_0 {
 		String nextSeason = null;
 		if(esVideo != null)
 		{
+			if(countryCode != null && countryCode.trim().length() > 0)
+			{
+				if(esVideo.getAccessControl() != null)
+				{
+					if(!esVideo.getAccessControl().getAllow())
+					{
+						if(esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+					}
+					else
+					{
+						if(!esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+					}		
+				}
+			}
+			
 			//fetch next episode list based on current episode no
 			esfdt = new ElasticSearchFilterDataTransfer();
 			
 			esfdt.setPagination(new Pagination(500, 0));
 			esfdt.setIndex(INDEX);			
-			esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, esVideo.getShow(), esVideo.getSeason(), (esVideo.getMeta() != null ?esVideo.getMeta().getEpisode():0), showCategory));
+			esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), esVideo.getSeason(), (esVideo.getMeta() != null ?esVideo.getMeta().getEpisode():0), showCategory));
 			esfdt.setSorting(sorting);
 			
 			resultMap = dao.getDetailList(esfdt);
@@ -251,7 +268,7 @@ public class VideoResource3_0 {
 				esfdt.setPagination(new Pagination(0, 0));
 				esfdt.setIndex(INDEX);	
 				esfdt.setFacets(VideoConstants.FACET_SEASON_NO);
-				esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, esVideo.getShow(), null, null, showCategory));
+				esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), null, null, showCategory));
 				esfdt.setSorting(sorting);
 				List<IElasticSearchSorting> aggDetailSorting = new ArrayList<IElasticSearchSorting>();
 				aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SEASON, SortingMode.ASCENDING));				
@@ -266,7 +283,7 @@ public class VideoResource3_0 {
 					
 					esfdt.setPagination(new Pagination(500, 0));
 					esfdt.setIndex(INDEX);			
-					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, esVideo.getShow(), nextSeason, null, showCategory));
+					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), nextSeason, null, showCategory));
 					esfdt.setSorting(sorting);
 					
 					resultMap = dao.getDetailList(esfdt);
