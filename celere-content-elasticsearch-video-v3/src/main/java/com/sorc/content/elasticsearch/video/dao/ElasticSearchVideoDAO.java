@@ -109,19 +109,26 @@ public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, 
 		boolean isPreviousSeasonFound = false;
 		Integer previousSeasonNumber = 1;
 		String seasonPreStr = "";
-		String[] previousSeasonArray = previousSeason.split(" ");		
-		try
+		if(previousSeason != null)
 		{
-			if(previousSeasonArray!= null && previousSeasonArray.length > 1)
+			String[] previousSeasonArray = previousSeason.split(" ");		
+			try
 			{
-				seasonPreStr = previousSeasonArray[0];
-				previousSeasonNumber = Integer.parseInt(previousSeasonArray[1].trim());
+				if(previousSeasonArray!= null && previousSeasonArray.length > 1)
+				{
+					seasonPreStr = previousSeasonArray[0];
+					previousSeasonNumber = Integer.parseInt(previousSeasonArray[1].trim());
+				}
+			}
+			catch(Exception e)
+			{
+				logger.info("Error while getting season no from previous season: "+previousSeason);
 			}
 		}
-		catch(Exception e)
-		{
-			logger.info("Error while getting season no from previous season: "+previousSeason);
-		}
+		else					
+			isPreviousSeasonFound = true;
+		
+		
 		List<Object> seasonList = getFacetList(esfdt);
 		
 		for(Object season : seasonList)
@@ -129,12 +136,44 @@ public class ElasticSearchVideoDAO extends ElasticSearchDAO<ElasticSearchVideo, 
 			
 			if(isPreviousSeasonFound)
 			{
-				nextSeason = seasonPreStr + " " +season;
-				break;
+				if(previousSeason != null)
+				{
+					nextSeason = seasonPreStr + " " +season;
+					break;
+				}
+				else
+				{
+					nextSeason = season.toString();
+					break;
+				}
 			}
 			if(season != null && Integer.valueOf(season.toString())==previousSeasonNumber)
 				isPreviousSeasonFound = true;		
 		}
 		return nextSeason;
+	}
+
+	@Override
+	public String getNextShow(ElasticSearchFilterDataTransfer esfdt, String previousShow) throws Exception {
+		String nextShow = null;
+		boolean isPreviousShowFound = false;		
+		
+		List<Object> showList = getFacetList(esfdt);
+		
+		if(previousShow == null)
+			isPreviousShowFound = true;
+		
+		for(Object show : showList)
+		{
+			
+			if(isPreviousShowFound)
+			{
+				nextShow = show.toString();
+				break;
+			}
+			if(show != null && show.toString().trim().equalsIgnoreCase(previousShow.trim()))
+				isPreviousShowFound = true;		
+		}
+		return nextShow;
 	}
 }

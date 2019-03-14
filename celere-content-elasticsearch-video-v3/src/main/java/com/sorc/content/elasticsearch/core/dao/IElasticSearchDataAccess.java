@@ -26,5 +26,7 @@ public interface IElasticSearchDataAccess extends IDataAccess {
 	
 	String getNextSeason(ElasticSearchFilterDataTransfer esfdt, String previousSeason) throws Exception;
 	
+	String getNextShow(ElasticSearchFilterDataTransfer esfdt, String previousShow) throws Exception;
+	
 	boolean healthCheck();
 }

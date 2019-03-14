@@ -225,6 +225,8 @@ public class VideoResource3_0 {
 		Long totalCount = 0L;
 		Map<String, Object> resultMap = null;
 		String nextSeason = null;
+		String nextShow = null;
+		
 		if(esVideo != null)
 		{
 			if(countryCode != null && countryCode.trim().length() > 0)
@@ -263,6 +265,8 @@ public class VideoResource3_0 {
 			
 			if(videoList == null || videoList.size() == 0)
 			{
+				totalCount = 0L;
+				
 				//get the next season based on show
 				esfdt = new ElasticSearchFilterDataTransfer();
 				esfdt.setPagination(new Pagination(0, 0));
@@ -292,6 +296,61 @@ public class VideoResource3_0 {
 								&& resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {
 							totalCount = (Long) resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT);
 							videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);					
+						}
+					}
+				}
+								
+				if(videoList == null || videoList.size() ==0)
+				{
+					totalCount = 0L;
+					
+					//get next show based on alphabatical order 
+					esfdt = new ElasticSearchFilterDataTransfer();
+					esfdt.setPagination(new Pagination(0, 0));
+					esfdt.setIndex(INDEX);	
+					esfdt.setFacets(VideoConstants.FACET_SHOW);
+					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, esVideo.getMainCategory(), null, null, null, null, status, null, null, null, null, null, null, showCategory));
+					esfdt.setSorting(sorting);
+					aggDetailSorting = new ArrayList<IElasticSearchSorting>();
+					aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, SortingMode.ASCENDING));				
+					esfdt.setAggDetailSorting(aggDetailSorting);
+					
+					nextShow = dao.getNextShow(esfdt, esVideo.getShow());
+					
+					if(nextShow != null && nextShow.trim().length() > 0)
+					{
+						
+						//get the next season based on show alphabasical order
+						esfdt = new ElasticSearchFilterDataTransfer();
+						esfdt.setPagination(new Pagination(0, 0));
+						esfdt.setIndex(INDEX);	
+						esfdt.setFacets(VideoConstants.FACET_SEASON);
+						esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, nextShow, null, null, showCategory));
+						esfdt.setSorting(sorting);
+						aggDetailSorting = new ArrayList<IElasticSearchSorting>();
+						aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SEASON, SortingMode.ASCENDING));				
+						esfdt.setAggDetailSorting(aggDetailSorting);
+						
+						nextSeason = dao.getNextSeason(esfdt, null);
+						
+						if(nextSeason != null && nextSeason.trim().length() > 0)
+						{
+							//fetch the next season spisodes
+							esfdt = new ElasticSearchFilterDataTransfer();
+							
+							esfdt.setPagination(new Pagination(500, 0));
+							esfdt.setIndex(INDEX);			
+							esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, nextShow, nextSeason, null, showCategory));
+							esfdt.setSorting(sorting);
+							
+							resultMap = dao.getDetailList(esfdt);
+							if(resultMap != null && !resultMap.isEmpty()) {
+								if(resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT) != null 
+										&& resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {
+									totalCount = (Long) resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT);
+									videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);					
+								}
+							}
 						}
 					}
 				}
