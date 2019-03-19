@@ -113,6 +113,11 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new NumericRangeFilter("meta.episode", filter.getEpisodeNum(), null));
 		}				
 		
+		if(filter.getSeasonNum() != null)
+		{
+			buildBoolQueryFilter(new TermFilter("meta.season", filter.getSeasonNum()));
+		}
+		
 		if(filter.getText() != null)
 		{			
 			if(isExactMatchAnalyzer(filter.getText()))

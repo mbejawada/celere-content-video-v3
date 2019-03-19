@@ -21,8 +21,8 @@ public class VideoParameterValidator {
 
 	public static BoolQueryBuilder validateCustomParameters(Set<Integer> websiteIds, String mainCategory, Set<String> mainCategoryNotIn, Integer videoDuration,
 			String countryCode, String videoId, String status, String text,
-			Integer showId, Integer seasonId, String showName, String seasonName, 
-			Integer episodeNum, String showCategory) {
+			Integer showCategoryId, Integer seasonCategoryId, String showName, String seasonName, 
+			Integer episodeNum, String showCategory, Integer seasonNo) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -49,11 +49,11 @@ public class VideoParameterValidator {
 		if(text != null && text.trim().length() > 0)
 			filter.setText(text);
 		
-		if(showId != null)
-			filter.setShowId(showId);
+		if(showCategoryId != null)
+			filter.setShowId(showCategoryId);
 		
-		if(seasonId != null)
-			filter.setSeasonId(seasonId);
+		if(seasonCategoryId != null)
+			filter.setSeasonId(seasonCategoryId);
 		
 		if(showName != null)
 			filter.setShowName(showName);
@@ -66,6 +66,9 @@ public class VideoParameterValidator {
 		
 		if(showCategory != null)
 			filter.setShowCategory(showCategory);
+		
+		if(seasonNo != null)
+			filter.setSeasonNum(seasonNo);
 		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();

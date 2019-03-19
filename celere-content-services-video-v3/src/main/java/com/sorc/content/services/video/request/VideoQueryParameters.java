@@ -17,7 +17,8 @@ public class VideoQueryParameters {
 	public static final String QUERY_PARAM_STAUTS = "status";
 	public static final String QUERY_PARAM_TEXT = "text";
 	public static final String QUERY_PARAM_VMS_ID = "vmsId";
-	public static final String QUERY_PARAM_SHOW_ID = "showId";
-	public static final String QUERY_PARAM_SEASON_ID = "seasonId";
+	public static final String QUERY_PARAM_SHOW_CATEGORY_ID = "show_category_id";
+	public static final String QUERY_PARAM_SEASON_CATEGORY_ID = "season_category_id";
 	public static final String QUERY_PARAM_SHOW_CATEGORY = "showCategory";
+	public static final String QUERY_PARAM_SEASON_NUM = "season_num";
 }

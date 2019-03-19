@@ -28,7 +28,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private Integer seasonId;
 	private Integer episodeNum;
 	private String showCategory;
-
+	private Integer seasonNum;
+	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
 	}
@@ -141,6 +142,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.showCategory = showCategory;
 	}
 
+	public Integer getSeasonNum() {
+		return seasonNum;
+	}
+
+	public void setSeasonNum(Integer seasonNum) {
+		this.seasonNum = seasonNum;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -159,6 +168,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				+ ((seasonId == null) ? 0 : seasonId.hashCode());
 		result = prime * result
 				+ ((seasonName == null) ? 0 : seasonName.hashCode());
+		result = prime * result
+				+ ((seasonNum == null) ? 0 : seasonNum.hashCode());
 		result = prime * result
 				+ ((showCategory == null) ? 0 : showCategory.hashCode());
 		result = prime * result + ((showId == null) ? 0 : showId.hashCode());
@@ -212,6 +223,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.seasonName != null)
 				return false;
 		} else if (!seasonName.equals(other.seasonName))
+			return false;
+		if (seasonNum == null) {
+			if (other.seasonNum != null)
+				return false;
+		} else if (!seasonNum.equals(other.seasonNum))
 			return false;
 		if (showCategory == null) {
 			if (other.showCategory != null)
