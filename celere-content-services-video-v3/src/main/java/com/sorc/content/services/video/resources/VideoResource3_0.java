@@ -371,31 +371,32 @@ public class VideoResource3_0 {
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SEASON_CATEGORY_ID, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SEASON_CATEGORY_ID) Integer seasonCategoryId,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SEASON_NO, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SEASON_NUM) Integer seasonNo,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SHOW_CATEGORY_ID, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SHOW_CATEGORY_ID) Integer showCategoryId,
-			@ApiParam(value = ServicesCommonDocumentation.OFFSET, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_OFFSET) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_OFFSET) int offset,
-			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SIZE) int size,			
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE) int page,			
+			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SIZE) int size,
+			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
 			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DESCENDING_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode)
 			throws JsonParseException, JsonMappingException, IOException,
 			Exception {
 		
 		String status = VideoConstants.STATUS_READY;			
 		
-		if(seasonCategoryId != null)
+		if(seasonCategoryId == null && showCategoryId == null)
 		{
-			seasonNo = null;
-			showCategoryId = null;
-		}
-		else if(seasonNo == null || showCategoryId == null)
-		{
-			throw new ValidationException("Either season_category_id or (season_num and show_category_id) are required");
+			throw new ValidationException("Either season_category_id or show_category_id are required");
 		}
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
-		esfdt.setPagination(new Pagination(size, offset));
+		esfdt.setPagination(new Pagination(size, (page-1)*size));
 		esfdt.setIndex(INDEX);
 		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, showCategoryId, seasonCategoryId, null, null, null, null, seasonNo));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
-		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_EPISODE_NO, sortingMode));		
+		if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM))
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_EPISODE_NO, sortingMode));
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_START_DATE))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_START_DATE, sortingMode));
+		}
 		esfdt.setSorting(sorting);
 		
 		Map<String, Object> resultMap = dao.getDetailList(esfdt);
