@@ -29,6 +29,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private Integer episodeNum;
 	private String showCategory;
 	private Integer seasonNum;
+	private Set<String> tagsIn;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -146,6 +147,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		return seasonNum;
 	}
 
+	public Set<String> getTagsIn() {
+		return tagsIn;
+	}
+
+	public void setTagsIn(Set<String> tagsIn) {
+		this.tagsIn = tagsIn;
+	}
+
 	public void setSeasonNum(Integer seasonNum) {
 		this.seasonNum = seasonNum;
 	}
@@ -176,6 +185,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result
 				+ ((showName == null) ? 0 : showName.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((tagsIn == null) ? 0 : tagsIn.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		result = prime * result
 				+ ((videoDuration == null) ? 0 : videoDuration.hashCode());
@@ -248,6 +258,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.status != null)
 				return false;
 		} else if (!status.equals(other.status))
+			return false;
+		if (tagsIn == null) {
+			if (other.tagsIn != null)
+				return false;
+		} else if (!tagsIn.equals(other.tagsIn))
 			return false;
 		if (text == null) {
 			if (other.text != null)

@@ -19,4 +19,5 @@ public class VideoDocumentationParameters {
 	public static final String DOC_PARAM_SHOW_CATEGORY = "Show Category i.e. SHOW";
 	public static final String DOC_PARAM_SEASON_NO = "Season Number i.e. 1 OR 2 OR 2017 etc.";
 	public static final String SORT_BY = "Optional, possible values are : START_DATE, EPISODE_NUM";
+	public static final String DOC_PARAM_TAGS_IN = "Video's tag i.e. supercar, hypercar, emerged etc.";
 }
