@@ -420,8 +420,7 @@ public class VideoResource3_0 {
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Result<ElasticSearchVideo> getVideoListByTag(
-			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,	
-			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TEXT, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_TEXT) String text,
+			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TAGS_IN, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_TAGS_IN) Set<String> tagsIn,			
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE) int page,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SIZE) int size,
@@ -430,15 +429,12 @@ public class VideoResource3_0 {
 			throws JsonParseException, JsonMappingException, IOException,
 			Exception {
 					
-		String status = VideoConstants.STATUS_READY;
-		
-		if(StringUtils.isNotEmpty(text))
-			text = getDecodedString(text);
+		String status = VideoConstants.STATUS_READY;		
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(size, (page-1)*size));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, text, null, null, null, null, null, null, null, tagsIn));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, null, null, null, null, null, tagsIn));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM))
