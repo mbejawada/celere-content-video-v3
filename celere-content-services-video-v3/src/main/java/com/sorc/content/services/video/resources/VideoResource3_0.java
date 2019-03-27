@@ -421,14 +421,18 @@ public class VideoResource3_0 {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Result<ElasticSearchVideo> getVideoListByTag(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
-			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TAGS_IN, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_TAGS_IN) Set<String> tagsIn,			
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TAGS_IN, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_TAGS_IN) Set<String> tagsIn,			
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_SIZE) int pageSize,
 			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_START_DATE) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
 			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DESCENDING_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode)
 			throws JsonParseException, JsonMappingException, IOException,
 			Exception {
-					
+			
+		if(tagsIn == null || tagsIn.isEmpty())
+		{
+			throw new ValidationException("tags_in is required");
+		}
 		String status = VideoConstants.STATUS_READY;		
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
