@@ -9,7 +9,8 @@ package com.sorc.content.services.video.request;
  */
 public class VideoQueryParameters {
 
-	public static final String QUERY_PARAM_PAGE = "page";
+	public static final String QUERY_PARAM_PAGE_INDEX = "pageIndex";
+	public static final String QUERY_PARAM_PAGE_SIZE = "pageSize";
 		
 	public static final String DEFAULT_QUERY_PARAM_PAGE = "1";
 	public static final String QUERY_PARAM_COUNTRY_CODE = "country_code";
