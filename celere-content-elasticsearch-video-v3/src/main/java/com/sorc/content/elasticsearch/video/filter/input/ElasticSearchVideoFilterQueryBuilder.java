@@ -70,6 +70,10 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new TermsFilter("keywords.keyword", filter.getTagsIn()));
 		}
 		
+		if (filter.getAssetIn() != null) {
+			buildBoolQueryFilter(new TermsFilter("id.keyword", filter.getAssetIn()));
+		}
+		
 		if(filter.getCountryCode() != null) {		
 			
 			BoolQueryBuilder countryGlobalBoolQueryBuilder = QueryBuilders.boolQuery();	

@@ -44,6 +44,7 @@ import com.sorc.content.services.video.documentation.constants.VideoConstants;
 import com.sorc.content.services.video.documentation.constants.VideoDocumentationParameters;
 import com.sorc.content.services.video.request.VideoParameterValidator;
 import com.sorc.content.services.video.request.VideoQueryParameters;
+import com.sorc.content.services.video.response.status.RestrictedAssetResource;
 import com.sorc.content.services.video.response.status.RestrictedResource;
 import com.sorc.content.video.dao.data.ElasticSearchVideo;
 import com.wordnik.swagger.annotations.Api;
@@ -111,7 +112,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, text, null, null, null, null, null, null, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, text, null, null, null, null, null, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -151,7 +152,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(1, 0));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null, null, null, null, null, null, null, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null, null, null, null, null, null, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -213,7 +214,7 @@ public class VideoResource3_0 {
 				
 		esfdt.setPagination(new Pagination(1, 0));
 		esfdt.setIndex(INDEX);		
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null, showCategoryId, seasonCategoryId, null, null, null, showCategory, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, videoId, status, null, showCategoryId, seasonCategoryId, null, null, null, showCategory, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_EPISODE_NO, SortingMode.ASCENDING));
@@ -251,7 +252,7 @@ public class VideoResource3_0 {
 			
 			esfdt.setPagination(new Pagination(500, 0));
 			esfdt.setIndex(INDEX);			
-			esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), esVideo.getSeason(), (esVideo.getMeta() != null ?esVideo.getMeta().getEpisode():0), showCategory, null, null));
+			esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), esVideo.getSeason(), (esVideo.getMeta() != null ?esVideo.getMeta().getEpisode():0), showCategory, null, null, null));
 			esfdt.setSorting(sorting);
 			
 			resultMap = dao.getDetailList(esfdt);
@@ -272,7 +273,7 @@ public class VideoResource3_0 {
 				esfdt.setPagination(new Pagination(0, 0));
 				esfdt.setIndex(INDEX);	
 				esfdt.setFacets(VideoConstants.FACET_SEASON_NO);
-				esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), null, null, showCategory, null, null));
+				esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), null, null, showCategory, null, null, null));
 				esfdt.setSorting(sorting);
 				List<IElasticSearchSorting> aggDetailSorting = new ArrayList<IElasticSearchSorting>();
 				aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SEASON, SortingMode.ASCENDING));				
@@ -287,7 +288,7 @@ public class VideoResource3_0 {
 					
 					esfdt.setPagination(new Pagination(500, 0));
 					esfdt.setIndex(INDEX);			
-					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), nextSeason, null, showCategory, null, null));
+					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, esVideo.getShow(), nextSeason, null, showCategory, null, null, null));
 					esfdt.setSorting(sorting);
 					
 					resultMap = dao.getDetailList(esfdt);
@@ -309,7 +310,7 @@ public class VideoResource3_0 {
 					esfdt.setPagination(new Pagination(0, 0));
 					esfdt.setIndex(INDEX);	
 					esfdt.setFacets(VideoConstants.FACET_SHOW);
-					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, esVideo.getMainCategory(), null, null, null, null, status, null, null, null, null, null, null, showCategory, null, null));
+					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, esVideo.getMainCategory(), null, null, null, null, status, null, null, null, null, null, null, showCategory, null, null, null));
 					esfdt.setSorting(sorting);
 					aggDetailSorting = new ArrayList<IElasticSearchSorting>();
 					aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, SortingMode.ASCENDING));				
@@ -325,7 +326,7 @@ public class VideoResource3_0 {
 						esfdt.setPagination(new Pagination(0, 0));
 						esfdt.setIndex(INDEX);	
 						esfdt.setFacets(VideoConstants.FACET_SEASON);
-						esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, nextShow, null, null, showCategory, null, null));
+						esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, nextShow, null, null, showCategory, null, null, null));
 						esfdt.setSorting(sorting);
 						aggDetailSorting = new ArrayList<IElasticSearchSorting>();
 						aggDetailSorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SEASON, SortingMode.ASCENDING));				
@@ -340,7 +341,7 @@ public class VideoResource3_0 {
 							
 							esfdt.setPagination(new Pagination(500, 0));
 							esfdt.setIndex(INDEX);			
-							esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, nextShow, nextSeason, null, showCategory, null, null));
+							esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, nextShow, nextSeason, null, showCategory, null, null, null));
 							esfdt.setSorting(sorting);
 							
 							resultMap = dao.getDetailList(esfdt);
@@ -388,7 +389,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, showCategoryId, seasonCategoryId, null, null, null, null, seasonNo, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, showCategoryId, seasonCategoryId, null, null, null, null, seasonNo, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM))
@@ -438,7 +439,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, null, null, null, null, null, tagsIn));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, null, null, null, null, null, tagsIn, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM))
@@ -461,6 +462,75 @@ public class VideoResource3_0 {
 		}
 		
 		return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GET
+	@Path("/assets")
+	@ApiOperation(value = "Find list of Videos by mentioned assets along with country code", notes = "Returns the list of asset video", response = ElasticSearchVideo.class, position = 6, httpMethod="GET")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Result<Object> getVideoListByAsset(
+			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_ASSET_IN, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_ASSET_IN) Set<String> assetIn,			
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode)
+			throws JsonParseException, JsonMappingException, IOException,
+			Exception {
+			
+		if(assetIn == null || assetIn.isEmpty())
+		{
+			throw new ValidationException("assets_in is required");
+		}
+		String status = VideoConstants.STATUS_READY;		
+		
+		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
+		esfdt.setPagination(new Pagination(assetIn.size(), 0));
+		esfdt.setIndex(INDEX);
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, null, null, null, null, null, null, assetIn));
+		
+		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
+		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_START_DATE, SortingMode.DESCENDING));	
+		
+		esfdt.setSorting(sorting);
+		
+		Map<String, Object> resultMap = dao.getDetailList(esfdt);
+		Long totalCount = 0L;
+		List<ElasticSearchVideo> videoList = new ArrayList<ElasticSearchVideo>();
+		if(resultMap != null && !resultMap.isEmpty()) {
+			if(resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT) != null 
+					&& resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST) != null) {
+				totalCount = (Long) resultMap.get(ElasticSearchVideoFieldConstants.TOTAL_COUNT);
+				videoList = (List<ElasticSearchVideo>) resultMap.get(ElasticSearchVideoFieldConstants.ELASTICSEARCH_VIDEO_LIST);
+			}
+		}
+		
+		List<Object> restrictedVideoList = new ArrayList<Object>();
+		if(videoList != null && !videoList.isEmpty())
+		{
+			for(ElasticSearchVideo esVideo : videoList)
+			{
+				if(esVideo.getAccessControl() != null)
+				{
+					if(!esVideo.getAccessControl().getAllow())
+					{
+						if(esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							restrictedVideoList.add(new RestrictedAssetResource(esVideo.getId(), esVideo.getAccessControl().getMessage()));
+						else
+							restrictedVideoList.add(esVideo);
+					}
+					else
+					{
+						if(!esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							restrictedVideoList.add(new RestrictedAssetResource(esVideo.getId(), esVideo.getAccessControl().getMessage()));
+						else
+							restrictedVideoList.add(esVideo);
+					}		
+				}
+				else
+					restrictedVideoList.add(esVideo);
+			}
+		}
+		return new Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
 	}
 	
 	public String getDecodedString(String string) throws UnsupportedEncodingException{

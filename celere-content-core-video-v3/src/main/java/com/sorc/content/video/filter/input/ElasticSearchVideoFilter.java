@@ -30,6 +30,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String showCategory;
 	private Integer seasonNum;
 	private Set<String> tagsIn;
+	private Set<String> assetIn;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -159,10 +160,19 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.seasonNum = seasonNum;
 	}
 
+	public Set<String> getAssetIn() {
+		return assetIn;
+	}
+
+	public void setAssetIn(Set<String> assetIn) {
+		this.assetIn = assetIn;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((assetIn == null) ? 0 : assetIn.hashCode());
 		result = prime * result
 				+ ((countryCode == null) ? 0 : countryCode.hashCode());
 		result = prime * result
@@ -204,6 +214,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		if (getClass() != obj.getClass())
 			return false;
 		ElasticSearchVideoFilter other = (ElasticSearchVideoFilter) obj;
+		if (assetIn == null) {
+			if (other.assetIn != null)
+				return false;
+		} else if (!assetIn.equals(other.assetIn))
+			return false;
 		if (countryCode == null) {
 			if (other.countryCode != null)
 				return false;
