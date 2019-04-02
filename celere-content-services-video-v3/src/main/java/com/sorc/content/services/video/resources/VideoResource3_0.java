@@ -367,11 +367,12 @@ public class VideoResource3_0 {
 	@ApiOperation(value = "Find list of Videos", notes = "Returns the list of video", response = ElasticSearchVideo.class, position = 4, httpMethod="GET")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Result<ElasticSearchVideo> getEpisodesBySeason(
+	public Result<Object> getEpisodesBySeason(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,			
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SEASON_CATEGORY_ID, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SEASON_CATEGORY_ID) Integer seasonCategoryId,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SEASON_NO, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SEASON_NUM) Integer seasonNo,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_SHOW_CATEGORY_ID, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_SHOW_CATEGORY_ID) Integer showCategoryId,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_SIZE) int pageSize,
 			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
@@ -385,6 +386,9 @@ public class VideoResource3_0 {
 		{
 			throw new ValidationException("Either season_category_id or show_category_id are required");
 		}
+		
+		if(countryCode == null || countryCode.trim().length() == 0)
+			countryCode = VideoConstants.COUNTRY_US;
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
@@ -411,7 +415,34 @@ public class VideoResource3_0 {
 			}
 		}
 		
-		return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+		List<Object> restrictedVideoList = new ArrayList<Object>();
+		if(videoList != null && !videoList.isEmpty())
+		{
+			for(ElasticSearchVideo esVideo : videoList)
+			{
+				if(esVideo.getAccessControl() != null)
+				{
+					if(!esVideo.getAccessControl().getAllow())
+					{
+						if(esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							restrictedVideoList.add(new RestrictedAssetResource(esVideo.getId(), esVideo.getAccessControl().getMessage()));
+						else
+							restrictedVideoList.add(esVideo);
+					}
+					else
+					{
+						if(!esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							restrictedVideoList.add(new RestrictedAssetResource(esVideo.getId(), esVideo.getAccessControl().getMessage()));
+						else
+							restrictedVideoList.add(esVideo);
+					}		
+				}
+				else
+					restrictedVideoList.add(esVideo);
+			}
+		}
+		
+		return new Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -420,9 +451,10 @@ public class VideoResource3_0 {
 	@ApiOperation(value = "Find list of Videos", notes = "Returns the list of video", response = ElasticSearchVideo.class, position = 5, httpMethod="GET")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Result<ElasticSearchVideo> getVideoListByTag(
+	public Result<Object> getVideoListByTag(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
-			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TAGS_IN, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_TAGS_IN) Set<String> tagsIn,			
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TAGS_IN, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_TAGS_IN) Set<String> tagsIn,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_SIZE) int pageSize,
 			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_START_DATE) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
@@ -434,6 +466,10 @@ public class VideoResource3_0 {
 		{
 			throw new ValidationException("tags_in is required");
 		}
+		
+		if(countryCode == null || countryCode.trim().length() == 0)
+			countryCode = VideoConstants.COUNTRY_US;
+		
 		String status = VideoConstants.STATUS_READY;		
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
@@ -461,7 +497,34 @@ public class VideoResource3_0 {
 			}
 		}
 		
-		return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+		List<Object> restrictedVideoList = new ArrayList<Object>();
+		if(videoList != null && !videoList.isEmpty())
+		{
+			for(ElasticSearchVideo esVideo : videoList)
+			{
+				if(esVideo.getAccessControl() != null)
+				{
+					if(!esVideo.getAccessControl().getAllow())
+					{
+						if(esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							restrictedVideoList.add(new RestrictedAssetResource(esVideo.getId(), esVideo.getAccessControl().getMessage()));
+						else
+							restrictedVideoList.add(esVideo);
+					}
+					else
+					{
+						if(!esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
+							restrictedVideoList.add(new RestrictedAssetResource(esVideo.getId(), esVideo.getAccessControl().getMessage()));
+						else
+							restrictedVideoList.add(esVideo);
+					}		
+				}
+				else
+					restrictedVideoList.add(esVideo);
+			}
+		}
+		
+		return new Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
 	}
 	
 	@SuppressWarnings("unchecked")
