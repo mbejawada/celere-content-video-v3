@@ -34,6 +34,8 @@ public class Category implements Serializable {
 	private String name;	
 	private String type;
 	private String description;	
+	private String featureVertUrl;
+	private String showVertUrl;
 	
 	public Category(){}
 
@@ -125,6 +127,22 @@ public class Category implements Serializable {
 		this.description = description;
 	}
 
+	public String getFeatureVertUrl() {
+		return featureVertUrl;
+	}
+
+	public void setFeatureVertUrl(String featureVertUrl) {
+		this.featureVertUrl = featureVertUrl;
+	}
+
+	public String getShowVertUrl() {
+		return showVertUrl;
+	}
+
+	public void setShowVertUrl(String showVertUrl) {
+		this.showVertUrl = showVertUrl;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -141,8 +159,12 @@ public class Category implements Serializable {
 				+ ((displayName == null) ? 0 : displayName.hashCode());
 		result = prime * result
 				+ ((featureUrl == null) ? 0 : featureUrl.hashCode());
+		result = prime * result
+				+ ((featureVertUrl == null) ? 0 : featureVertUrl.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((showVertUrl == null) ? 0 : showVertUrl.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((vmsUrl == null) ? 0 : vmsUrl.hashCode());
 		result = prime * result + ((webUrl == null) ? 0 : webUrl.hashCode());
@@ -188,6 +210,11 @@ public class Category implements Serializable {
 				return false;
 		} else if (!featureUrl.equals(other.featureUrl))
 			return false;
+		if (featureVertUrl == null) {
+			if (other.featureVertUrl != null)
+				return false;
+		} else if (!featureVertUrl.equals(other.featureVertUrl))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -197,6 +224,11 @@ public class Category implements Serializable {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (showVertUrl == null) {
+			if (other.showVertUrl != null)
+				return false;
+		} else if (!showVertUrl.equals(other.showVertUrl))
 			return false;
 		if (type == null) {
 			if (other.type != null)

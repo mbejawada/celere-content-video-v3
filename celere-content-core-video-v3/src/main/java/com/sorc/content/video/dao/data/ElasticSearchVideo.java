@@ -51,6 +51,7 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 	private String mainCategory;
 	private String showParentalRating;
 	private String showGenry;
+	private String seasonEpisodeShort;
 	
 	@Override
 	public String getId() {
@@ -200,6 +201,14 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		this.showGenry = showGenry;
 	}
 
+	public String getSeasonEpisodeShort() {
+		return seasonEpisodeShort;
+	}
+
+	public void setSeasonEpisodeShort(String seasonEpisodeShort) {
+		this.seasonEpisodeShort = seasonEpisodeShort;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -231,6 +240,10 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 						.hashCode());
 		result = prime * result + ((person == null) ? 0 : person.hashCode());
 		result = prime * result + ((season == null) ? 0 : season.hashCode());
+		result = prime
+				* result
+				+ ((seasonEpisodeShort == null) ? 0 : seasonEpisodeShort
+						.hashCode());
 		result = prime * result + ((show == null) ? 0 : show.hashCode());
 		result = prime * result
 				+ ((showGenry == null) ? 0 : showGenry.hashCode());
@@ -330,6 +343,11 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 			if (other.season != null)
 				return false;
 		} else if (!season.equals(other.season))
+			return false;
+		if (seasonEpisodeShort == null) {
+			if (other.seasonEpisodeShort != null)
+				return false;
+		} else if (!seasonEpisodeShort.equals(other.seasonEpisodeShort))
 			return false;
 		if (show == null) {
 			if (other.show != null)
