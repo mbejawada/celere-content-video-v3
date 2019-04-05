@@ -51,6 +51,7 @@ public class Video implements Serializable {
 	private Integer votes;
 	private String hlsUrl;
 	private String mpegdashUrl;
+	private String bifThumbnailUrl;
 
 	public String getDataUrl() {
 		return dataUrl;
@@ -208,6 +209,12 @@ public class Video implements Serializable {
 	public void setMpegdashUrl(String mpegdashUrl) {
 		this.mpegdashUrl = mpegdashUrl;
 	}
+	public String getBifThumbnailUrl() {
+		return bifThumbnailUrl;
+	}
+	public void setBifThumbnailUrl(String bifThumbnailUrl) {
+		this.bifThumbnailUrl = bifThumbnailUrl;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -220,6 +227,8 @@ public class Video implements Serializable {
 				* result
 				+ ((appleUmcThumbnailUrl == null) ? 0 : appleUmcThumbnailUrl
 						.hashCode());
+		result = prime * result
+				+ ((bifThumbnailUrl == null) ? 0 : bifThumbnailUrl.hashCode());
 		result = prime * result + ((dataUrl == null) ? 0 : dataUrl.hashCode());
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
@@ -277,6 +286,11 @@ public class Video implements Serializable {
 			if (other.appleUmcThumbnailUrl != null)
 				return false;
 		} else if (!appleUmcThumbnailUrl.equals(other.appleUmcThumbnailUrl))
+			return false;
+		if (bifThumbnailUrl == null) {
+			if (other.bifThumbnailUrl != null)
+				return false;
+		} else if (!bifThumbnailUrl.equals(other.bifThumbnailUrl))
 			return false;
 		if (dataUrl == null) {
 			if (other.dataUrl != null)
