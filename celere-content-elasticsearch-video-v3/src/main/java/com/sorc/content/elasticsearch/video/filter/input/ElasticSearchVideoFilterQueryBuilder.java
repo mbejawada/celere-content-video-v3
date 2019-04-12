@@ -87,11 +87,13 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			countryNotAllowBoolQueryBuilder.mustNot(fb.createFilter(new TermFilter("accessControl.values.keyword", filter.getCountryCode())));
 			countryNotAllowBoolQueryBuilder.filter(fb.createFilter(new TermFilter("accessControl.allow", false)));
 				
+			BoolQueryBuilder subBoolQueryBuilder = QueryBuilders.boolQuery();		
+			subBoolQueryBuilder.should(countryGlobalBoolQueryBuilder);
+			subBoolQueryBuilder.should(countryAllowBoolQueryBuilder);
+			subBoolQueryBuilder.should(countryNotAllowBoolQueryBuilder);
 			if(boolQueryBuilder == null)
-				boolQueryBuilder = QueryBuilders.boolQuery();		
-			boolQueryBuilder.should(countryGlobalBoolQueryBuilder);
-			boolQueryBuilder.should(countryAllowBoolQueryBuilder);
-			boolQueryBuilder.should(countryNotAllowBoolQueryBuilder);
+				boolQueryBuilder = QueryBuilders.boolQuery();	
+			boolQueryBuilder.filter(subBoolQueryBuilder);
 		}
 		
 		if(filter.getVideoId()!= null) {			

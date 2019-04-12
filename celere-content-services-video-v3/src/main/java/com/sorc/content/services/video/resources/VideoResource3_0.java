@@ -38,12 +38,12 @@ import com.sorc.content.services.documentation.ServicesCommonDocumentation;
 import com.sorc.content.services.request.IHttpRequestHandler;
 import com.sorc.content.services.request.QueryParameters;
 import com.sorc.content.services.request.QueryParametersPaginationSorting;
-import com.sorc.content.services.response.Result;
 import com.sorc.content.services.validation.NotEmpty;
 import com.sorc.content.services.video.documentation.constants.VideoConstants;
 import com.sorc.content.services.video.documentation.constants.VideoDocumentationParameters;
 import com.sorc.content.services.video.request.VideoParameterValidator;
 import com.sorc.content.services.video.request.VideoQueryParameters;
+import com.sorc.content.services.video.response.Result;
 import com.sorc.content.services.video.response.status.RestrictedAssetResource;
 import com.sorc.content.services.video.response.status.RestrictedResource;
 import com.sorc.content.video.dao.data.ElasticSearchVideo;
@@ -97,6 +97,7 @@ public class VideoResource3_0 {
 	public Result<ElasticSearchVideo> getElasticSearchVideoList(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,	
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TEXT, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_TEXT) String text,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_STATUS, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_STAUTS) String status,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_SIZE) int pageSize)
@@ -112,7 +113,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, text, null, null, null, null, null, null, null, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, text, null, null, null, null, null, null, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_UPDATED_AT, SortingMode.DESCENDING));		
@@ -129,7 +130,7 @@ public class VideoResource3_0 {
 			}
 		}
 		
-		return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+		return new Result<ElasticSearchVideo>(totalCount, videoList, pageIndex, pageSize, httpRequestHandler.getCorrelationId());
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -237,12 +238,12 @@ public class VideoResource3_0 {
 					if(!esVideo.getAccessControl().getAllow())
 					{
 						if(esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
-							return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+							return new com.sorc.content.services.response.Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
 					}
 					else
 					{
 						if(!esVideo.getAccessControl().getValues().contains(countryCode.toUpperCase()))
-							return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
+							return new com.sorc.content.services.response.Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());
 					}		
 				}
 			}
@@ -358,7 +359,7 @@ public class VideoResource3_0 {
 			}
 		}
 		
-		return new Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());				
+		return new com.sorc.content.services.response.Result<ElasticSearchVideo>(totalCount, videoList, httpRequestHandler.getCorrelationId());				
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -442,7 +443,7 @@ public class VideoResource3_0 {
 			}
 		}
 		
-		return new Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
+		return new Result<Object>(totalCount, restrictedVideoList, pageIndex, pageSize, httpRequestHandler.getCorrelationId());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -524,7 +525,7 @@ public class VideoResource3_0 {
 			}
 		}
 		
-		return new Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
+		return new Result<Object>(totalCount, restrictedVideoList, pageIndex, pageSize, httpRequestHandler.getCorrelationId());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -533,7 +534,7 @@ public class VideoResource3_0 {
 	@ApiOperation(value = "Find list of Videos by mentioned assets along with country code", notes = "Returns the list of asset video", response = ElasticSearchVideo.class, position = 6, httpMethod="GET")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Result<Object> getVideoListByAsset(
+	public com.sorc.content.services.response.Result<Object> getVideoListByAsset(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_ASSET_IN, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_ASSET_IN) Set<String> assetIn,			
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode)
@@ -593,7 +594,7 @@ public class VideoResource3_0 {
 					restrictedVideoList.add(esVideo);
 			}
 		}
-		return new Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
+		return new com.sorc.content.services.response.Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
 	}
 	
 	public String getDecodedString(String string) throws UnsupportedEncodingException{
