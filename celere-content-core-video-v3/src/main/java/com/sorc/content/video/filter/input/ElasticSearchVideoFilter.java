@@ -31,6 +31,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private Integer seasonNum;
 	private Set<String> tagsIn;
 	private Set<String> assetIn;
+	private String mediaType;
+	private Boolean isSlider;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -168,6 +170,22 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.assetIn = assetIn;
 	}
 
+	public String getMediaType() {
+		return mediaType;
+	}
+
+	public void setMediaType(String mediaType) {
+		this.mediaType = mediaType;
+	}
+
+	public Boolean getIsSlider() {
+		return isSlider;
+	}
+
+	public void setIsSlider(Boolean isSlider) {
+		this.isSlider = isSlider;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -178,11 +196,15 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result
 				+ ((episodeNum == null) ? 0 : episodeNum.hashCode());
 		result = prime * result
+				+ ((isSlider == null) ? 0 : isSlider.hashCode());
+		result = prime * result
 				+ ((mainCategory == null) ? 0 : mainCategory.hashCode());
 		result = prime
 				* result
 				+ ((mainCategoryNotIn == null) ? 0 : mainCategoryNotIn
 						.hashCode());
+		result = prime * result
+				+ ((mediaType == null) ? 0 : mediaType.hashCode());
 		result = prime * result
 				+ ((seasonId == null) ? 0 : seasonId.hashCode());
 		result = prime * result
@@ -229,6 +251,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				return false;
 		} else if (!episodeNum.equals(other.episodeNum))
 			return false;
+		if (isSlider == null) {
+			if (other.isSlider != null)
+				return false;
+		} else if (!isSlider.equals(other.isSlider))
+			return false;
 		if (mainCategory == null) {
 			if (other.mainCategory != null)
 				return false;
@@ -238,6 +265,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.mainCategoryNotIn != null)
 				return false;
 		} else if (!mainCategoryNotIn.equals(other.mainCategoryNotIn))
+			return false;
+		if (mediaType == null) {
+			if (other.mediaType != null)
+				return false;
+		} else if (!mediaType.equals(other.mediaType))
 			return false;
 		if (seasonId == null) {
 			if (other.seasonId != null)

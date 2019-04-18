@@ -25,6 +25,8 @@ public class VideoQueryParameters {
 	public static final String DEFAULT_SORTING_EPISODE_NUM = "EPISODE_NUM";
 	public static final String DEFAULT_SORTING_START_DATE = "START_DATE";
 	public static final String SORTING_START_DATE = "START_DATE";
+	public static final String SORTING_VIEWS = "VIEWS";
 	public static final String QUERY_PARAM_TAGS_IN = "tags_in";
 	public static final String QUERY_PARAM_ASSET_IN = "assets_in";
+	public static final String QUERY_PARAM_MEDIA_TYPE = "media_type";
 }

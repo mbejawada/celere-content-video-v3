@@ -128,6 +128,16 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new TermFilter("meta.season", filter.getSeasonNum()));
 		}
 		
+		if(filter.getMediaType() != null)
+		{
+			buildBoolQueryFilter(new TermFilter("metaMediaBasicFields.mediaType.keyword", filter.getMediaType()));
+		}
+		
+		if(filter.getIsSlider() != null)
+		{
+			buildBoolQueryFilter(new TermFilter("isSlider", filter.getIsSlider()));
+		}
+		
 		if(filter.getText() != null)
 		{			
 			if(isExactMatchAnalyzer(filter.getText()))

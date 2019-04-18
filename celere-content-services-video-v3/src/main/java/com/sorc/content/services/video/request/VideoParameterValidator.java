@@ -23,7 +23,7 @@ public class VideoParameterValidator {
 			String countryCode, String videoId, String status, String text,
 			Integer showCategoryId, Integer seasonCategoryId, String showName, String seasonName, 
 			Integer episodeNum, String showCategory, Integer seasonNo,
-			Set<String> tagsIn, Set<String> assetIn) {
+			Set<String> tagsIn, Set<String> assetIn, String mediaType, Boolean isSlider) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -78,6 +78,12 @@ public class VideoParameterValidator {
 		if(assetIn != null && !assetIn.isEmpty()) {
 			filter.setAssetIn(assetIn);
 		}
+		
+		if(mediaType != null)
+			filter.setMediaType(mediaType);
+		
+		if(isSlider != null)
+			filter.setIsSlider(isSlider);
 		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();
