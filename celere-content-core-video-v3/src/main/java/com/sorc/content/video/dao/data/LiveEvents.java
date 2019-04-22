@@ -38,6 +38,7 @@ public class LiveEvents implements Serializable {
 	private Boolean eventTimeTBD;
 	private String sportName;
 	private String sportingLeague;
+	private boolean isHls;
 	
 	public String getVod() {
 		return vod;
@@ -118,6 +119,12 @@ public class LiveEvents implements Serializable {
 	public void setSportingLeague(String sportingLeague) {
 		this.sportingLeague = sportingLeague;
 	}
+	public boolean isHls() {
+		return isHls;
+	}
+	public void setHls(boolean isHls) {
+		this.isHls = isHls;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -140,6 +147,7 @@ public class LiveEvents implements Serializable {
 				+ ((eventStartDate == null) ? 0 : eventStartDate.hashCode());
 		result = prime * result
 				+ ((eventTimeTBD == null) ? 0 : eventTimeTBD.hashCode());
+		result = prime * result + (isHls ? 1231 : 1237);
 		result = prime * result
 				+ ((playerType == null) ? 0 : playerType.hashCode());
 		result = prime * result
@@ -203,6 +211,8 @@ public class LiveEvents implements Serializable {
 			if (other.eventTimeTBD != null)
 				return false;
 		} else if (!eventTimeTBD.equals(other.eventTimeTBD))
+			return false;
+		if (isHls != other.isHls)
 			return false;
 		if (playerType == null) {
 			if (other.playerType != null)

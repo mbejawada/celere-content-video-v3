@@ -33,6 +33,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private Set<String> assetIn;
 	private String mediaType;
 	private Boolean isSlider;
+	private Boolean isLiveEvent;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -186,6 +187,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.isSlider = isSlider;
 	}
 
+	public Boolean getIsLiveEvent() {
+		return isLiveEvent;
+	}
+
+	public void setIsLiveEvent(Boolean isLiveEvent) {
+		this.isLiveEvent = isLiveEvent;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -195,6 +204,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				+ ((countryCode == null) ? 0 : countryCode.hashCode());
 		result = prime * result
 				+ ((episodeNum == null) ? 0 : episodeNum.hashCode());
+		result = prime * result
+				+ ((isLiveEvent == null) ? 0 : isLiveEvent.hashCode());
 		result = prime * result
 				+ ((isSlider == null) ? 0 : isSlider.hashCode());
 		result = prime * result
@@ -250,6 +261,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.episodeNum != null)
 				return false;
 		} else if (!episodeNum.equals(other.episodeNum))
+			return false;
+		if (isLiveEvent == null) {
+			if (other.isLiveEvent != null)
+				return false;
+		} else if (!isLiveEvent.equals(other.isLiveEvent))
 			return false;
 		if (isSlider == null) {
 			if (other.isSlider != null)
