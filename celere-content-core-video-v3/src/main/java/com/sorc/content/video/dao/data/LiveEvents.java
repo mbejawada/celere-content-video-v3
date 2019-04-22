@@ -119,10 +119,10 @@ public class LiveEvents implements Serializable {
 	public void setSportingLeague(String sportingLeague) {
 		this.sportingLeague = sportingLeague;
 	}
-	public boolean isHls() {
+	public boolean getIsHls() {
 		return isHls;
 	}
-	public void setHls(boolean isHls) {
+	public void setIsHls(boolean isHls) {
 		this.isHls = isHls;
 	}
 	@Override
