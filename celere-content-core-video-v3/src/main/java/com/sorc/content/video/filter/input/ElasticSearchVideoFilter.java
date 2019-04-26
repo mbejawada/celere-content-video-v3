@@ -34,6 +34,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String mediaType;
 	private Boolean isSlider;
 	private Boolean isLiveEvent;
+	private String startDate;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -195,6 +196,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.isLiveEvent = isLiveEvent;
 	}
 
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -227,6 +236,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result + ((showId == null) ? 0 : showId.hashCode());
 		result = prime * result
 				+ ((showName == null) ? 0 : showName.hashCode());
+		result = prime * result
+				+ ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((tagsIn == null) ? 0 : tagsIn.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
@@ -316,6 +327,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.showName != null)
 				return false;
 		} else if (!showName.equals(other.showName))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
 			return false;
 		if (status == null) {
 			if (other.status != null)

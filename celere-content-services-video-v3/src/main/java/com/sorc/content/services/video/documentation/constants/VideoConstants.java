@@ -40,6 +40,7 @@ public class VideoConstants {
 	public static final String STATUS_READY = "READY";
 	public static final String SORT_EPISODE_NO = "meta.episode";
 	public static final String SORT_START_DATE = "video.startDate";
+	public static final String SORT_SORT_DATE = "meta.sortDate";
 	public static final String SORT_VIEWS = "video.views";
 	public static final String COUNTRY_US = "US";
 }

@@ -14,6 +14,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import com.sorc.content.elasticsearch.core.constant.ElasticSearchVideoFieldConstants;
 import com.sorc.content.elasticsearch.core.filter.input.CustomFilterBuilder;
+import com.sorc.content.elasticsearch.core.filter.input.DateRangeFilter;
 import com.sorc.content.elasticsearch.core.filter.input.ExistsFilter;
 import com.sorc.content.elasticsearch.core.filter.input.IElasticSearchFilter;
 import com.sorc.content.elasticsearch.core.filter.input.IElasticSearchQueryBuilder;
@@ -141,6 +142,11 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		if(filter.getIsLiveEvent() != null)
 		{
 			buildBoolQueryFilter(new TermFilter("meta.isLiveEvent", filter.getIsLiveEvent()));
+		}
+		
+		if(filter.getStartDate() != null)
+		{
+			buildBoolQueryFilter(new DateRangeFilter("video.startDate", filter.getStartDate(), null));
 		}
 		
 		if(filter.getText() != null)
