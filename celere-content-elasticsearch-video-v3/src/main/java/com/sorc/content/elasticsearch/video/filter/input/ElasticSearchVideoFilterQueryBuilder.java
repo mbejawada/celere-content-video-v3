@@ -151,7 +151,7 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		
 		if(filter.getSortDate() != null)
 		{
-			buildBoolQueryFilter(new TermFilter("meta.sortDate", filter.getSortDate()));
+			buildBoolQueryFilter(new DateRangeFilter("meta.sortDate", filter.getSortDate(), null));
 		}
 		
 		if(filter.getIsHls() != null && filter.getIsHls())
