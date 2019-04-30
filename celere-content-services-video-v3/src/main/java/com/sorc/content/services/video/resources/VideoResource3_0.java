@@ -99,8 +99,7 @@ public class VideoResource3_0 {
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_TEXT, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_TEXT) String text,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_STATUS, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_STAUTS) String status,
-			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_MEDIA_TYPE, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_MEDIA_TYPE) String mediaType,
-			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_FORMAT_TYPE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_PARAM_FORMAT_TYPE_HLS) @QueryParam(VideoQueryParameters.QUERY_PARAM_FORMAT_TYPE) String formatType,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_MEDIA_TYPE, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_MEDIA_TYPE) String mediaType,			
 			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_START_DATE) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
 			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DESCENDING_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
@@ -112,16 +111,12 @@ public class VideoResource3_0 {
 			status = VideoConstants.STATUS_READY;
 		
 		if(StringUtils.isNotEmpty(text))
-			text = getDecodedString(text);
-		
-		Boolean hlsVideo = null;
-		if(formatType != null && VideoQueryParameters.DEFAULT_PARAM_FORMAT_TYPE_HLS.equalsIgnoreCase(formatType))
-			hlsVideo = true;
+			text = getDecodedString(text);		
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, text, null, null, null, null, null, null, null, null, null, mediaType, null, null, null, null, hlsVideo));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, text, null, null, null, null, null, null, null, null, null, mediaType, null, null, null, null, null));
 				
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM))
@@ -679,6 +674,7 @@ public class VideoResource3_0 {
 	public Result<ElasticSearchVideo> getLiveVideoList(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,			
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_FORMAT_TYPE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_PARAM_FORMAT_TYPE_HLS) @QueryParam(VideoQueryParameters.QUERY_PARAM_FORMAT_TYPE) String formatType,
 			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_START_DATE) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
 			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DESCENDING_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
@@ -691,11 +687,14 @@ public class VideoResource3_0 {
 		
 		String status = VideoConstants.STATUS_READY;				
 		boolean isLiveEvent = true;
+		Boolean hlsVideo = null;
+		if(formatType != null && VideoQueryParameters.DEFAULT_PARAM_FORMAT_TYPE_HLS.equalsIgnoreCase(formatType))
+			hlsVideo = true;
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, null, null, null, null, null, null, null, null, null, isLiveEvent, null, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, null, null, null, null, null, null, null, null, null, isLiveEvent, null, null, hlsVideo));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM))
