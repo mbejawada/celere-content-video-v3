@@ -35,6 +35,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private Boolean isSlider;
 	private Boolean isLiveEvent;
 	private String startDate;
+	private String sortDate;
+	private Boolean isHls;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -204,6 +206,22 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.startDate = startDate;
 	}
 
+	public String getSortDate() {
+		return sortDate;
+	}
+
+	public void setSortDate(String sortDate) {
+		this.sortDate = sortDate;
+	}
+
+	public Boolean getIsHls() {
+		return isHls;
+	}
+
+	public void setIsHls(Boolean isHls) {
+		this.isHls = isHls;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -213,6 +231,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				+ ((countryCode == null) ? 0 : countryCode.hashCode());
 		result = prime * result
 				+ ((episodeNum == null) ? 0 : episodeNum.hashCode());
+		result = prime * result + ((isHls == null) ? 0 : isHls.hashCode());
 		result = prime * result
 				+ ((isLiveEvent == null) ? 0 : isLiveEvent.hashCode());
 		result = prime * result
@@ -236,6 +255,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result + ((showId == null) ? 0 : showId.hashCode());
 		result = prime * result
 				+ ((showName == null) ? 0 : showName.hashCode());
+		result = prime * result
+				+ ((sortDate == null) ? 0 : sortDate.hashCode());
 		result = prime * result
 				+ ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
@@ -272,6 +293,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.episodeNum != null)
 				return false;
 		} else if (!episodeNum.equals(other.episodeNum))
+			return false;
+		if (isHls == null) {
+			if (other.isHls != null)
+				return false;
+		} else if (!isHls.equals(other.isHls))
 			return false;
 		if (isLiveEvent == null) {
 			if (other.isLiveEvent != null)
@@ -327,6 +353,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.showName != null)
 				return false;
 		} else if (!showName.equals(other.showName))
+			return false;
+		if (sortDate == null) {
+			if (other.sortDate != null)
+				return false;
+		} else if (!sortDate.equals(other.sortDate))
 			return false;
 		if (startDate == null) {
 			if (other.startDate != null)

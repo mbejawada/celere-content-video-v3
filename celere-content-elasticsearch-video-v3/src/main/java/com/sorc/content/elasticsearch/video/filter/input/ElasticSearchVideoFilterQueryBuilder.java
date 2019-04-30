@@ -149,6 +149,16 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new DateRangeFilter("video.startDate", filter.getStartDate(), null));
 		}
 		
+		if(filter.getSortDate() != null)
+		{
+			buildBoolQueryFilter(new TermFilter("meta.sortDate", filter.getSortDate()));
+		}
+		
+		if(filter.getIsHls() != null && filter.getIsHls())
+		{
+			buildBoolQueryFilter(new TermFilter("liveEvents.isHls", filter.getIsHls()));
+		}
+		
 		if(filter.getText() != null)
 		{			
 			if(isExactMatchAnalyzer(filter.getText()))
