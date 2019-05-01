@@ -544,10 +544,12 @@ public class VideoResource3_0 {
 	@ApiOperation(value = "Find list of Videos by mentioned assets along with country code", notes = "Returns the list of asset video", response = ElasticSearchVideo.class, position = 6, httpMethod="GET")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Missing website ID"), @ApiResponse(code = 400, message = "Missing Action Name"), @ApiResponse(code = 404, message = "Resource not found")})
 	@Produces({ MediaType.APPLICATION_JSON })
-	public com.sorc.content.services.response.Result<Object> getVideoListByAsset(
+	public Result<Object> getVideoListByAsset(
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_ASSET_IN, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_ASSET_IN) Set<String> assetIn,			
-			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode)
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,
+			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
+			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_SIZE) int pageSize)
 			throws JsonParseException, JsonMappingException, IOException,
 			Exception {
 			
@@ -558,7 +560,7 @@ public class VideoResource3_0 {
 		String status = VideoConstants.STATUS_READY;		
 		
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
-		esfdt.setPagination(new Pagination(assetIn.size(), 0));
+		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
 		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, null, null, status, null, null, null, null, null, null, null, null, null, assetIn, null, null, null, null, null, null));
 		
@@ -604,7 +606,7 @@ public class VideoResource3_0 {
 					restrictedVideoList.add(esVideo);
 			}
 		}
-		return new com.sorc.content.services.response.Result<Object>(totalCount, restrictedVideoList, httpRequestHandler.getCorrelationId());
+		return new Result<Object>(totalCount, restrictedVideoList, pageIndex, pageSize, httpRequestHandler.getCorrelationId());
 	}
 	
 	@SuppressWarnings("unchecked")
