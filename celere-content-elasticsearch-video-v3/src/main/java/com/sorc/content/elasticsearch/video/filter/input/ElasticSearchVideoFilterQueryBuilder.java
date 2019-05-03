@@ -159,6 +159,11 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new TermFilter("liveEvents.isHls", filter.getIsHls()));
 		}
 		
+		if(filter.getSliderTemplate() != null)
+		{
+			buildBoolQueryFilter(new TermFilter("slider.template.keyword", filter.getSliderTemplate()));
+		}
+		
 		if(filter.getText() != null)
 		{			
 			if(isExactMatchAnalyzer(filter.getText()))

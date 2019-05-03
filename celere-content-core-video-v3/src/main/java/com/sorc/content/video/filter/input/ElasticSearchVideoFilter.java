@@ -37,6 +37,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String startDate;
 	private String sortDate;
 	private Boolean isHls;
+	private String sliderTemplate;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -222,6 +223,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.isHls = isHls;
 	}
 
+	public String getSliderTemplate() {
+		return sliderTemplate;
+	}
+
+	public void setSliderTemplate(String sliderTemplate) {
+		this.sliderTemplate = sliderTemplate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -255,6 +264,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result + ((showId == null) ? 0 : showId.hashCode());
 		result = prime * result
 				+ ((showName == null) ? 0 : showName.hashCode());
+		result = prime * result
+				+ ((sliderTemplate == null) ? 0 : sliderTemplate.hashCode());
 		result = prime * result
 				+ ((sortDate == null) ? 0 : sortDate.hashCode());
 		result = prime * result
@@ -353,6 +364,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.showName != null)
 				return false;
 		} else if (!showName.equals(other.showName))
+			return false;
+		if (sliderTemplate == null) {
+			if (other.sliderTemplate != null)
+				return false;
+		} else if (!sliderTemplate.equals(other.sliderTemplate))
 			return false;
 		if (sortDate == null) {
 			if (other.sortDate != null)

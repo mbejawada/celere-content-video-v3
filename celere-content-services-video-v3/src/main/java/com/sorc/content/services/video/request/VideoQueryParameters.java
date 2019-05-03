@@ -31,5 +31,6 @@ public class VideoQueryParameters {
 	public static final String QUERY_PARAM_ASSET_IN = "assets_in";
 	public static final String QUERY_PARAM_MEDIA_TYPE = "media_type";
 	public static final String QUERY_PARAM_FORMAT_TYPE = "format_type";
+	public static final String QUERY_PARAM_SLIDER_TEMPLATE = "slider_template";
 	public static final String DEFAULT_PARAM_FORMAT_TYPE_HLS = "HLS";
 }

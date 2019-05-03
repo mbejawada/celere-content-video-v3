@@ -23,4 +23,5 @@ public class VideoDocumentationParameters {
 	public static final String DOC_PARAM_ASSET_IN = "Video id i.e. 0_7mw0p3ek,0_xgnojbr7etc.";
 	public static final String DOC_PARAM_MEDIA_TYPE = "Media type i.e. Episode, Live, Movie etc.";
 	public static final String DOC_PARAM_FORMAT_TYPE = "video format type, possible values HLS, ALL";
+	public static final String DOC_PARAM_SLIDER_TEMPLATE = "Slider template i.e. Episode, Marketing Centered, Marketing Left";
 }

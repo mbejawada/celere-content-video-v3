@@ -24,7 +24,8 @@ public class VideoParameterValidator {
 			Integer showCategoryId, Integer seasonCategoryId, String showName, String seasonName, 
 			Integer episodeNum, String showCategory, Integer seasonNo,
 			Set<String> tagsIn, Set<String> assetIn, String mediaType, Boolean isSlider,
-			Boolean isLiveEvent, String startDate, String sortDate, Boolean isHls) {
+			Boolean isLiveEvent, String startDate, String sortDate, Boolean isHls,
+			String sliderTemplate) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -97,6 +98,9 @@ public class VideoParameterValidator {
 		
 		if(isHls != null && isHls)
 			filter.setIsHls(true);
+		
+		if(sliderTemplate != null)
+			filter.setSliderTemplate(sliderTemplate);
 		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();
