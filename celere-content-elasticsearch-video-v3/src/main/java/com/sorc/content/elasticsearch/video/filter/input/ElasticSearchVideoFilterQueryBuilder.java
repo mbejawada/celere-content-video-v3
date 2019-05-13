@@ -146,12 +146,12 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		
 		if(filter.getStartDate() != null)
 		{
-			buildBoolQueryFilter(new DateRangeFilter("video.startDate", filter.getStartDate(), null));
+			buildBoolQueryFilter(new DateRangeFilter("video.startDate", filter.getStartDate(), null, false));
 		}
 		
 		if(filter.getSortDate() != null)
 		{
-			buildBoolQueryFilter(new DateRangeFilter("meta.sortDate", filter.getSortDate(), null));
+			buildBoolQueryFilter(new DateRangeFilter("meta.sortDate", filter.getSortDate(), null, false));
 		}
 		
 		if(filter.getIsHls() != null && filter.getIsHls())
@@ -162,6 +162,16 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		if(filter.getSliderTemplate() != null)
 		{
 			buildBoolQueryFilter(new TermFilter("slider.template.keyword", filter.getSliderTemplate()));
+		}
+		
+		if(filter.getEpisodeStartDateRange() != null)
+		{
+			buildBoolQueryFilter(new DateRangeFilter("video.startDate", filter.getEpisodeStartDateRange(), null, true));
+		}
+		
+		if(filter.getEpisodeEndDateRange() != null)
+		{
+			buildBoolQueryFilter(new DateRangeFilter("video.endDate", filter.getEpisodeEndDateRange(), null, true));
 		}
 		
 		if(filter.getText() != null)

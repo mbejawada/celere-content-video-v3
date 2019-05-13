@@ -25,7 +25,7 @@ public class VideoParameterValidator {
 			Integer episodeNum, String showCategory, Integer seasonNo,
 			Set<String> tagsIn, Set<String> assetIn, String mediaType, Boolean isSlider,
 			Boolean isLiveEvent, String startDate, String sortDate, Boolean isHls,
-			String sliderTemplate) {
+			String sliderTemplate, String episodeStartDateRange, String episodeEndDateRange) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -101,6 +101,12 @@ public class VideoParameterValidator {
 		
 		if(sliderTemplate != null)
 			filter.setSliderTemplate(sliderTemplate);
+		
+		if(episodeStartDateRange != null)
+			filter.setEpisodeStartDateRange(episodeStartDateRange);
+		
+		if(episodeEndDateRange != null)
+			filter.setEpisodeEndDateRange(episodeEndDateRange);
 		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();

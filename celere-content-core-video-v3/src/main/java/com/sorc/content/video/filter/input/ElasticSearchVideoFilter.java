@@ -38,6 +38,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String sortDate;
 	private Boolean isHls;
 	private String sliderTemplate;
+	private String episodeStartDateRange;
+	private String episodeEndDateRange;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -231,6 +233,22 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.sliderTemplate = sliderTemplate;
 	}
 
+	public String getEpisodeStartDateRange() {
+		return episodeStartDateRange;
+	}
+
+	public void setEpisodeStartDateRange(String episodeStartDateRange) {
+		this.episodeStartDateRange = episodeStartDateRange;
+	}
+
+	public String getEpisodeEndDateRange() {
+		return episodeEndDateRange;
+	}
+
+	public void setEpisodeEndDateRange(String episodeEndDateRange) {
+		this.episodeEndDateRange = episodeEndDateRange;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -238,8 +256,16 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result + ((assetIn == null) ? 0 : assetIn.hashCode());
 		result = prime * result
 				+ ((countryCode == null) ? 0 : countryCode.hashCode());
+		result = prime
+				* result
+				+ ((episodeEndDateRange == null) ? 0 : episodeEndDateRange
+						.hashCode());
 		result = prime * result
 				+ ((episodeNum == null) ? 0 : episodeNum.hashCode());
+		result = prime
+				* result
+				+ ((episodeStartDateRange == null) ? 0 : episodeStartDateRange
+						.hashCode());
 		result = prime * result + ((isHls == null) ? 0 : isHls.hashCode());
 		result = prime * result
 				+ ((isLiveEvent == null) ? 0 : isLiveEvent.hashCode());
@@ -300,10 +326,20 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				return false;
 		} else if (!countryCode.equals(other.countryCode))
 			return false;
+		if (episodeEndDateRange == null) {
+			if (other.episodeEndDateRange != null)
+				return false;
+		} else if (!episodeEndDateRange.equals(other.episodeEndDateRange))
+			return false;
 		if (episodeNum == null) {
 			if (other.episodeNum != null)
 				return false;
 		} else if (!episodeNum.equals(other.episodeNum))
+			return false;
+		if (episodeStartDateRange == null) {
+			if (other.episodeStartDateRange != null)
+				return false;
+		} else if (!episodeStartDateRange.equals(other.episodeStartDateRange))
 			return false;
 		if (isHls == null) {
 			if (other.isHls != null)
