@@ -64,7 +64,7 @@ public class VideoResource3_0 {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	private static final String INDEX = "mtod_video";
+	private static final String INDEX = "new_mtod_video";
 
 	@Autowired
 	private IElasticSearchDataAccess dao;
