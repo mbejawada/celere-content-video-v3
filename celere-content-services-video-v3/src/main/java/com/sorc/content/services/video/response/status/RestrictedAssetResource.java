@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response.Status.Family;
  */
 public class RestrictedAssetResource implements StatusType{
 	
-	public static final int CODE = 401;
+	public static final int CODE = 403;
 	public String vmsId;
 	private String description;
 	

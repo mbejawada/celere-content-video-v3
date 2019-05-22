@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response.Status.Family;
  */
 public class RestrictedResource implements StatusType{
 	
-	public static final int CODE = 401;
+	public static final int CODE = 403;
 	private String description;
 	
 	public RestrictedResource(String description){

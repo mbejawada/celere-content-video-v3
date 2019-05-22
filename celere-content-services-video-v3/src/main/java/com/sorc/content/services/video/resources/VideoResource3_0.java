@@ -45,7 +45,6 @@ import com.sorc.content.services.video.request.VideoParameterValidator;
 import com.sorc.content.services.video.request.VideoQueryParameters;
 import com.sorc.content.services.video.response.Result;
 import com.sorc.content.services.video.response.status.RestrictedAssetResource;
-import com.sorc.content.services.video.response.status.RestrictedResource;
 import com.sorc.content.video.dao.data.ElasticSearchVideo;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -64,7 +63,7 @@ public class VideoResource3_0 {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	private static final String INDEX = "new_mtod_video";
+	private static final String INDEX = "mtod_video";
 
 	@Autowired
 	private IElasticSearchDataAccess dao;
@@ -189,13 +188,13 @@ public class VideoResource3_0 {
 					{
 						if(!videoList.get(0).getAccessControl().getAllow())
 						{
-							if(videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
-								return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
+							if(videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))		
+								throw new ForBiddenException(videoList.get(0).getAccessControl().getMessage());													
 						}
 						else
 						{
-							if(!videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))
-								return new RestrictedResource(videoList.get(0).getAccessControl().getMessage());
+							if(!videoList.get(0).getAccessControl().getValues().contains(countryCode.toUpperCase()))															
+								throw new ForBiddenException(videoList.get(0).getAccessControl().getMessage());							
 						}		
 					}
 				}
@@ -691,7 +690,7 @@ public class VideoResource3_0 {
 			throw new ValidationException("website_ids and country_code are required fields");
 		
 		String status = VideoConstants.STATUS_READY;				
-		boolean isLiveEvent = true;
+		Boolean isLiveEvent = null; //logic change need to use mainCategory for live things
 		Boolean hlsVideo = null;
 		if(formatType != null && VideoQueryParameters.DEFAULT_PARAM_FORMAT_TYPE_HLS.equalsIgnoreCase(formatType))
 			hlsVideo = true;
@@ -699,7 +698,7 @@ public class VideoResource3_0 {
 		ElasticSearchFilterDataTransfer esfdt = new ElasticSearchFilterDataTransfer();
 		esfdt.setPagination(new Pagination(pageSize, (pageIndex-1)*pageSize));
 		esfdt.setIndex(INDEX);
-		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, null, null, null, null, null, null, null, null, null, isLiveEvent, null, null, hlsVideo, null, null, null));
+		esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, VideoConstants.CATEGORY_WATCH_LIVE, null, null, countryCode, null, status, null, null, null, null, null, null, null, null, null, null, null, null, isLiveEvent, null, null, hlsVideo, null, null, null));
 		
 		List<IElasticSearchSorting> sorting = new ArrayList<IElasticSearchSorting>();
 		if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.DEFAULT_SORTING_EPISODE_NUM))
