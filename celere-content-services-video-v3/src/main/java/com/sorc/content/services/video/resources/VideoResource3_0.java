@@ -35,6 +35,7 @@ import com.sorc.content.elasticsearch.core.dto.ElasticSearchFilterDataTransfer;
 import com.sorc.content.elasticsearch.core.sort.IElasticSearchSorting;
 import com.sorc.content.elasticsearch.video.sort.ElasticSearchVideoSorting;
 import com.sorc.content.services.documentation.ServicesCommonDocumentation;
+import com.sorc.content.services.exception.ForBiddenException;
 import com.sorc.content.services.request.IHttpRequestHandler;
 import com.sorc.content.services.request.QueryParameters;
 import com.sorc.content.services.request.QueryParametersPaginationSorting;
