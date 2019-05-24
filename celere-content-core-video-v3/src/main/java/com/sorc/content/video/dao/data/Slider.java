@@ -44,6 +44,8 @@ public class Slider implements Serializable {
 	private List<String> entitlementCheck  = new ArrayList<String>();
 	private String moreInfo;
 	private String campaign;
+	private String sliderThumbnailUrl;
+	private String sliderThumbnailVertUrl;
 
 	public Slider(){}
 
@@ -175,6 +177,22 @@ public class Slider implements Serializable {
 		this.campaign = campaign;
 	}
 
+	public String getSliderThumbnailUrl() {
+		return sliderThumbnailUrl;
+	}
+
+	public void setSliderThumbnailUrl(String sliderThumbnailUrl) {
+		this.sliderThumbnailUrl = sliderThumbnailUrl;
+	}
+
+	public String getSliderThumbnailVertUrl() {
+		return sliderThumbnailVertUrl;
+	}
+
+	public void setSliderThumbnailVertUrl(String sliderThumbnailVertUrl) {
+		this.sliderThumbnailVertUrl = sliderThumbnailVertUrl;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -202,6 +220,14 @@ public class Slider implements Serializable {
 				+ ((moreInfo == null) ? 0 : moreInfo.hashCode());
 		result = prime * result
 				+ ((platformCheck == null) ? 0 : platformCheck.hashCode());
+		result = prime
+				* result
+				+ ((sliderThumbnailUrl == null) ? 0 : sliderThumbnailUrl
+						.hashCode());
+		result = prime
+				* result
+				+ ((sliderThumbnailVertUrl == null) ? 0
+						: sliderThumbnailVertUrl.hashCode());
 		result = prime * result
 				+ ((subTitle == null) ? 0 : subTitle.hashCode());
 		result = prime * result
@@ -277,6 +303,16 @@ public class Slider implements Serializable {
 			if (other.platformCheck != null)
 				return false;
 		} else if (!platformCheck.equals(other.platformCheck))
+			return false;
+		if (sliderThumbnailUrl == null) {
+			if (other.sliderThumbnailUrl != null)
+				return false;
+		} else if (!sliderThumbnailUrl.equals(other.sliderThumbnailUrl))
+			return false;
+		if (sliderThumbnailVertUrl == null) {
+			if (other.sliderThumbnailVertUrl != null)
+				return false;
+		} else if (!sliderThumbnailVertUrl.equals(other.sliderThumbnailVertUrl))
 			return false;
 		if (subTitle == null) {
 			if (other.subTitle != null)
