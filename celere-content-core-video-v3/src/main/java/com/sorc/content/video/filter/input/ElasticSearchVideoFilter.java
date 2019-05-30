@@ -40,6 +40,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String sliderTemplate;
 	private String episodeStartDateRange;
 	private String episodeEndDateRange;
+	private Set<String> liveStatus;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -249,6 +250,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.episodeEndDateRange = episodeEndDateRange;
 	}
 
+	public Set<String> getLiveStatus() {
+		return liveStatus;
+	}
+
+	public void setLiveStatus(Set<String> liveStatus) {
+		this.liveStatus = liveStatus;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -271,6 +280,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				+ ((isLiveEvent == null) ? 0 : isLiveEvent.hashCode());
 		result = prime * result
 				+ ((isSlider == null) ? 0 : isSlider.hashCode());
+		result = prime * result
+				+ ((liveStatus == null) ? 0 : liveStatus.hashCode());
 		result = prime * result
 				+ ((mainCategory == null) ? 0 : mainCategory.hashCode());
 		result = prime
@@ -355,6 +366,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.isSlider != null)
 				return false;
 		} else if (!isSlider.equals(other.isSlider))
+			return false;
+		if (liveStatus == null) {
+			if (other.liveStatus != null)
+				return false;
+		} else if (!liveStatus.equals(other.liveStatus))
 			return false;
 		if (mainCategory == null) {
 			if (other.mainCategory != null)

@@ -135,6 +135,10 @@ public class VideoResource3_0 {
 		{
 			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SORT_DATE, sortingMode));
 		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
+		}
 		esfdt.setSorting(sorting);
 		
 		Map<String, Object> resultMap = dao.getDetailList(esfdt);
@@ -252,6 +256,10 @@ public class VideoResource3_0 {
 		{
 			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SORT_DATE, sortingMode));
 		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
+		}
 		esfdt.setSorting(sorting);
 		
 		List<ElasticSearchVideo> videoList = new ArrayList<ElasticSearchVideo>();
@@ -298,6 +306,10 @@ public class VideoResource3_0 {
 				else if(sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_DATE))
 				{
 					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, esVideo.getShow(), null, null, showCategory, null, null, null, mediaType, null, null, null, esVideo.getMeta().getSortDate(), null, null, null, null));
+				}
+				else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
+				{
+					sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
 				}
 				else
 					esfdt.setFilters(VideoParameterValidator.validateCustomParameters(websiteIds, null, null, null, countryCode, null, status, null, null, null, esVideo.getShow(), null, esVideo.getMeta().getEpisode(), showCategory, null, null, null, mediaType, null, null, null, null, null, null, null, null));
@@ -407,6 +419,10 @@ public class VideoResource3_0 {
 		{
 			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SORT_DATE, sortingMode));
 		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
+		}
 		esfdt.setSorting(sorting);
 		
 		Map<String, Object> resultMap = dao.getDetailList(esfdt);
@@ -496,6 +512,10 @@ public class VideoResource3_0 {
 		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_DATE))
 		{
 			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SORT_DATE, sortingMode));
+		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
 		}
 		esfdt.setSorting(sorting);
 		
@@ -654,6 +674,10 @@ public class VideoResource3_0 {
 		{
 			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SORT_DATE, sortingMode));
 		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
+		}
 		esfdt.setSorting(sorting);
 		
 		Map<String, Object> resultMap = dao.getDetailList(esfdt);
@@ -680,8 +704,8 @@ public class VideoResource3_0 {
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,				
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,			
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_FORMAT_TYPE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_PARAM_FORMAT_TYPE_HLS) @QueryParam(VideoQueryParameters.QUERY_PARAM_FORMAT_TYPE) String formatType,
-			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_START_DATE) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
-			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DESCENDING_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode,
+			@ApiParam(value = VideoDocumentationParameters.LIVE_VIDEO_SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_EVENT_START_DATE) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
+			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_SIZE) int pageSize)
 			throws JsonParseException, JsonMappingException, IOException,
@@ -715,6 +739,14 @@ public class VideoResource3_0 {
 		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_DATE))
 		{
 			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SORT_DATE, sortingMode));
+		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
+		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_EVENT_START_DATE))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_LIVE_EVENT_START_DATE, sortingMode));
 		}
 		esfdt.setSorting(sorting);
 		

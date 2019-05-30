@@ -3,14 +3,15 @@
  */
 package com.sorc.content.services.video.request;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
 import com.sorc.content.elasticsearch.video.filter.input.ElasticSearchVideoFilterQueryBuilder;
+import com.sorc.content.services.video.documentation.constants.VideoConstants;
 import com.sorc.content.video.filter.input.ElasticSearchVideoFilter;
 
 /**
@@ -32,7 +33,16 @@ public class VideoParameterValidator {
 			filter.setWebsiteIds(websiteIds);
 		
 		if(mainCategory != null)
+		{
 			filter.setMainCategory(mainCategory);
+			if(VideoConstants.CATEGORY_WATCH_LIVE.equalsIgnoreCase(filter.getMainCategory().trim()))
+			{
+				Set<String> liveStatus = new HashSet<String>();
+				liveStatus.add(VideoConstants.LIVE_ENVENT_STATUS_LIVE);
+				liveStatus.add(VideoConstants.LIVE_ENVENT_STATUS_UPCOMMMING);
+				filter.setLiveStatus(liveStatus);
+			}
+		}
 		
 		if(mainCategoryNotIn != null && !mainCategoryNotIn.isEmpty())
 			filter.setMainCategoryNotIn(mainCategoryNotIn);

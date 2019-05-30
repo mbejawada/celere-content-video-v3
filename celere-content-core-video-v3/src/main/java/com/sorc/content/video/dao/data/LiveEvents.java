@@ -28,7 +28,7 @@ public class LiveEvents implements Serializable {
 	private String vod;
 	private String cdn;
 	private String playerType;
-	private String catalogStateDate;
+	private String catalogStartDate;
 	private String catalogEndDate;
 	private String createPageDate;
 	private String endPageDate;
@@ -39,6 +39,7 @@ public class LiveEvents implements Serializable {
 	private String sportName;
 	private String sportingLeague;
 	private boolean isHls;
+	private String liveStatus;
 	
 	public String getVod() {
 		return vod;
@@ -58,11 +59,11 @@ public class LiveEvents implements Serializable {
 	public void setPlayerType(String playerType) {
 		this.playerType = playerType;
 	}
-	public String getCatalogStateDate() {
-		return catalogStateDate;
+	public String getCatalogStartDate() {
+		return catalogStartDate;
 	}
-	public void setCatalogStateDate(String catalogStateDate) {
-		this.catalogStateDate = catalogStateDate;
+	public void setCatalogStartDate(String catalogStartDate) {
+		this.catalogStartDate = catalogStartDate;
 	}
 	public String getCatalogEndDate() {
 		return catalogEndDate;
@@ -125,6 +126,12 @@ public class LiveEvents implements Serializable {
 	public void setIsHls(boolean isHls) {
 		this.isHls = isHls;
 	}
+	public String getLiveStatus() {
+		return liveStatus;
+	}
+	public void setLiveStatus(String liveStatus) {
+		this.liveStatus = liveStatus;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -133,7 +140,7 @@ public class LiveEvents implements Serializable {
 				+ ((catalogEndDate == null) ? 0 : catalogEndDate.hashCode());
 		result = prime
 				* result
-				+ ((catalogStateDate == null) ? 0 : catalogStateDate.hashCode());
+				+ ((catalogStartDate == null) ? 0 : catalogStartDate.hashCode());
 		result = prime * result + ((cdn == null) ? 0 : cdn.hashCode());
 		result = prime * result
 				+ ((cdnMobile == null) ? 0 : cdnMobile.hashCode());
@@ -148,6 +155,8 @@ public class LiveEvents implements Serializable {
 		result = prime * result
 				+ ((eventTimeTBD == null) ? 0 : eventTimeTBD.hashCode());
 		result = prime * result + (isHls ? 1231 : 1237);
+		result = prime * result
+				+ ((liveStatus == null) ? 0 : liveStatus.hashCode());
 		result = prime * result
 				+ ((playerType == null) ? 0 : playerType.hashCode());
 		result = prime * result
@@ -172,10 +181,10 @@ public class LiveEvents implements Serializable {
 				return false;
 		} else if (!catalogEndDate.equals(other.catalogEndDate))
 			return false;
-		if (catalogStateDate == null) {
-			if (other.catalogStateDate != null)
+		if (catalogStartDate == null) {
+			if (other.catalogStartDate != null)
 				return false;
-		} else if (!catalogStateDate.equals(other.catalogStateDate))
+		} else if (!catalogStartDate.equals(other.catalogStartDate))
 			return false;
 		if (cdn == null) {
 			if (other.cdn != null)
@@ -213,6 +222,11 @@ public class LiveEvents implements Serializable {
 		} else if (!eventTimeTBD.equals(other.eventTimeTBD))
 			return false;
 		if (isHls != other.isHls)
+			return false;
+		if (liveStatus == null) {
+			if (other.liveStatus != null)
+				return false;
+		} else if (!liveStatus.equals(other.liveStatus))
 			return false;
 		if (playerType == null) {
 			if (other.playerType != null)

@@ -31,6 +31,7 @@ public class VideoConstants {
 	public static final String SORT_SHOW = "show.keyword";
 	public static final String SORT_SEASON = "season.keyword";
 	public static final String SORT_UPDATED_AT = "updatedAt";
+	public static final String SORT_LIVE_EVENT_START_DATE = "liveEvents.eventStartDate";
 	
 	public static final String CALL_TYPE_APPLEUMC_CATALOG = "/appleUmc/catalog";
 	public static final String CALL_TYPE_APPLEUMC_AVAILABILITY = "/appleUmc/availability";	
@@ -43,4 +44,7 @@ public class VideoConstants {
 	public static final String SORT_SORT_DATE = "meta.sortDate";
 	public static final String SORT_VIEWS = "video.views";
 	public static final String COUNTRY_US = "US";
+	public static final String CALL_TYPE_SEARCH = "/search";
+	public static final String LIVE_ENVENT_STATUS_LIVE = "live";
+	public static final String LIVE_ENVENT_STATUS_UPCOMMMING = "upcoming";
 }

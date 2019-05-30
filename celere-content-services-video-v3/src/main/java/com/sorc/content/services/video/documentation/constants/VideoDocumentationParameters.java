@@ -18,7 +18,7 @@ public class VideoDocumentationParameters {
 	public static final String DOC_PARAM_SEASON_CATEGORY_ID = "Season category id belongs to video i.e. 42026062";
 	public static final String DOC_PARAM_SHOW_CATEGORY = "Show Category i.e. SHOW";
 	public static final String DOC_PARAM_SEASON_NO = "Season Number i.e. 1 OR 2 OR 2017 etc.";
-	public static final String SORT_BY = "Optional, possible values are : START_DATE, EPISODE_NUM, VIEWS, SORT_DATE";
+	public static final String SORT_BY = "Optional, possible values are : START_DATE, EPISODE_NUM, VIEWS, SORT_DATE, SHOW_NAME";
 	public static final String DOC_PARAM_TAGS_IN = "Video's tag i.e. supercar, hypercar, emerged etc.";
 	public static final String DOC_PARAM_ASSET_IN = "Video id i.e. 0_7mw0p3ek,0_xgnojbr7etc.";
 	public static final String DOC_PARAM_MEDIA_TYPE = "Media type i.e. Episode, Live, Movie etc.";
@@ -26,4 +26,5 @@ public class VideoDocumentationParameters {
 	public static final String DOC_PARAM_SLIDER_TEMPLATE = "Slider template i.e. Episode, Marketing Centered, Marketing Left";
 	public static final String DOC_PARAM_START_DATE = "Episode startDate i.e. 2016-04-21";
 	public static final String DOC_PARAM_END_DATE = "Episode endDate i.e. 2019-04-21";
+	public static final String LIVE_VIDEO_SORT_BY = "Optional, possible values are : EVENT_START_DATE";
 }

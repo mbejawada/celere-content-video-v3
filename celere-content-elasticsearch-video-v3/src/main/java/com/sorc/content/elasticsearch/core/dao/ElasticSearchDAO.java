@@ -196,8 +196,20 @@ public abstract class ElasticSearchDAO<T extends IDataTransfer<IDType>, IDType>
 		// build the search
 		if (index != null) {
 			JSONObject source = new JSONObject();	
-			source.put(ElasticSearchVideoFieldConstants.FROM, 0);
-			source.put(ElasticSearchVideoFieldConstants.SIZE, 0);
+			
+			if(callType != null && ElasticSearchVideoFieldConstants.CALL_TYPE_SEARCH.equalsIgnoreCase(callType))
+			{
+				source.put(ElasticSearchVideoFieldConstants.FROM, pagination.getOffset());
+				source.put(ElasticSearchVideoFieldConstants.SIZE, pagination.getSize());
+				if(filters != null) {
+					source.put(ElasticSearchVideoFieldConstants.QUERY, filters.toString());
+				}
+			}
+			else
+			{
+				source.put(ElasticSearchVideoFieldConstants.FROM, 0);
+				source.put(ElasticSearchVideoFieldConstants.SIZE, 0);
+			}
 			
 			source.put(ElasticSearchVideoFieldConstants.AGGREGATIONS, 
 					setAggregateDetailFacetFilterBuilder(facet, filters, facetFields, additionalFacetColumns, sorting, aggDetailSorting, pagination, callType));
@@ -227,7 +239,7 @@ public abstract class ElasticSearchDAO<T extends IDataTransfer<IDType>, IDType>
 			} while (retry.shouldRetry());			
 		}
 		return searchResult;
-	}
+	}	
 	
 	public List<Object> getElasticSearchAppleUmcFeedDetailFacetResult(Pagination pagination, String index, String facet,
 			BoolQueryBuilder filters, List<String> facetFields, List<String> additionalFacetColumns, List<IElasticSearchSorting> sorting, List<IElasticSearchSorting> aggDetailSorting, String callType) throws Exception

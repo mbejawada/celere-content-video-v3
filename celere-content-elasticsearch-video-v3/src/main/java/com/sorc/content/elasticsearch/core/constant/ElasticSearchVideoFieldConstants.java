@@ -27,8 +27,10 @@ public class ElasticSearchVideoFieldConstants {
 	public static final String INCLUDES = "includes";
 	public static final String SOURCE = "_source";
 	public static final String TOP_HITS = "top_hits";
+	public static final String CATEGORY_TYPE = "Show";
 	
 	public static final String CALL_TYPE_APPLEUMC_CATALOG = "/appleUmc/catalog";	
-	public static final String CALL_TYPE_APPLEUMC_AVAILABILITY = "/appleUmc/availability";	
+	public static final String CALL_TYPE_APPLEUMC_AVAILABILITY = "/appleUmc/availability";
+	public static final String CALL_TYPE_SEARCH = "/search";
 	public static final String SEARCHABLE_FIELDS = "searchable_fields";
 }
