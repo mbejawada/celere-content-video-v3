@@ -27,4 +27,5 @@ public class VideoDocumentationParameters {
 	public static final String DOC_PARAM_START_DATE = "Episode startDate i.e. 2016-04-21";
 	public static final String DOC_PARAM_END_DATE = "Episode endDate i.e. 2019-04-21";
 	public static final String LIVE_VIDEO_SORT_BY = "Optional, possible values are : EVENT_START_DATE";
+	public static final String LIVE_EVENT_STATUS = "Optional, possible values are : live, upcoming and expired";
 }

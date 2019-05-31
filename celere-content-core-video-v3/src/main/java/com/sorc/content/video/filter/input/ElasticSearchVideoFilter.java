@@ -40,7 +40,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String sliderTemplate;
 	private String episodeStartDateRange;
 	private String episodeEndDateRange;
-	private Set<String> liveStatus;
+	private Set<String> liveStatusIn;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -250,12 +250,12 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.episodeEndDateRange = episodeEndDateRange;
 	}
 
-	public Set<String> getLiveStatus() {
-		return liveStatus;
+	public Set<String> getLiveStatusIn() {
+		return liveStatusIn;
 	}
 
-	public void setLiveStatus(Set<String> liveStatus) {
-		this.liveStatus = liveStatus;
+	public void setLiveStatusIn(Set<String> liveStatusIn) {
+		this.liveStatusIn = liveStatusIn;
 	}
 
 	@Override
@@ -281,7 +281,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		result = prime * result
 				+ ((isSlider == null) ? 0 : isSlider.hashCode());
 		result = prime * result
-				+ ((liveStatus == null) ? 0 : liveStatus.hashCode());
+				+ ((liveStatusIn == null) ? 0 : liveStatusIn.hashCode());
 		result = prime * result
 				+ ((mainCategory == null) ? 0 : mainCategory.hashCode());
 		result = prime
@@ -367,10 +367,10 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 				return false;
 		} else if (!isSlider.equals(other.isSlider))
 			return false;
-		if (liveStatus == null) {
-			if (other.liveStatus != null)
+		if (liveStatusIn == null) {
+			if (other.liveStatusIn != null)
 				return false;
-		} else if (!liveStatus.equals(other.liveStatus))
+		} else if (!liveStatusIn.equals(other.liveStatusIn))
 			return false;
 		if (mainCategory == null) {
 			if (other.mainCategory != null)

@@ -75,8 +75,8 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new TermsFilter("id.keyword", filter.getAssetIn()));
 		}
 		
-		if(filter.getLiveStatus() != null) {
-			buildBoolQueryFilter(new TermsFilter("liveEvents.liveStatus.keyword", filter.getLiveStatus()));
+		if(filter.getLiveStatusIn() != null) {
+			buildBoolQueryFilter(new TermsFilter("liveEvents.liveStatus.keyword", filter.getLiveStatusIn()));
 		}
 		
 		if(filter.getCountryCode() != null) {		

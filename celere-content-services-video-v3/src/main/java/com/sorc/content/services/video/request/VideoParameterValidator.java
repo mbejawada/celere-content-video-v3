@@ -26,7 +26,7 @@ public class VideoParameterValidator {
 			Integer episodeNum, String showCategory, Integer seasonNo,
 			Set<String> tagsIn, Set<String> assetIn, String mediaType, Boolean isSlider,
 			Boolean isLiveEvent, String startDate, String sortDate, Boolean isHls,
-			String sliderTemplate, String episodeStartDateRange, String episodeEndDateRange) {
+			String sliderTemplate, String episodeStartDateRange, String episodeEndDateRange, Set<String> liveStatusIn) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -34,15 +34,11 @@ public class VideoParameterValidator {
 		
 		if(mainCategory != null)
 		{
-			filter.setMainCategory(mainCategory);
-			if(VideoConstants.CATEGORY_WATCH_LIVE.equalsIgnoreCase(filter.getMainCategory().trim()))
-			{
-				Set<String> liveStatus = new HashSet<String>();
-				liveStatus.add(VideoConstants.LIVE_ENVENT_STATUS_LIVE);
-				liveStatus.add(VideoConstants.LIVE_ENVENT_STATUS_UPCOMMMING);
-				filter.setLiveStatus(liveStatus);
-			}
+			filter.setMainCategory(mainCategory);			
 		}
+		
+		if(liveStatusIn != null && !liveStatusIn.isEmpty())
+			filter.setLiveStatusIn(liveStatusIn);		
 		
 		if(mainCategoryNotIn != null && !mainCategoryNotIn.isEmpty())
 			filter.setMainCategoryNotIn(mainCategoryNotIn);
