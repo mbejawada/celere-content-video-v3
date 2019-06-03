@@ -41,6 +41,7 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 	private String episodeStartDateRange;
 	private String episodeEndDateRange;
 	private Set<String> liveStatusIn;
+	private String playlistId;
 	
 	public Set<Integer> getWebsiteIds() {
 		return websiteIds;
@@ -258,6 +259,14 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 		this.liveStatusIn = liveStatusIn;
 	}
 
+	public String getPlaylistId() {
+		return playlistId;
+	}
+
+	public void setPlaylistId(String playlistId) {
+		this.playlistId = playlistId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -290,6 +299,8 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 						.hashCode());
 		result = prime * result
 				+ ((mediaType == null) ? 0 : mediaType.hashCode());
+		result = prime * result
+				+ ((playlistId == null) ? 0 : playlistId.hashCode());
 		result = prime * result
 				+ ((seasonId == null) ? 0 : seasonId.hashCode());
 		result = prime * result
@@ -386,6 +397,11 @@ public class ElasticSearchVideoFilter implements IFilter<ElasticSearchVideo, Str
 			if (other.mediaType != null)
 				return false;
 		} else if (!mediaType.equals(other.mediaType))
+			return false;
+		if (playlistId == null) {
+			if (other.playlistId != null)
+				return false;
+		} else if (!playlistId.equals(other.playlistId))
 			return false;
 		if (seasonId == null) {
 			if (other.seasonId != null)

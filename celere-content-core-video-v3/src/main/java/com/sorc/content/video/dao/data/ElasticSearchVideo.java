@@ -54,6 +54,7 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 	private String seasonEpisodeShort;
 	private Boolean isSlider;
 	private Slider slider;
+	private List<String> playlistIds = new ArrayList<String>();
 	
 	@Override
 	public String getId() {
@@ -227,6 +228,14 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		this.slider = slider;
 	}
 
+	public List<String> getPlaylistIds() {
+		return playlistIds;
+	}
+
+	public void setPlaylistIds(List<String> playlistIds) {
+		this.playlistIds = playlistIds;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -259,6 +268,8 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 				+ ((metaMediaBasicFields == null) ? 0 : metaMediaBasicFields
 						.hashCode());
 		result = prime * result + ((person == null) ? 0 : person.hashCode());
+		result = prime * result
+				+ ((playlistIds == null) ? 0 : playlistIds.hashCode());
 		result = prime * result + ((season == null) ? 0 : season.hashCode());
 		result = prime
 				* result
@@ -364,6 +375,11 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 			if (other.person != null)
 				return false;
 		} else if (!person.equals(other.person))
+			return false;
+		if (playlistIds == null) {
+			if (other.playlistIds != null)
+				return false;
+		} else if (!playlistIds.equals(other.playlistIds))
 			return false;
 		if (season == null) {
 			if (other.season != null)

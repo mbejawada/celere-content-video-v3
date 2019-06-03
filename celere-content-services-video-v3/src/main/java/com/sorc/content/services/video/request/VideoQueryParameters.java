@@ -22,6 +22,7 @@ public class VideoQueryParameters {
 	public static final String QUERY_PARAM_SEASON_CATEGORY_ID = "season_category_id";
 	public static final String QUERY_PARAM_SHOW_CATEGORY = "showCategory";
 	public static final String QUERY_PARAM_SEASON_NUM = "season_num";
+	public static final String QUERY_PARAM_PLAYLIST_ID = "playlist_id";
 	public static final String DEFAULT_SORTING_EPISODE_NUM = "EPISODE_NUM";
 	public static final String DEFAULT_SORTING_START_DATE = "START_DATE";
 	public static final String DEFAULT_SORTING_EVENT_START_DATE = "EVENT_START_DATE";

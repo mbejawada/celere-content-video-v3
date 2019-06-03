@@ -59,6 +59,10 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new TermFilter("mainCategory.keyword", filter.getMainCategory()));
 		}
 		
+		if(filter.getPlaylistId()!= null) {
+			buildBoolQueryFilter(new TermFilter("playlistIds.keyword", filter.getPlaylistId()));
+		}
+		
 		if (filter.getMainCategoryNotIn() != null) {
 			buildBoolQueryFilter(new TermsFilter("mainCategory.keyword", filter.getMainCategoryNotIn()), true);
 		}
