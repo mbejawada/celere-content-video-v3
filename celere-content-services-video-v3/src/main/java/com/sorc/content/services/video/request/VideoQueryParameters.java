@@ -41,4 +41,6 @@ public class VideoQueryParameters {
 	public static final String DEFAULT_PARAM_FORMAT_TYPE_HLS = "HLS";
 	public static final String QUERY_PARAM_START_DATE = "start_date";
 	public static final String QUERY_PARAM_END_DATE = "end_date";
+	public static final String QUERY_PARAM_IS_LIVE = "is_live";
+	public static final String DEFAULT_QUERY_PARAM_IS_LIVE = "false";
 }
