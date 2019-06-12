@@ -4,7 +4,9 @@
 package com.sorc.content.elasticsearch.video.filter.input;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
@@ -184,7 +186,13 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 		
 		if(filter.getIsFree() != null)
 		{
-			buildBoolQueryFilter(new TermFilter("meta.isFree", filter.getIsFree()));
+			Set<String> entilementIn = new HashSet<String>();
+			entilementIn.add("Free");
+			entilementIn.add("free");
+			if(filter.getIsFree())			
+				buildBoolQueryFilter(new TermsFilter("meta.entitlement", entilementIn));			
+			else
+				buildBoolQueryFilter(new TermsFilter("meta.entitlement", entilementIn), true);
 		}
 		
 		if(filter.getText() != null)
