@@ -27,7 +27,7 @@ public class VideoParameterValidator {
 			Set<String> tagsIn, Set<String> assetIn, String mediaType, Boolean isSlider,
 			Boolean isLiveEvent, String startDate, String sortDate, Boolean isHls,
 			String sliderTemplate, String episodeStartDateRange, String episodeEndDateRange, Set<String> liveStatusIn,
-			String playlistId) {
+			String playlistId, Boolean isFree) {
 		ElasticSearchVideoFilter filter = new ElasticSearchVideoFilter();
 		
 		if(websiteIds != null && !websiteIds.isEmpty())
@@ -117,6 +117,9 @@ public class VideoParameterValidator {
 		
 		if(playlistId != null)
 			filter.setPlaylistId(playlistId);
+		
+		if(isFree != null)
+			filter.setIsFree(isFree);
 		
 		ElasticSearchVideoFilterQueryBuilder qb = new ElasticSearchVideoFilterQueryBuilder(filter);
 		return qb.buildQuery();

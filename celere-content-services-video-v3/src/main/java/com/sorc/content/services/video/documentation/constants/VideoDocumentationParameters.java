@@ -30,4 +30,5 @@ public class VideoDocumentationParameters {
 	public static final String LIVE_EVENT_STATUS = "Optional, possible values are : live, upcoming and expired";
 	public static final String DOC_PARAM_PLAYLIST_ID = "Playlist Id ie. 0_6cbek30m";
 	public static final String DOC_PARAM_IS_LIVE = "IsVideo Live? i.e. true or false, default false";
+	public static final String DOC_PARAM_IS_FREE = "Optional, possible values are : true or false";
 }

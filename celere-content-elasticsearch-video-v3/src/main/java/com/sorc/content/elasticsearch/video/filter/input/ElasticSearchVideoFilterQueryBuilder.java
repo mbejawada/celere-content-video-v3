@@ -182,6 +182,11 @@ public class ElasticSearchVideoFilterQueryBuilder implements IElasticSearchQuery
 			buildBoolQueryFilter(new DateRangeFilter("video.endDate", filter.getEpisodeEndDateRange(), null, true));
 		}
 		
+		if(filter.getIsFree() != null)
+		{
+			buildBoolQueryFilter(new TermFilter("meta.isFree", filter.getIsFree()));
+		}
+		
 		if(filter.getText() != null)
 		{			
 			if(isExactMatchAnalyzer(filter.getText()))

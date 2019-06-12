@@ -43,4 +43,5 @@ public class VideoQueryParameters {
 	public static final String QUERY_PARAM_END_DATE = "end_date";
 	public static final String QUERY_PARAM_IS_LIVE = "is_live";
 	public static final String DEFAULT_QUERY_PARAM_IS_LIVE = "false";
+	public static final String QUERY_PARAM_IS_FREE = "is_free";
 }
