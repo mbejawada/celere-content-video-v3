@@ -44,4 +44,6 @@ public class VideoQueryParameters {
 	public static final String QUERY_PARAM_IS_LIVE = "is_live";
 	public static final String DEFAULT_QUERY_PARAM_IS_LIVE = "false";
 	public static final String QUERY_PARAM_IS_FREE = "is_free";
+	public static final String QUERY_PARAM_IS_SLIDER = "is_slider";
+	public static final String DEFAULT_QUERY_PARAM_IS_SLIDER = "false";
 }
