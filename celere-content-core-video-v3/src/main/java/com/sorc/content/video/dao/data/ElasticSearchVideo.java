@@ -53,8 +53,8 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 	private String showGenry;
 	private String seasonEpisodeShort;
 	private Boolean isSlider;
-	private Slider slider;
-	private List<String> playlistIds = new ArrayList<String>();
+	private Slider slider;	
+	private List<Playlist> playlists = new ArrayList<Playlist>();
 	
 	@Override
 	public String getId() {
@@ -228,12 +228,12 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		this.slider = slider;
 	}
 
-	public List<String> getPlaylistIds() {
-		return playlistIds;
+	public List<Playlist> getPlaylists() {
+		return playlists;
 	}
 
-	public void setPlaylistIds(List<String> playlistIds) {
-		this.playlistIds = playlistIds;
+	public void setPlaylists(List<Playlist> playlists) {
+		this.playlists = playlists;
 	}
 
 	@Override
@@ -269,7 +269,7 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 						.hashCode());
 		result = prime * result + ((person == null) ? 0 : person.hashCode());
 		result = prime * result
-				+ ((playlistIds == null) ? 0 : playlistIds.hashCode());
+				+ ((playlists == null) ? 0 : playlists.hashCode());
 		result = prime * result + ((season == null) ? 0 : season.hashCode());
 		result = prime
 				* result
@@ -376,10 +376,10 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 				return false;
 		} else if (!person.equals(other.person))
 			return false;
-		if (playlistIds == null) {
-			if (other.playlistIds != null)
+		if (playlists == null) {
+			if (other.playlists != null)
 				return false;
-		} else if (!playlistIds.equals(other.playlistIds))
+		} else if (!playlists.equals(other.playlists))
 			return false;
 		if (season == null) {
 			if (other.season != null)

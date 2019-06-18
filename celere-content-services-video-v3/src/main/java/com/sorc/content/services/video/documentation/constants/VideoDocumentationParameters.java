@@ -32,4 +32,5 @@ public class VideoDocumentationParameters {
 	public static final String DOC_PARAM_IS_LIVE = "Is Video Live? i.e. true or false, default false";
 	public static final String DOC_PARAM_IS_FREE = "Optional, possible values are : true or false";
 	public static final String DOC_PARAM_IS_SLIDER = "Is Video Slider? i.e. true or false, default false";
+	public static final String PLAYLIST_SORT_BY = "Optional, possible values are : START_DATE, EPISODE_NUM, VIEWS, SORT_DATE, SHOW_NAME, PLAYLISTORDER";
 }

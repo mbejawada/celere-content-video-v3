@@ -796,8 +796,8 @@ public class VideoResource3_0 {
 			@ApiParam(value = ServicesCommonDocumentation.WEBSITEID, required = true) @NotEmpty(QueryParameters.WEBSITE_IDS) @QueryParam(QueryParameters.WEBSITE_IDS) final Set<Integer> websiteIds,	
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PLAYLIST_ID, required = true) @QueryParam(VideoQueryParameters.QUERY_PARAM_PLAYLIST_ID) String playlistId,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_COUNTRY_CODE, required = false) @QueryParam(VideoQueryParameters.QUERY_PARAM_COUNTRY_CODE) String countryCode,						
-			@ApiParam(value = VideoDocumentationParameters.SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_START_DATE) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
-			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DESCENDING_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode,
+			@ApiParam(value = VideoDocumentationParameters.PLAYLIST_SORT_BY, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_SORTING_PLAYLISTORDER) @QueryParam(QueryParametersPaginationSorting.QUERY_PARAM_SORT_BY) String sortBy,
+			@ApiParam(value = ServicesCommonDocumentation.SORTING_MODE, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_SORTING_MODE) @QueryParam(QueryParametersPaginationSorting.QUERY_SORTING_MODE) SortingMode sortingMode,
 			@ApiParam(value = VideoDocumentationParameters.DOC_PARAM_PAGE, required = false) @DefaultValue(VideoQueryParameters.DEFAULT_QUERY_PARAM_PAGE) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_INDEX) int pageIndex,			
 			@ApiParam(value = ServicesCommonDocumentation.PAGINATION, required = false) @DefaultValue(QueryParametersPaginationSorting.DEFAULT_PAGINATION) @QueryParam(VideoQueryParameters.QUERY_PARAM_PAGE_SIZE) int pageSize)
 			throws JsonParseException, JsonMappingException, IOException,
@@ -835,6 +835,10 @@ public class VideoResource3_0 {
 		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_SHOW_NAME))
 		{
 			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_SHOW, sortingMode));
+		}
+		else if(sortBy != null && sortBy.equalsIgnoreCase(VideoQueryParameters.SORTING_SORT_PLAYLISTORDER))
+		{
+			sorting.add(new ElasticSearchVideoSorting(VideoConstants.SORT_PLAYLIST_ORDER, sortingMode));
 		}
 		esfdt.setSorting(sorting);
 		
