@@ -1,0 +1,30 @@
+<configuration>
+  <!-- TOKENS are:
+LOG_ABSOLUTE_PATH_RS
+APP_NAME_RS
+MAX_HISTORY_RS
+LOG_LEVEL_RS
+  -->
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/home/java_app/applications/app-soa/ops/logs/log-articles.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- daily rollover -->
+      <fileNamePattern>/home/java_app/applications/app-soa/ops/logs/log-articles.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+      <!-- keep  days' worth of history -->
+      <maxHistory>1</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z',GMT} - [%thread] - %-5level - %logger{55} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+        <syslogHost>localhost</syslogHost>
+        <facility>USER</facility>
+        <suffixPattern>{yyyy-MM-dd'T'HH:mm:ss.SSS'Z',GMT} - [%thread] - %-5level - %logger{55} - %msg%</suffixPattern>
+	<oneLineStackTrace>true</oneLineStackTrace>
+  </appender>
+  <root level="DEBUG">
+    <appender-ref ref="FILE" />
+    <appender-ref ref="SYSLOG"/>
+  </root>
+</configuration>

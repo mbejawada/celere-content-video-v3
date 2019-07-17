@@ -1312,9 +1312,9 @@ SwaggerAuthorizations.prototype.getUrlWithSignature = function(obj, apiKey, secr
   // The signature input will be in the following format: "GET\nlocalhost:8080\n/videoapi/3.0\napi_key=T5AZ7KETPG&offset=0&size=20&website_ids=3002"
   var urlToSign = obj.method + "\n" + hostPort + "\n" + urlPath + "\n" + urlQuery;
   var signature = CryptoJS.HmacSHA1(urlToSign, secretKey).toString(CryptoJS.enc.Base64);
-  var encodedSignature = encodeURIComponent(signature);
+  //var encodedSignature = encodeURIComponent(signature);
 
-  urlWithSignature = urlObject.protocol + "//" + hostPort + urlPath + "?" + urlQuery + "&signature=" + encodedSignature;
+  urlWithSignature = urlObject.protocol + "//" + hostPort + urlPath + "?" + urlQuery + "&signature=" + signature;
   return urlWithSignature;
 }
 

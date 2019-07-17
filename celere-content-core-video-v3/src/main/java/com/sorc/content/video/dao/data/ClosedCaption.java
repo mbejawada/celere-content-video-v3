@@ -40,6 +40,7 @@ public class ClosedCaption implements Serializable {
 	private Integer size;
 	private String tags;
 	private String fileExt;
+	private String captionUrl;
 
 	public String getLanguage() {
 		return language;
@@ -114,10 +115,18 @@ public class ClosedCaption implements Serializable {
 		this.fileExt = fileExt;
 	}
 	
+	public String getCaptionUrl() {
+		return captionUrl;
+	}
+	public void setCaptionUrl(String captionUrl) {
+		this.captionUrl = captionUrl;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((captionUrl == null) ? 0 : captionUrl.hashCode());
 		result = prime * result
 				+ ((createdAt == null) ? 0 : createdAt.hashCode());
 		result = prime * result
@@ -148,6 +157,11 @@ public class ClosedCaption implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ClosedCaption other = (ClosedCaption) obj;
+		if (captionUrl == null) {
+			if (other.captionUrl != null)
+				return false;
+		} else if (!captionUrl.equals(other.captionUrl))
+			return false;
 		if (createdAt == null) {
 			if (other.createdAt != null)
 				return false;

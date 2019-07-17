@@ -46,10 +46,18 @@ public class CustomFilterBuilder {
 		} else if(filter instanceof ExistsFilter) {
 			return QueryBuilders.existsQuery(((ExistsFilter) filter).getField());
 		} else if (filter instanceof DateRangeFilter) {
-			return QueryBuilders
+			if(!((DateRangeFilter) filter).isIncludeBoundry())
+				return QueryBuilders
 					.rangeQuery(((DateRangeFilter) filter).getField())
-					.gte(((DateRangeFilter) filter).getFrom())
-					.lte(((DateRangeFilter) filter).getTo());
+					.gt(((DateRangeFilter) filter).getFrom())
+					.lt(((DateRangeFilter) filter).getTo());
+			else
+				return QueryBuilders
+						.rangeQuery(((DateRangeFilter) filter).getField())
+						.gte(((DateRangeFilter) filter).getFrom())
+						.lte(((DateRangeFilter) filter).getTo());
+		} else if(filter instanceof NumericRangeFilter) {
+			return QueryBuilders.rangeQuery(((NumericRangeFilter) filter).getField()).gt(((NumericRangeFilter) filter).getFrom());
 		}
 		else {
 			return null;

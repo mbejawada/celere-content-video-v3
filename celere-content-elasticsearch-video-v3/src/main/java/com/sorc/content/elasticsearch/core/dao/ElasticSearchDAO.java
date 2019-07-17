@@ -10,10 +10,7 @@ import io.searchbox.core.SearchResult;
 import io.searchbox.core.search.sort.Sort;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,6 +37,7 @@ import com.sorc.content.core.pagination.Pagination;
 import com.sorc.content.core.sort.SortingMode;
 import com.sorc.content.elasticsearch.core.constant.ElasticSearchVideoFieldConstants;
 import com.sorc.content.elasticsearch.core.sort.IElasticSearchSorting;
+import com.sorc.content.elasticsearch.core.util.AppleUmcAvailabilityResultAssembler;
 import com.sorc.content.elasticsearch.core.util.ElasticSearchVideoResultAssembler;
 import com.sorc.content.mongodb.core.dao.DBGlobalConfig;
 import com.sorc.content.mongodb.core.dao.RetryStrategy;
@@ -198,8 +196,20 @@ public abstract class ElasticSearchDAO<T extends IDataTransfer<IDType>, IDType>
 		// build the search
 		if (index != null) {
 			JSONObject source = new JSONObject();	
-			source.put(ElasticSearchVideoFieldConstants.FROM, 0);
-			source.put(ElasticSearchVideoFieldConstants.SIZE, 0);
+			
+			if(callType != null && ElasticSearchVideoFieldConstants.CALL_TYPE_SEARCH.equalsIgnoreCase(callType))
+			{
+				source.put(ElasticSearchVideoFieldConstants.FROM, pagination.getOffset());
+				source.put(ElasticSearchVideoFieldConstants.SIZE, pagination.getSize());
+				if(filters != null) {
+					source.put(ElasticSearchVideoFieldConstants.QUERY, filters.toString());
+				}
+			}
+			else
+			{
+				source.put(ElasticSearchVideoFieldConstants.FROM, 0);
+				source.put(ElasticSearchVideoFieldConstants.SIZE, 0);
+			}
 			
 			source.put(ElasticSearchVideoFieldConstants.AGGREGATIONS, 
 					setAggregateDetailFacetFilterBuilder(facet, filters, facetFields, additionalFacetColumns, sorting, aggDetailSorting, pagination, callType));
@@ -212,11 +222,7 @@ public abstract class ElasticSearchDAO<T extends IDataTransfer<IDType>, IDType>
 			// execute the search			
 			do {
 				try {
-					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-					System.out.println("querying..."+dateFormat.format(new Date()));
-					System.out.println(source.toString());
 					searchResult  = jestClient.execute(search);					
-					System.out.println("finished query..."+dateFormat.format(new Date()));
 					break;
 				} catch (NoNodeAvailableException e) {
 					retry.errorOccured(e);
@@ -233,13 +239,20 @@ public abstract class ElasticSearchDAO<T extends IDataTransfer<IDType>, IDType>
 			} while (retry.shouldRetry());			
 		}
 		return searchResult;
-	}
+	}	
 	
-	public List<Object> getElasticSearchAppleumvFeedDetailFacetResult(Pagination pagination, String index, String facet,
+	public List<Object> getElasticSearchAppleUmcFeedDetailFacetResult(Pagination pagination, String index, String facet,
 			BoolQueryBuilder filters, List<String> facetFields, List<String> additionalFacetColumns, List<IElasticSearchSorting> sorting, List<IElasticSearchSorting> aggDetailSorting, String callType) throws Exception
 	{
 		SearchResult searchResult = searchDetailFacet(pagination, index, facet, filters, facetFields, additionalFacetColumns, sorting, aggDetailSorting, callType);		
-		return ElasticSearchVideoResultAssembler.getElasticSearchAppleumvFeedDetailFacetResult(facet, additionalFacetColumns.get(0), filters, searchResult);
+		return ElasticSearchVideoResultAssembler.getElasticSearchAppleUmcFeedDetailFacetResult(facet, additionalFacetColumns.get(0), filters, searchResult);
+	}
+	
+	public List<Object> getElasticSearchAppleUmcAvailabilityFeedDetailFacetResult(Pagination pagination, String index, String facet,
+			BoolQueryBuilder filters, List<String> facetFields, List<String> additionalFacetColumns, List<IElasticSearchSorting> sorting, List<IElasticSearchSorting> aggDetailSorting, String callType) throws Exception
+	{
+		SearchResult searchResult = searchDetailFacet(pagination, index, facet, filters, facetFields, additionalFacetColumns, sorting, aggDetailSorting, callType);		
+		return AppleUmcAvailabilityResultAssembler.getElasticSearchAppleUmcAvailabilityFeedDetailFacetResult(facet, additionalFacetColumns.get(0), filters, searchResult);
 	}
 		
 	private JSONObject setAggregateBuilder(String facet,  List<IElasticSearchSorting> sorting ) {

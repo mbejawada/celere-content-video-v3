@@ -49,6 +49,12 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 	private String show;
 	private String season;
 	private String mainCategory;
+	private String showParentalRating;
+	private String showGenry;
+	private String seasonEpisodeShort;
+	private Boolean isSlider;
+	private Slider slider;	
+	private List<Playlist> playlists = new ArrayList<Playlist>();
 	
 	@Override
 	public String getId() {
@@ -182,6 +188,54 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		this.mainCategory = mainCategory;
 	}
 
+	public String getShowParentalRating() {
+		return showParentalRating;
+	}
+
+	public void setShowParentalRating(String showParentalRating) {
+		this.showParentalRating = showParentalRating;
+	}
+
+	public String getShowGenry() {
+		return showGenry;
+	}
+
+	public void setShowGenry(String showGenry) {
+		this.showGenry = showGenry;
+	}
+
+	public String getSeasonEpisodeShort() {
+		return seasonEpisodeShort;
+	}
+
+	public void setSeasonEpisodeShort(String seasonEpisodeShort) {
+		this.seasonEpisodeShort = seasonEpisodeShort;
+	}
+
+	public Boolean getIsSlider() {
+		return isSlider;
+	}
+
+	public void setIsSlider(Boolean isSlider) {
+		this.isSlider = isSlider;
+	}
+
+	public Slider getSlider() {
+		return slider;
+	}
+
+	public void setSlider(Slider slider) {
+		this.slider = slider;
+	}
+
+	public List<Playlist> getPlaylists() {
+		return playlists;
+	}
+
+	public void setPlaylists(List<Playlist> playlists) {
+		this.playlists = playlists;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -200,6 +254,8 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 				+ ((hasSyndication == null) ? 0 : hasSyndication.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
+				+ ((isSlider == null) ? 0 : isSlider.hashCode());
+		result = prime * result
 				+ ((keywords == null) ? 0 : keywords.hashCode());
 		result = prime * result + ((links == null) ? 0 : links.hashCode());
 		result = prime * result
@@ -212,8 +268,21 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 				+ ((metaMediaBasicFields == null) ? 0 : metaMediaBasicFields
 						.hashCode());
 		result = prime * result + ((person == null) ? 0 : person.hashCode());
+		result = prime * result
+				+ ((playlists == null) ? 0 : playlists.hashCode());
 		result = prime * result + ((season == null) ? 0 : season.hashCode());
+		result = prime
+				* result
+				+ ((seasonEpisodeShort == null) ? 0 : seasonEpisodeShort
+						.hashCode());
 		result = prime * result + ((show == null) ? 0 : show.hashCode());
+		result = prime * result
+				+ ((showGenry == null) ? 0 : showGenry.hashCode());
+		result = prime
+				* result
+				+ ((showParentalRating == null) ? 0 : showParentalRating
+						.hashCode());
+		result = prime * result + ((slider == null) ? 0 : slider.hashCode());
 		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result
 				+ ((updatedAt == null) ? 0 : updatedAt.hashCode());
@@ -267,6 +336,11 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (isSlider == null) {
+			if (other.isSlider != null)
+				return false;
+		} else if (!isSlider.equals(other.isSlider))
+			return false;
 		if (keywords == null) {
 			if (other.keywords != null)
 				return false;
@@ -302,15 +376,40 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 				return false;
 		} else if (!person.equals(other.person))
 			return false;
+		if (playlists == null) {
+			if (other.playlists != null)
+				return false;
+		} else if (!playlists.equals(other.playlists))
+			return false;
 		if (season == null) {
 			if (other.season != null)
 				return false;
 		} else if (!season.equals(other.season))
 			return false;
+		if (seasonEpisodeShort == null) {
+			if (other.seasonEpisodeShort != null)
+				return false;
+		} else if (!seasonEpisodeShort.equals(other.seasonEpisodeShort))
+			return false;
 		if (show == null) {
 			if (other.show != null)
 				return false;
 		} else if (!show.equals(other.show))
+			return false;
+		if (showGenry == null) {
+			if (other.showGenry != null)
+				return false;
+		} else if (!showGenry.equals(other.showGenry))
+			return false;
+		if (showParentalRating == null) {
+			if (other.showParentalRating != null)
+				return false;
+		} else if (!showParentalRating.equals(other.showParentalRating))
+			return false;
+		if (slider == null) {
+			if (other.slider != null)
+				return false;
+		} else if (!slider.equals(other.slider))
 			return false;
 		if (tags == null) {
 			if (other.tags != null)
@@ -333,5 +432,5 @@ public class ElasticSearchVideo  implements IDataTransfer<String>, Serializable 
 		} else if (!websiteIds.equals(other.websiteIds))
 			return false;
 		return true;
-	}		
+	}	
 }
